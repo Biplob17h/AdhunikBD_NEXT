@@ -12,6 +12,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {},
+      fontFamily: {
+        heading: ["Lato", "serif"],
+        body: ["Open Sans", "serif"],
+        inter: ["Inter", "serif"],
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
