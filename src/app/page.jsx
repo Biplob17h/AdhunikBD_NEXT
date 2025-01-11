@@ -1,3 +1,4 @@
+import AdsBannerSection from "@/components/screens/home/app-ads";
 import CategoriesSection from "@/components/screens/home/categories";
 import FaqSection from "@/components/screens/home/faqs";
 import ForHomeSectionSlider from "@/components/screens/home/for-home";
@@ -14,6 +15,7 @@ const HomePage = () => {
       <RecommendedSection />
       <GallerySlider />
       <FaqSection />
+      <AdsBannerSection />
     </>
   );
 };
