@@ -11,7 +11,7 @@
 }
 
 .container_fluid {
-  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-0;
+  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 2xl:px-0;
 }
 
 h1,
