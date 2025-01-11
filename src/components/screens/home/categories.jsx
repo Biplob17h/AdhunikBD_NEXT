@@ -17,7 +17,7 @@ const CategoriesSection = () => {
         </div>
 
         {/* Dynamic categories */}
-        <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 xl:grid-cols-6 xl:gap-6">
+        <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 xl:grid-cols-6 xl:gap-6">
           {categories.map((category) => (
             <Link
               key={category.id}
@@ -41,6 +41,14 @@ const CategoriesSection = () => {
               </div>
             </Link>
           ))}
+        </div>
+        <div className="mt-8 text-center">
+          <Link
+            href="/categories"
+            className="rounded-lg bg-black px-8 py-3 font-inter text-lg text-white transition-all duration-300 ease-in-out hover:bg-primary"
+          >
+            View More
+          </Link>
         </div>
       </div>
     </section>
