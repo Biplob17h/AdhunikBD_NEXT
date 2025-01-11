@@ -10,8 +10,8 @@ const FaqSection = () => {
   return (
     <section className="py-16 xl:py-32">
       <div className="container_fluid">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="block md:hidden lg:block">
             <img className="rounded-[32px]" src="/images/faq.png" alt="faq" />
           </div>
           <div className="space-y-4 rounded-[32px] bg-secondary p-6">
