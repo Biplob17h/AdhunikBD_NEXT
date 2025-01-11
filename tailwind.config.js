@@ -28,6 +28,9 @@ module.exports = {
         body: ["Open Sans", "serif"],
         inter: ["Inter", "serif"],
       },
+      boxShadow: {
+        "4xl": "rgba(0, 0, 0, 0.04) 0px 3px 5px",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

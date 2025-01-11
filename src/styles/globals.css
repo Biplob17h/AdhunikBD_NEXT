@@ -36,3 +36,8 @@ h6 {
   background-color: #28a69f;
   @apply h-full w-full;
 }
+
+.bg-categories-hover:hover,
+.bg-categories-hover:focus {
+  @apply cursor-pointer bg-primary-gradient transition-all duration-500 ease-in-out;
+}
