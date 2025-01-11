@@ -11,7 +11,18 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {},
+      colors: {
+        primary: "#3AAEA7",
+        secondary: "#f5f5f5",
+        accent: "#28A69F",
+        active: "#77A1D3",
+      },
+      backgroundImage: {
+        "primary-gradient":
+          "linear-gradient(to right, #77A1D3, #79CBCA, #E684AE)",
+        "primary-gradient-hover":
+          "linear-gradient(to right, #79CBCA, #77A1D3, #E684AE)",
+      },
       fontFamily: {
         heading: ["Lato", "serif"],
         body: ["Open Sans", "serif"],
