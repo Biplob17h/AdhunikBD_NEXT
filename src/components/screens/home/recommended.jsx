@@ -1,3 +1,4 @@
+import { recommendedServices } from "@/data/recommended.data";
 import Link from "next/link";
 
 const RecommendedSection = () => {
@@ -10,68 +11,24 @@ const RecommendedSection = () => {
           </h2>
         </div>
 
-        {/* for your home slider */}
+        {/* Dynamically render services */}
         <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <Link
-            href="/categories/id"
-            className="cursor-pointer space-y-2 rounded-2xl border border-black/[0.06] bg-[#fbfbfb] p-6 text-center"
-          >
-            <div>
-              <img
-                src="/images/recommended/service1.png"
-                className="h-full w-full rounded-xl object-cover"
-                alt="service"
-              />
-            </div>
-            <p className="text-xs font-bold text-black">
-              Plumbing & Sanitary Services
-            </p>
-          </Link>
-          <Link
-            href="/categories/id"
-            className="cursor-pointer space-y-2 rounded-2xl border border-black/[0.06] bg-[#fbfbfb] p-6 text-center"
-          >
-            <div>
-              <img
-                src="/images/recommended/service2.png"
-                className="h-full w-full rounded-xl object-cover"
-                alt="service"
-              />
-            </div>
-            <p className="text-xs font-bold text-black">
-              Plumbing & Sanitary Services
-            </p>
-          </Link>{" "}
-          <Link
-            href="/categories/id"
-            className="cursor-pointer space-y-2 rounded-2xl border border-black/[0.06] bg-[#fbfbfb] p-6 text-center"
-          >
-            <div>
-              <img
-                src="/images/recommended/service3.png"
-                className="h-full w-full rounded-xl object-cover"
-                alt="service"
-              />
-            </div>
-            <p className="text-xs font-bold text-black">
-              Plumbing & Sanitary Services
-            </p>
-          </Link>{" "}
-          <Link
-            href="/categories/id"
-            className="cursor-pointer space-y-2 rounded-2xl border border-black/[0.06] bg-[#fbfbfb] p-6 text-center"
-          >
-            <div>
-              <img
-                src="/images/recommended/service4.png"
-                className="h-full w-full rounded-xl object-cover"
-                alt="service"
-              />
-            </div>
-            <p className="text-xs font-bold text-black">
-              Plumbing & Sanitary Services
-            </p>
-          </Link>
+          {recommendedServices.map((service) => (
+            <Link
+              key={service.id}
+              href={`/categories/${service.id}`}
+              className="cursor-pointer space-y-2 rounded-2xl border border-black/[0.06] bg-[#fbfbfb] p-6 text-center"
+            >
+              <div>
+                <img
+                  src={service.image}
+                  className="h-full w-full rounded-xl object-cover"
+                  alt={service.name}
+                />
+              </div>
+              <p className="text-xs font-bold text-black">{service.name}</p>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
