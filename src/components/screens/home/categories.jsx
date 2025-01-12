@@ -22,7 +22,7 @@ const CategoriesSection = () => {
             <Link
               key={category.id}
               href={`/categories/${category.id}`}
-              className="bg-categories-hover rounded p-[1px]"
+              className="bg-categories-hover rounded p-[1.15px]"
             >
               <div className="space-y-4 rounded bg-white p-4 text-center shadow-4xl">
                 <div className="mx-auto h-[67.37px] w-[67.37px]">
