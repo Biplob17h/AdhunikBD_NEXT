@@ -22,7 +22,7 @@ const CategoriesSection = () => {
             <Link
               key={category.id}
               href={`/categories/${category.id}`}
-              className="bg-categories-hover rounded p-[1.15px]"
+              className="bg-categories-hover group rounded p-[1.15px]"
             >
               <div className="space-y-4 rounded bg-white p-4 text-center shadow-4xl">
                 <div className="mx-auto h-[67.37px] w-[67.37px]">
@@ -32,7 +32,7 @@ const CategoriesSection = () => {
                     alt={category.title}
                   />
                 </div>
-                <h5 className="text-lg font-semibold text-black">
+                <h5 className="text-lg font-semibold text-black transition-all duration-300 ease-in-out group-hover:text-primary">
                   {category.title}
                 </h5>
                 <p className="text-base font-light text-[#a1a1a1]">
