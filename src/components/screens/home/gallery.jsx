@@ -48,8 +48,8 @@ const GallerySlider = () => {
       {/* Swiper Slider */}
       <div className="relative mt-10 overflow-hidden px-4 md:px-0">
         {/* custom shapes */}
-        <div className="absolute left-0 top-0 z-10 h-full w-8 bg-gradient-to-t from-secondary to-transparent blur-md lg:w-16 2xl:w-32" />
-        <div className="absolute right-0 top-0 z-10 h-full w-8 bg-gradient-to-t from-secondary to-transparent blur-md lg:w-16 2xl:w-32" />
+        <div className="absolute -left-2 top-0 z-10 h-full w-8 bg-gradient-to-r from-white via-secondary to-transparent blur-md lg:w-16 2xl:w-32" />
+        <div className="absolute -right-3 top-0 z-10 h-full w-8 bg-gradient-to-l from-white via-secondary to-transparent blur-md lg:w-16 2xl:w-32" />
         <div>
           {/* Custom Prev Button */}
           <button
