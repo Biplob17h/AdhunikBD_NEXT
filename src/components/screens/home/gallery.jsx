@@ -12,21 +12,19 @@ const GallerySlider = () => {
   // Dynamic slides data
   const slides = [
     "/images/gallery/slide-service1.png",
+    "/images/gallery/slide-service2.png",
+    "/images/gallery/slide-service3.png",
+    "/images/gallery/slide-service4.png",
+    "/images/gallery/slide-service5.png",
     "/images/gallery/slide-service1.png",
-    "/images/gallery/slide-service1.png",
-    "/images/gallery/slide-service1.png",
-    "/images/gallery/slide-service1.png",
-    "/images/gallery/slide-service1.png",
-    "/images/gallery/slide-service1.png",
-    "/images/gallery/slide-service1.png",
-    "/images/gallery/slide-service1.png",
-    "/images/gallery/slide-service1.png",
-    "/images/gallery/slide-service1.png",
-    "/images/gallery/slide-service1.png",
+    "/images/gallery/slide-service2.png",
+    "/images/gallery/slide-service3.png",
+    "/images/gallery/slide-service4.png",
+    "/images/gallery/slide-service5.png",
   ];
 
-  // Calculate the middle slide index dynamically
-  const middleSlideIndex = Math.floor(slides.length / 2);
+  // State to track the active slide index
+  const [activeIndex, setActiveIndex] = useState(0);
 
   // State to manage arrow enable/disable
   const [isBeginning, setIsBeginning] = useState(true);
@@ -48,8 +46,8 @@ const GallerySlider = () => {
       {/* Swiper Slider */}
       <div className="relative mt-10 overflow-hidden px-4 md:px-0">
         {/* custom shapes */}
-        <div className="absolute -left-2 top-0 z-10 h-full w-8 bg-gradient-to-r from-white via-secondary to-transparent blur-md lg:w-16 2xl:w-32" />
-        <div className="absolute -right-3 top-0 z-10 h-full w-8 bg-gradient-to-l from-white via-secondary to-transparent blur-md lg:w-16 2xl:w-32" />
+        <div className="absolute -left-2 top-0 z-10 h-full w-8 bg-gradient-to-r from-white/85 via-secondary/90 to-transparent blur-md lg:w-16 2xl:w-32" />
+        <div className="absolute -right-3 top-0 z-10 h-full w-8 bg-gradient-to-l from-white via-secondary/90 to-transparent blur-md lg:w-16 2xl:w-32" />
         <div>
           {/* Custom Prev Button */}
           <button
@@ -81,10 +79,10 @@ const GallerySlider = () => {
           grabCursor={true}
           centeredSlides={true}
           slidesPerView={"auto"}
-          initialSlide={middleSlideIndex}
+          initialSlide={Math.floor(slides.length / 2)}
           coverflowEffect={{
             rotate: 0,
-            stretch: -25,
+            stretch: -29,
             depth: 90,
             modifier: 2.5,
             slideShadows: true,
@@ -94,10 +92,12 @@ const GallerySlider = () => {
             nextEl: ".custom-next",
           }}
           onInit={(swiper) => {
+            setActiveIndex(swiper.activeIndex);
             setIsBeginning(swiper.isBeginning);
             setIsEnd(swiper.isEnd);
           }}
           onSlideChange={(swiper) => {
+            setActiveIndex(swiper.activeIndex);
             setIsBeginning(swiper.isBeginning);
             setIsEnd(swiper.isEnd);
           }}
@@ -110,17 +110,33 @@ const GallerySlider = () => {
             1280: { slidesPerView: 4 },
           }}
         >
-          {slides.map((slide, index) => (
-            <SwiperSlide key={index}>
-              <div>
-                <img
-                  src={slide}
-                  className="w-full rounded-[32px] object-cover"
-                  alt={`Slide ${index + 1}`}
-                />
-              </div>
-            </SwiperSlide>
-          ))}
+          {slides.map((slide, index) => {
+            // Determine positions
+            const isActive = index === activeIndex;
+            const isLeftThree = index === activeIndex - 2;
+            const isRightThree = index === activeIndex + 2;
+
+            return (
+              <SwiperSlide
+                key={index}
+                className={` ${
+                  isActive
+                    ? "" // Active slide
+                    : isLeftThree
+                      ? "left3" // Left-three position
+                      : isRightThree && "right3" // Right-three position
+                }`}
+              >
+                <div>
+                  <img
+                    src={slide}
+                    className="h-full w-full rounded-[32px] object-cover"
+                    alt={`Slide ${index + 1}`}
+                  />
+                </div>
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </div>
     </section>

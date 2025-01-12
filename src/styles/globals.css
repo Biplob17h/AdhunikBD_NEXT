@@ -77,3 +77,12 @@ h6 {
 .swiper-button-next {
   @apply !hidden;
 }
+
+.left3 {
+  transform: translate3d(-125.033px, 0px, -310.118px) rotateX(0deg)
+    rotateY(0deg) scale(0.9) !important;
+}
+.right3 {
+  transform: translate3d(124.967px, 0px, -310.882px) rotateX(0deg) rotateY(0deg)
+    scale(0.9) !important;
+}
