@@ -49,3 +49,31 @@ h6 {
 .bg-categories-hover:focus {
   @apply cursor-pointer bg-primary-gradient transition-all duration-500 ease-in-out;
 }
+
+/* swiper */
+.mySwiper .swiper-slide {
+  transition: transform 0.5s ease;
+}
+
+.mySwiper .swiper-slide-active {
+  transform: scale(1.3); /* Scale up active slide */
+  z-index: 10;
+}
+
+.mySwiper .swiper-slide-next,
+.mySwiper .swiper-slide-prev {
+  transform: scale(0.8); /* Slightly smaller for next/prev slides */
+}
+
+.mySwiper .swiper-slide:nth-child(n + 4),
+.mySwiper .swiper-slide:nth-last-child(n + 4) {
+  transform: scale(0.5); /* Smallest for far slides */
+}
+.swiper-slide-shadow-coverflow {
+  border-radius: 32px;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  @apply !hidden;
+}
