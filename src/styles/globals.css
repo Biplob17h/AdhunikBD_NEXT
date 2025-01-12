@@ -49,7 +49,7 @@ h6 {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  @apply h-full w-full bg-secondary lg:min-h-[1328px];
+  @apply h-full w-full bg-secondary lg:h-[1328px];
 }
 
 .bg-categories-hover:hover,
