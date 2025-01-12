@@ -77,7 +77,7 @@ const ClientFeedbackSection = () => {
                 }}
               >
                 <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-                  <div className="lg:min-w-[277px]">
+                  <div className="overflow-hidden rounded-full lg:min-w-[277px] lg:rounded-[10px]">
                     <img
                       src={feedback.image}
                       className="h-12 w-12 rounded-full object-cover transition-all duration-300 ease-in-out group-hover:scale-105 lg:h-auto lg:w-full lg:rounded-[10px]"
