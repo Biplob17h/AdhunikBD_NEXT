@@ -34,7 +34,7 @@ const GallerySlider = () => {
 
   return (
     <section className="bg-secondary py-12 xl:py-[60px]">
-      <div className="heading mx-auto max-w-[855px] space-y-4 text-center">
+      <div className="heading mx-auto max-w-[855px] space-y-4 px-4 text-center md:px-0">
         <h2 className="text-3xl font-bold text-black/75 md:text-5xl">
           Gallery
         </h2>
@@ -46,11 +46,11 @@ const GallerySlider = () => {
       </div>
 
       {/* Swiper Slider */}
-      <div className="relative mt-10">
+      <div className="relative mt-10 px-4 md:px-0">
         <div>
           {/* Custom Prev Button */}
           <button
-            className={`custom-prev absolute left-80 top-[50%] z-10 inline-flex h-12 w-12 -translate-y-1/2 transform items-center justify-center rounded-full ${
+            className={`custom-prev absolute left-5 top-[50%] z-10 inline-flex h-12 w-12 -translate-y-1/2 transform items-center justify-center rounded-full md:left-20 xl:left-40 2xl:left-80 ${
               isBeginning
                 ? "cursor-not-allowed bg-gray-300 text-gray-500"
                 : "bg-white text-black hover:bg-gray-50"
@@ -62,7 +62,7 @@ const GallerySlider = () => {
 
           {/* Custom Next Button */}
           <button
-            className={`custom-next absolute right-80 top-[50%] z-10 inline-flex h-12 w-12 -translate-y-1/2 transform items-center justify-center rounded-full ${
+            className={`custom-next absolute right-5 top-[50%] z-10 inline-flex h-12 w-12 -translate-y-1/2 transform items-center justify-center rounded-full md:right-20 xl:right-40 2xl:right-80 ${
               isEnd
                 ? "cursor-not-allowed bg-gray-300 text-gray-500"
                 : "bg-white text-black hover:bg-gray-50"
@@ -82,8 +82,8 @@ const GallerySlider = () => {
           coverflowEffect={{
             rotate: 0,
             stretch: -25,
-            depth: 100,
-            modifier: 2,
+            depth: 90,
+            modifier: 2.5,
             slideShadows: true,
           }}
           navigation={{
@@ -112,7 +112,7 @@ const GallerySlider = () => {
               <div>
                 <img
                   src={slide}
-                  className="w-full object-cover"
+                  className="w-full rounded-[32px] object-cover"
                   alt={`Slide ${index + 1}`}
                 />
               </div>
