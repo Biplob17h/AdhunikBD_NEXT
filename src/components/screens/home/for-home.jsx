@@ -5,6 +5,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Link from "next/link";
 
 const ForHomeSectionSlider = () => {
   return (
@@ -25,20 +26,20 @@ const ForHomeSectionSlider = () => {
                   key={index}
                   className="sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
                 >
-                  <div>
-                    <div className="relative">
+                  <Link href="/categories" className="group relative block">
+                    <div className="overflow-hidden rounded-xl">
                       <img
                         src="/images/for-home.png"
-                        className="h-full w-full rounded-xl object-cover"
+                        className="h-full w-full rounded-xl object-cover transition-all duration-300 ease-in-out group-hover:scale-105"
                         alt="work-image"
                       />
-                      <div className="absolute bottom-4 left-1/2 w-full -translate-x-1/2">
-                        <p className="mx-auto max-w-[199.31px] rounded-xl bg-white/30 p-[7.46px] text-center font-heading text-[13.44px] font-bold text-white/75 backdrop-blur-sm">
-                          Plumbing & Sanitary Services
-                        </p>
-                      </div>
                     </div>
-                  </div>
+                    <div className="absolute bottom-4 left-1/2 w-full -translate-x-1/2">
+                      <p className="mx-auto max-w-[199.31px] rounded-xl bg-white/30 p-[7.46px] text-center font-heading text-[13.44px] font-bold text-white/75 backdrop-blur-sm transition-all duration-300 ease-in-out group-hover:bg-primary/50 group-hover:text-white">
+                        Plumbing & Sanitary Services
+                      </p>
+                    </div>
+                  </Link>
                 </CarouselItem>
               ))}
             </CarouselContent>
