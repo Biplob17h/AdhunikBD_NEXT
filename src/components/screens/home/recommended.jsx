@@ -17,16 +17,18 @@ const RecommendedSection = () => {
             <Link
               key={service.id}
               href={`/categories/${service.id}`}
-              className="cursor-pointer space-y-2 rounded-2xl border border-black/[0.06] bg-[#fbfbfb] p-6 text-center"
+              className="group cursor-pointer space-y-2 rounded-2xl border border-black/[0.06] bg-[#fbfbfb] p-6 text-center"
             >
-              <div>
+              <div className="overflow-hidden rounded-xl">
                 <img
                   src={service.image}
-                  className="h-full w-full rounded-xl object-cover"
+                  className="h-full w-full rounded-xl object-cover transition-all duration-300 ease-in-out group-hover:scale-105"
                   alt={service.name}
                 />
               </div>
-              <p className="text-xs font-bold text-black">{service.name}</p>
+              <p className="text-xs font-bold text-black transition-all duration-300 ease-in-out group-hover:text-primary">
+                {service.name}
+              </p>
             </Link>
           ))}
         </div>
