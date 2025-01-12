@@ -17,7 +17,7 @@ const ForHomeSectionSlider = () => {
         </div>
 
         {/* for your home slider */}
-        <div className="mt-8">
+        <div className="mt-10">
           <Carousel>
             <CarouselContent>
               {Array.from({ length: 12 }).map((_, index) => (

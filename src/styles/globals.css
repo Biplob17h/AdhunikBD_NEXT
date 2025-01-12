@@ -44,6 +44,13 @@ h6 {
   border-radius: 24px;
   @apply h-full min-h-[440px] w-full bg-secondary;
 }
+.how-works-bg {
+  background-image: url("/how-works-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  @apply h-full min-h-[1328px] w-full bg-secondary;
+}
 
 .bg-categories-hover:hover,
 .bg-categories-hover:focus {
