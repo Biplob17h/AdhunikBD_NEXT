@@ -86,9 +86,9 @@ const LoginPage = () => {
               </div>
             </form>
           </div>
-          <div>
+          <div className="hidden lg:block">
             <img
-              className="h-full w-full object-cover"
+              className="h-full w-full rounded-2xl object-cover"
               src="/auth.png"
               alt="auth"
             />
