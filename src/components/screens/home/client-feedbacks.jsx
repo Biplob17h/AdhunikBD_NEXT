@@ -77,29 +77,38 @@ const ClientFeedbackSection = () => {
                 }}
               >
                 <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-                  <div className="overflow-hidden rounded-full lg:min-w-[277px] lg:rounded-[10px]">
+                  <div className="hidden overflow-hidden rounded-full 2xl:block 2xl:min-w-[277px] 2xl:rounded-[10px]">
                     <img
                       src={feedback.image}
-                      className="h-12 w-12 rounded-full object-cover transition-all duration-300 ease-in-out group-hover:scale-105 lg:h-auto lg:w-full lg:rounded-[10px]"
+                      className="h-12 w-12 rounded-full object-cover transition-all duration-300 ease-in-out group-hover:scale-105 2xl:h-auto 2xl:w-full 2xl:rounded-[10px]"
                       alt={feedback.name}
                     />
                   </div>
                   <div className="flex-1 space-y-[18px]">
-                    <p className="mt-0 text-base leading-[27px] text-black/60 lg:mt-8">
+                    <q className="mt-0 block text-base leading-[27px] text-black/60 2xl:mt-8">
                       {feedback.feedback}
-                    </p>
-                    <div className="space-y-1">
-                      <h4 className="font-inter text-base font-bold text-black">
-                        {feedback.name}
-                      </h4>
-                      <p className="font-inter text-sm text-[#808080]">
-                        {feedback.role}
-                      </p>
+                    </q>
+                    <div className="flex items-center gap-4 2xl:block">
+                      <div className="2xl:hidden">
+                        <img
+                          src={feedback.image}
+                          className="h-12 w-12 rounded-full object-cover transition-all duration-300 ease-in-out group-hover:scale-105 2xl:h-auto 2xl:w-full 2xl:rounded-[10px]"
+                          alt={feedback.name}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="font-inter text-base font-bold text-black">
+                          {feedback.name}
+                        </h4>
+                        <p className="font-inter text-sm text-[#808080]">
+                          {feedback.role}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="absolute right-6 top-6">
-                  <img src="/quotes.svg" alt="quotes" />
+                <div className="absolute bottom-9 right-6 2xl:top-6">
+                  <img src="/quotes.svg" alt="quotes" className="opacity-50" />
                 </div>
               </div>
             </SwiperSlide>
