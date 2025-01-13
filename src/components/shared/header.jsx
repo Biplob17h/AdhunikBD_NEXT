@@ -19,7 +19,7 @@ const HeaderSection = ({ title, links = ["Home"] }) => {
 
             <ArrowRight className="inline-block h-5 w-5 p-1" />
 
-            <Link className="text-[#77A1D3]" href="/#">
+            <Link className="text-[#77A1D3]" href="#">
               {links[1]}
             </Link>
           </div>
