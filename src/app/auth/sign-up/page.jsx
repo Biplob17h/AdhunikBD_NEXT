@@ -17,7 +17,7 @@ const SignUpPage = () => {
                 Welcome
               </h3>
               <p className="text-lg text-black/60">
-                Enter your email and password to sign in
+                Enter your name, email and password to sign up
               </p>
             </div>
             <form action="#" id="#" className="space-y-6">
@@ -79,22 +79,20 @@ const SignUpPage = () => {
                   className="mt-2 max-h-[49px] rounded-lg border border-black/30 px-4 py-[18px] text-base"
                 />
               </div>
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="remember" />
-                  <label
-                    htmlFor="remember"
-                    className="text-lg leading-[30px] text-black/60 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Remember me
-                  </label>
-                </div>
-                <Link
-                  href="/forgot-password"
-                  className="text-lg leading-[30px] text-[#1173ff] underline-offset-4 transition-all duration-300 ease-in-out hover:underline"
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" />
+                <label
+                  htmlFor="terms"
+                  className="inline-flex items-center gap-1 text-lg leading-[30px] text-black/60 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Forgot Password ?
-                </Link>
+                  I accept the terms and conditions and
+                  <Link
+                    href="/privacy"
+                    className="underline underline-offset-4 transition-all duration-300 ease-in-out hover:text-[#1173ff]"
+                  >
+                    privacy policy
+                  </Link>
+                </label>
               </div>
               <Button className="h-[72px] w-full rounded-lg bg-black/75 p-6 text-xl font-medium text-white">
                 Sign in
