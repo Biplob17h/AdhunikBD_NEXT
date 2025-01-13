@@ -108,7 +108,11 @@ const ClientFeedbackSection = () => {
                   </div>
                 </div>
                 <div className="absolute bottom-9 right-6 2xl:top-6">
-                  <img src="/quotes.svg" alt="quotes" className="opacity-50" />
+                  <img
+                    src="/quotes.svg"
+                    alt="quotes"
+                    className="opacity-50 2xl:opacity-100"
+                  />
                 </div>
               </div>
             </SwiperSlide>
