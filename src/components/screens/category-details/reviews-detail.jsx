@@ -1,4 +1,5 @@
 import { StarIcon } from "@/components/ui/svgs";
+import { ThumbsUp } from "lucide-react";
 
 const ReviewDetailSection = () => {
   return (
@@ -50,39 +51,61 @@ const ReviewDetailSection = () => {
         </div>
 
         {/* Comments */}
-        <div className="space-y-4">
-          {Array(2)
-            .fill(0)
-            .map((_, index) => (
-              <div
-                key={index}
-                className="rounded-lg border bg-gray-50 p-4 shadow-sm"
-              >
-                <div className="flex items-center space-x-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
-                    <span className="text-sm font-bold text-gray-600">S.H</span>
+        <div>
+          <h4 className="my-2 text-2xl text-black/90">Comments</h4>
+          <div className="divide-y divide-[#0B0D0C]/10">
+            {Array(2)
+              .fill(0)
+              .map((_, index) => (
+                <div key={index} className="py-4">
+                  <div className="flex gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#262740]">
+                      <span className="text-base font-medium text-white">
+                        S.H
+                      </span>
+                    </div>
+                    <div className="flex flex-1 flex-col">
+                      <p className="inline-flex items-center gap-4">
+                        <span>Sunmon Hossain</span>
+                        <span className="text-sm text-gray-500">
+                          3 Days ago
+                        </span>
+                      </p>
+                      <div className="inline-flex items-center">
+                        {Array.from({ length: 5 }).map((_, index) => (
+                          <StarIcon
+                            key={index}
+                            className="w-4 text-[#FFB543]"
+                          />
+                        ))}
+                      </div>
+                      <div className="space-y-2">
+                        <p className="font-inter text-lg font-medium text-black/60">
+                          Great Product
+                        </p>
+                        <p className="pb-2 leading-[150%] text-black/60">
+                          There are many variations of passages of Lorem Ipsum
+                          available, but the majority have suffered alteration
+                          in some form, by injected humour There are many
+                          variations of passages of Lorem Ipsum available, but
+                          the majority have suffered alteration in some form, by
+                          injected humour alteration in some form.
+                        </p>
+                      </div>
+                      <div className="mt-3 flex space-x-4 text-sm lg:text-base">
+                        <button className="inline-flex items-center gap-1 text-[#667085] hover:underline">
+                          {" "}
+                          <ThumbsUp className="w-4" /> Like
+                        </button>
+                        <button className="text-[#EC4C25] hover:underline">
+                          Reply
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-semibold text-gray-800">
-                      Sunmon Hossain
-                    </p>
-                    <p className="text-sm text-gray-500">3 Days ago</p>
-                  </div>
                 </div>
-                <div className="mt-4">
-                  <p className="text-lg font-medium">Great Product</p>
-                  <p className="mt-2 text-gray-600">
-                    There are many variations of passages of Lorem Ipsum
-                    available, but the majority have suffered alteration in some
-                    form, by injected humour.
-                  </p>
-                </div>
-                <div className="mt-3 flex space-x-4 text-sm text-gray-600">
-                  <button className="hover:underline">Like</button>
-                  <button className="hover:underline">Reply</button>
-                </div>
-              </div>
-            ))}
+              ))}
+          </div>
         </div>
       </div>
     </div>
