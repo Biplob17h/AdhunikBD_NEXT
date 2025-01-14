@@ -17,7 +17,7 @@ const RecommendedSection = () => {
             <Link
               key={service.id}
               href={`/categories/${service.id}`}
-              className="group cursor-pointer space-y-2 rounded-2xl border border-black/[0.06] bg-[#fbfbfb] p-6 text-center"
+              className="group inline-block cursor-pointer space-y-2 rounded-2xl border border-black/[0.06] bg-[#fbfbfb] p-6 text-center"
             >
               <div className="overflow-hidden rounded-xl">
                 <img

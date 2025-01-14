@@ -26,7 +26,7 @@ const CategoriesPage = () => {
         setSearchTerm={setSearchTerm}
       />
 
-      <ServicesOfCategorySection  filteredServices={filteredServices}/>
+      <ServicesOfCategorySection filteredServices={filteredServices} />
     </div>
   );
 };
