@@ -8,7 +8,7 @@ const CategoryHeroBanner = () => {
       <div className="container_fluid">
         <div className="cat_details_hero_banner border-t-[3px] border-primary p-6 xl:p-8">
           <div className="max-w-[1023px] space-y-4">
-            <div className="flex items-center gap-4 lg:gap-8 flex-wrap">
+            <div className="flex flex-wrap items-center gap-4 lg:gap-8">
               <h2 className="text-2xl font-semibold leading-[32px] text-white lg:text-[32px]">
                 Plumbing & Sanitary Services
               </h2>
@@ -21,11 +21,11 @@ const CategoryHeroBanner = () => {
               quality, responsive, certified, guaranteed, experienced,
               sustainable, modern
             </p>
-            <div className="flex items-center gap-7 flex-wrap">
+            <div className="flex flex-wrap items-center gap-7">
               <button className="inline-flex max-h-[45px] items-center justify-center rounded-lg bg-white px-6 py-2 text-lg font-semibold uppercase leading-[32px] text-black/75">
                 Add to favorites
               </button>
-              <p className="inline-flex items-center gap-2 text-white flex-wrap">
+              <p className="inline-flex flex-wrap items-center gap-2 text-white">
                 <span className="font-inter text-[26px] font-extrabold leading-[48px]">
                   4.5
                 </span>
