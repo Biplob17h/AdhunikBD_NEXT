@@ -51,6 +51,14 @@ h6 {
   background-repeat: no-repeat;
   @apply h-full w-full bg-secondary lg:h-[1328px];
 }
+.cat_details_hero_banner {
+  background-image: url("/images/categories/details/hero-banner.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 24px;
+  @apply h-full w-full bg-primary lg:h-[333px];
+}
 
 .bg-categories-hover:hover,
 .bg-categories-hover:focus {

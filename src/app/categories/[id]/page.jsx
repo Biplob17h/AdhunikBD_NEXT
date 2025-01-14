@@ -1,5 +1,11 @@
+import CategoryHeroBanner from "@/components/screens/category-details/hero";
+
 const CategoriesDetailsPage = () => {
-  return <div>ServiceDetailsPage</div>;
+  return (
+    <>
+      <CategoryHeroBanner />
+    </>
+  );
 };
 
 export default CategoriesDetailsPage;
