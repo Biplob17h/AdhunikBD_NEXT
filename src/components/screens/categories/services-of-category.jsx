@@ -1,12 +1,10 @@
-const ServicesOfCategorySection = () => {
+const ServicesOfCategorySection = ({ filteredServices }) => {
   return (
-    <div>
-      <h2>Shifting</h2>
-      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {recommendedServices.map((service) => (
-          <Link
+    <section className="pb-8 xl:pb-16">
+      <div className="container_fluid mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {filteredServices.map((service) => (
+          <div
             key={service.id}
-            href={`/categories/${service.id}`}
             className="group cursor-pointer space-y-2 rounded-2xl border border-black/[0.06] bg-[#fbfbfb] p-6 text-center"
           >
             <div className="overflow-hidden rounded-xl">
@@ -19,10 +17,10 @@ const ServicesOfCategorySection = () => {
             <p className="text-xs font-bold text-black transition-all duration-300 ease-in-out group-hover:text-primary">
               {service.name}
             </p>
-          </Link>
+          </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -8,7 +8,7 @@ const CategoryFilter = ({
   setSearchTerm,
 }) => {
   return (
-    <section className="pb-8 pt-8 xl:pt-16">
+    <section className="pt-8 xl:pt-16">
       <div className="container_fluid">
         <h2 className="text-center text-3xl font-bold text-black/75 md:text-5xl">
           Unlock the Power of All Services
