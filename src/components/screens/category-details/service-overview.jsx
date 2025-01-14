@@ -28,7 +28,7 @@ const serviceData = [
 const ServiceOverviewSection = ({ services }) => {
   return (
     <div className="space-y-6">
-      <h3 className="mb-4 border-b text-[26px] font-semibold leading-[48px] text-black/75">
+      <h3 className="text-[26px] font-semibold leading-[48px] text-black/75 underline decoration-primary decoration-wavy underline-offset-8">
         Service Overview
       </h3>
       <p className="text-base text-black/60 lg:leading-[32px]">

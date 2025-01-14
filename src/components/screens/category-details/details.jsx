@@ -6,7 +6,7 @@ import { IoIosArrowForward } from "react-icons/io";
 const DetailSection = () => {
   return (
     <div>
-      <h3 className="mb-4 text-[26px] font-semibold leading-[48px] text-black/75">
+      <h3 className="mb-4 text-[26px] font-semibold leading-[48px] text-black/75 underline decoration-primary decoration-wavy underline-offset-8">
         Details
       </h3>
       {/*  */}
