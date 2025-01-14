@@ -23,7 +23,7 @@ const ReviewDetailSection = () => {
           </div>
 
           {/* Rating Breakdown */}
-          <div className="flex-1 space-y-4 bg-[#0B0D0C]/[0.04] p-6">
+          <div className="flex-1 space-y-3 bg-[#0B0D0C]/[0.04] p-6">
             {[
               { stars: 5, percentage: 70 },
               { stars: 4, percentage: 15 },
@@ -37,6 +37,11 @@ const ReviewDetailSection = () => {
                     className="h-2 rounded-full bg-[#20590C]"
                     style={{ width: `${item.percentage}%` }}
                   ></div>
+                </div>
+                <div className="inline-flex items-center gap-0.5">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <StarIcon key={index} className="w-4 text-[#FFB543]" />
+                  ))}
                 </div>
                 <span className="w-10 text-black/60">{item.percentage}%</span>
               </div>
