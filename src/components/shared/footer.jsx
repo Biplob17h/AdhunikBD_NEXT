@@ -73,7 +73,7 @@ const FooterSection = () => {
           <p className="text-sm font-light text-white">
             © {year} Sheba, Inc. All rights reserved.
           </p>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 text-white">
             {socialLinks.map((social, index) => (
               <Link key={index} href={social.href}>
                 <social.Icon />
