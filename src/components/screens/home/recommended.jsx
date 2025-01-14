@@ -13,7 +13,7 @@ const RecommendedSection = () => {
 
         {/* Dynamically render services */}
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {recommendedServices.map((service) => (
+          {recommendedServices.slice(0, 4).map((service) => (
             <Link
               key={service.id}
               href={`/categories/${service.id}`}
