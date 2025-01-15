@@ -11,6 +11,7 @@ const CategoriesSection = () => {
           <motion.h2
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
             className="text-3xl font-bold text-black/75 md:text-5xl"
           >
@@ -19,6 +20,7 @@ const CategoriesSection = () => {
           <motion.p
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 1, ease: "easeInOut" }}
             className="text-base text-black/60"
           >
@@ -31,37 +33,40 @@ const CategoriesSection = () => {
         {/* Dynamic categories */}
         <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 xl:grid-cols-6 xl:gap-6">
           {categories.map((category, index) => (
-            <Link
+            <motion.div
               key={category.id}
-              href={`/categories/${category.id}`}
-              className="bg-categories-hover group rounded p-[1.15px]"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 + index * 0.1, ease: "easeInOut" }}
             >
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 + index * 0.1, ease: "easeInOut" }}
-                className="space-y-4 rounded bg-white p-4 text-center shadow-4xl"
+              <Link
+                href={`/categories/${category.id}`}
+                className="bg-categories-hover group block rounded p-[1px]"
               >
-                <div className="mx-auto h-[67.37px] w-[67.37px]">
-                  <img
-                    src={category.image}
-                    className="h-full w-full object-fill"
-                    alt={category.title}
-                  />
+                <div className="space-y-4 rounded bg-white p-4 text-center shadow-4xl">
+                  <div className="mx-auto h-[67.37px] w-[67.37px]">
+                    <img
+                      src={category.image}
+                      className="h-full w-full object-fill"
+                      alt={category.title}
+                    />
+                  </div>
+                  <h5 className="text-lg font-semibold text-black transition-all duration-300 ease-in-out group-hover:text-primary">
+                    {category.title}
+                  </h5>
+                  <p className="text-base font-light text-[#a1a1a1]">
+                    {category.description}
+                  </p>
                 </div>
-                <h5 className="text-lg font-semibold text-black transition-all duration-300 ease-in-out group-hover:text-primary">
-                  {category.title}
-                </h5>
-                <p className="text-base font-light text-[#a1a1a1]">
-                  {category.description}
-                </p>
-              </motion.div>
-            </Link>
+              </Link>
+            </motion.div>
           ))}
         </div>
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="mt-10 text-center"
         >
