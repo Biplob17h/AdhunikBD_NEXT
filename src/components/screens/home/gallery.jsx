@@ -38,7 +38,7 @@ const GallerySlider = () => {
         <motion.h2
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
           className="text-3xl font-bold text-black/75 md:text-5xl"
         >
           Gallery
@@ -46,7 +46,7 @@ const GallerySlider = () => {
         <motion.p
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
           className="text-base text-black/60"
         >
           Discover tailored categories designed to simplify your search, explore
