@@ -1,15 +1,29 @@
+"use client";
+import { motion } from "framer-motion";
 const TeamPage = () => {
   return (
     <section className="py-8 xl:py-16">
       <div className="container_fluid">
-        <h2 className="text-center text-3xl font-bold text-black/75 md:text-5xl">
+        <motion.h2
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="text-center text-3xl font-bold text-black/75 md:text-5xl"
+        >
           Our Trusted Team
-        </h2>
+        </motion.h2>
 
         {/* you team members */}
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: 8 }).map((_, index) => (
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.5 + index * 0.1,
+                delay: index * 0.1,
+                ease: "easeInOut",
+              }}
               key={index}
               className="group relative cursor-pointer overflow-hidden rounded-2xl bg-secondary"
             >
@@ -25,7 +39,7 @@ const TeamPage = () => {
                 </div>
               </div>
               <div className="inverted-round" />
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
