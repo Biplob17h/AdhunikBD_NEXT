@@ -1,4 +1,7 @@
+"use client";
 import Link from "next/link";
+
+import { motion } from "framer-motion";
 
 const AdsBannerSection = () => {
   const appStores = [
@@ -9,7 +12,12 @@ const AdsBannerSection = () => {
     <section className="pb-16">
       <div className="container_fluid ads-banner overflow-hidden">
         <div className="items-center justify-between gap-6 pl-6 pt-12 lg:flex lg:pl-12 lg:pt-0">
-          <div className="max-w-[460px] space-y-6 xl:max-w-[666px]">
+          <motion.div
+            initial={{ opacity: 0, y: -80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1, ease: "easeInOut" }}
+            className="max-w-[460px] space-y-6 xl:max-w-[666px]"
+          >
             <h2 className="text-2xl font-bold text-black/75 md:text-3xl xl:text-5xl">
               Get your service from our app
             </h2>
@@ -24,8 +32,12 @@ const AdsBannerSection = () => {
                 </Link>
               ))}
             </div>
-          </div>
-          <div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 120 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6, ease: "easeInOut" }}
+          >
             <div className="relative top-6">
               <img
                 src="/phone-mockup.png"
@@ -33,7 +45,7 @@ const AdsBannerSection = () => {
                 alt="app-mockup"
               />
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
