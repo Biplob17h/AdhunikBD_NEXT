@@ -12,6 +12,8 @@ import { feedbacks } from "@/data/feedback.data";
 import { useState } from "react";
 import { Autoplay } from "swiper/modules";
 
+import { motion } from "framer-motion";
+
 const ClientFeedbackSection = () => {
   const [activeIndex, setActiveIndex] = useState(2);
 
@@ -19,14 +21,24 @@ const ClientFeedbackSection = () => {
     <section className="pb-16 xl:pb-32">
       <div className="container_fluid">
         <div className="heading mx-auto max-w-[855px] space-y-4 text-center">
-          <h2 className="text-3xl font-bold uppercase text-black/75 md:text-5xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1, ease: "easeInOut" }}
+            className="text-3xl font-bold uppercase text-black/75 md:text-5xl"
+          >
             How It Works
-          </h2>
-          <p className="text-base text-black/60">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
+            className="text-base text-black/60"
+          >
             There are many variations of passages of Lorem Ipsum available, but
             the majority have <br className="hidden md:block" /> suffered
             alteration in some.
-          </p>
+          </motion.p>
         </div>
       </div>
       {/* Feedback Cards slides */}
