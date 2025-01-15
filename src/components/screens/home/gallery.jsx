@@ -8,6 +8,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { ArrowLeft, ArrowRight } from "@/components/ui/svgs";
 import { EffectCoverflow, Navigation } from "swiper/modules";
 
+import { motion } from "framer-motion";
+
 const GallerySlider = () => {
   // Dynamic slides data
   const slides = [
@@ -33,14 +35,24 @@ const GallerySlider = () => {
   return (
     <section className="bg-secondary py-12 xl:py-[60px]">
       <div className="heading mx-auto max-w-[855px] space-y-4 px-4 text-center md:px-0">
-        <h2 className="text-3xl font-bold text-black/75 md:text-5xl">
+        <motion.h2
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="text-3xl font-bold text-black/75 md:text-5xl"
+        >
           Gallery
-        </h2>
-        <p className="text-base text-black/60">
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
+          className="text-base text-black/60"
+        >
           Discover tailored categories designed to simplify your search, explore
           diverse options, and <br className="hidden md:block" /> find exactly
           what you need effortlessly
-        </p>
+        </motion.p>
       </div>
 
       {/* Swiper Slider */}

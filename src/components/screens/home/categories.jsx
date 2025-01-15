@@ -11,7 +11,6 @@ const CategoriesSection = () => {
           <motion.h2
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
             className="text-3xl font-bold text-black/75 md:text-5xl"
           >
@@ -20,7 +19,6 @@ const CategoriesSection = () => {
           <motion.p
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
             transition={{ duration: 1, ease: "easeInOut" }}
             className="text-base text-black/60"
           >
@@ -37,8 +35,11 @@ const CategoriesSection = () => {
               key={category.id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 + index * 0.1, ease: "easeInOut" }}
+              transition={{
+                duration: 0.5 + index * 0.1,
+                delay: index * 0.1,
+                ease: "easeInOut",
+              }}
             >
               <Link
                 href={`/categories/${category.id}`}
