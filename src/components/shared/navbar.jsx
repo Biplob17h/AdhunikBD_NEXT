@@ -28,7 +28,8 @@ const Navbar = () => {
               <Link
                 href={item.href}
                 className={cn("nav_link text-black", {
-                  "text-active font-semibold": pathname === item.href,
+                  "bg-primary-gradient bg-clip-text font-medium text-transparent":
+                    pathname === item.href,
                 })}
               >
                 {item.name}
@@ -43,7 +44,7 @@ const Navbar = () => {
             className={cn(
               "nav_link inline-block rounded-lg bg-[#040404] px-8 py-3 font-bold text-white",
               {
-                "bg-active": pathname === "/auth/login",
+                "bg-primary-gradient": pathname === "/auth/login",
               },
             )}
           >
@@ -94,7 +95,8 @@ const Navbar = () => {
                 href={item.href}
                 onClick={closeMenu}
                 className={cn("nav_link text-black", {
-                  "text-active font-semibold": pathname === item.href,
+                  "bg-primary-gradient bg-clip-text font-medium text-transparent":
+                    pathname === item.href,
                 })}
               >
                 {item.name}
@@ -111,7 +113,7 @@ const Navbar = () => {
             className={cn(
               "nav_link inline-block w-full rounded-lg bg-[#040404] px-8 py-3 font-bold text-white md:w-auto",
               {
-                "bg-active": pathname === "/auth/login",
+                "bg-primary-gradient": pathname === "/auth/login",
               },
             )}
           >
