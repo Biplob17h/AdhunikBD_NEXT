@@ -6,7 +6,7 @@ const BlogCard = ({ blog }) => {
   return (
     <Link
       href={`/blog/${id}`}
-      className="group relative space-y-4 rounded-2xl border border-black/[0.04] bg-white p-6 drop-shadow-sm"
+      className="group relative block space-y-4 rounded-2xl border border-black/[0.04] bg-white p-6 drop-shadow-sm"
     >
       <div className="overflow-hidden rounded-2xl">
         <img
