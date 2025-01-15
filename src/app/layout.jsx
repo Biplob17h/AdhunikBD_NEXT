@@ -1,5 +1,6 @@
 import FooterSection from "@/components/shared/footer";
 import Navbar from "@/components/shared/navbar";
+import ScrollToTop from "@/components/shared/scroll-to-top";
 import "../styles/globals.css";
 
 export const metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
         <footer>
           <FooterSection />
         </footer>
+        <ScrollToTop />
       </body>
     </html>
   );
