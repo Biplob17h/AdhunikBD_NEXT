@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapIcon } from "@/components/ui/svgs";
+import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
@@ -17,7 +18,6 @@ const HeroSection = () => {
       );
       const data = await response.json();
       if (data && data.address) {
-        console.log(data.address);
         const { town } = data.address;
         setLocation(`${town || ""}`.trim());
       } else {
@@ -50,23 +50,46 @@ const HeroSection = () => {
     setSearchValue(item);
   };
 
+  const fadeInUp = {
+    initial: { opacity: 0, y: 30 },
+    animate: { opacity: 1, y: 0 },
+  };
+
   return (
-    <section className="container_fluid bg-hero-home">
-      <div className="items-center justify-between gap-12 space-y-12 py-8 lg:flex lg:space-y-0 xl:px-12 xl:gap-16">
-        <div className="lg:max-w-xl xl:max-w-[668px]">
+    <motion.section
+      className="container_fluid bg-hero-home"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
+      <div className="items-center justify-between gap-12 space-y-12 py-8 lg:flex lg:space-y-0 xl:gap-16 xl:px-12">
+        <motion.div className="lg:max-w-xl xl:max-w-[668px]" {...fadeInUp}>
           <div className="space-y-2">
-            <h2 className="text-4xl font-bold text-white md:text-6xl lg:text-5xl xl:text-[58px] xl:leading-none">
+            <motion.h2
+              className="text-4xl font-bold text-white md:text-6xl lg:text-5xl xl:text-[58px] xl:leading-none"
+              {...fadeInUp}
+              transition={{ delay: 0.2 }}
+            >
               Simplify Your World Achieve More
-            </h2>
-            <p className="text-base font-light text-white xl:text-xl xl:leading-[32px]">
+            </motion.h2>
+            <motion.p
+              className="text-base font-light text-white xl:text-xl xl:leading-[32px]"
+              {...fadeInUp}
+              transition={{ delay: 0.4 }}
+            >
               Streamline tasks, manage schedules, and access smart solutions
               designed to simplify your life. Boost productivity effortlessly
               with a personal assistant that keeps you organized, focused, and
               always one step ahead
-            </p>
+            </motion.p>
           </div>
+
           {/* location search */}
-          <div className="mt-6 max-w-[547px]">
+          <motion.div
+            className="mt-6 max-w-[547px]"
+            {...fadeInUp}
+            transition={{ delay: 0.6 }}
+          >
             <div className="flex items-center space-x-4">
               <Button
                 onClick={handleLocationClick}
@@ -108,17 +131,22 @@ const HeroSection = () => {
                 ))}
               </div>
             </div>
-          </div>
-        </div>
-        <div className="flex flex-1 items-center justify-center lg:justify-end">
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="flex flex-1 items-center justify-center lg:justify-end"
+          {...fadeInUp}
+          transition={{ delay: 0.8 }}
+        >
           <img
             src="/images/hero-workers-frame.png"
             className="w-full select-none"
             alt="workers"
           />
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
