@@ -1,8 +1,14 @@
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import Link from "next/link";
 import { IoIosArrowForward } from "react-icons/io";
+import CartModal from "../categories/cart-modal";
 
 const DetailSection = () => {
   return (
@@ -97,31 +103,58 @@ const DetailSection = () => {
               Plumbing & Sanitary
             </h3>
             <div className="group rounded-lg bg-primary-gradient p-[1px]">
-              <Link
-                href="/categories"
-                className="flex items-center justify-between rounded-lg bg-white px-4 py-3 text-[#77A1D3] transition-all duration-300 ease-in-out group-hover:translate-x-1 group-hover:text-primary"
-              >
-                <p>Plumbing Check up</p>
-                <IoIosArrowForward />
-              </Link>
+              <Dialog>
+                <DialogTrigger className="w-full">
+                  <div
+                    role="button"
+                    className="flex w-full items-center justify-between rounded-lg bg-white px-4 py-3 text-[#77A1D3] transition-all duration-300 ease-in-out group-hover:translate-x-1 group-hover:text-primary"
+                  >
+                    <span>Plumbing Check up</span>
+                    <IoIosArrowForward />
+                  </div>
+                </DialogTrigger>
+
+                <DialogContent className="w-full lg:min-w-[978px]">
+                  <DialogTitle>{/* blank title */}</DialogTitle>
+                  <CartModal />
+                </DialogContent>
+              </Dialog>
             </div>{" "}
             <div className="group rounded-lg bg-primary-gradient p-[1px]">
-              <Link
-                href="/categories"
-                className="flex items-center justify-between rounded-lg bg-white px-4 py-3 text-[#77A1D3] transition-all duration-300 ease-in-out group-hover:translate-x-1 group-hover:text-primary"
-              >
-                <p>Water Tap servicing</p>
-                <IoIosArrowForward />
-              </Link>
+              <Dialog>
+                <DialogTrigger className="w-full">
+                  <div
+                    role="button"
+                    className="flex w-full items-center justify-between rounded-lg bg-white px-4 py-3 text-[#77A1D3] transition-all duration-300 ease-in-out group-hover:translate-x-1 group-hover:text-primary"
+                  >
+                    <span>Water Tap Servicing</span>
+                    <IoIosArrowForward />
+                  </div>
+                </DialogTrigger>
+
+                <DialogContent className="w-full lg:min-w-[978px]">
+                  <DialogTitle>{/* blank title */}</DialogTitle>
+                  <CartModal />
+                </DialogContent>
+              </Dialog>
             </div>{" "}
             <div className="group rounded-lg bg-primary-gradient p-[1px]">
-              <Link
-                href="/categories"
-                className="flex items-center justify-between rounded-lg bg-white px-4 py-3 text-[#77A1D3] transition-all duration-300 ease-in-out group-hover:translate-x-1 group-hover:text-primary"
-              >
-                <p>Sink Issues</p>
-                <IoIosArrowForward />
-              </Link>
+              <Dialog>
+                <DialogTrigger className="w-full">
+                  <div
+                    role="button"
+                    className="flex w-full items-center justify-between rounded-lg bg-white px-4 py-3 text-[#77A1D3] transition-all duration-300 ease-in-out group-hover:translate-x-1 group-hover:text-primary"
+                  >
+                    <span>Sink Issues</span>
+                    <IoIosArrowForward />
+                  </div>
+                </DialogTrigger>
+
+                <DialogContent className="w-full lg:min-w-[978px]">
+                  <DialogTitle>{/* blank title */}</DialogTitle>
+                  <CartModal />
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
