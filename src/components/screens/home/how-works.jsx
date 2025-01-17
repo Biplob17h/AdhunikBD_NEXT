@@ -29,12 +29,7 @@ const HowWorkSection = () => {
           {/* Step Cards */}
           <div className="mx-auto mt-10 grid grid-cols-1 gap-8 px-6 sm:grid-cols-2 md:px-8 lg:gap-x-20 lg:gap-y-0 xl:max-w-[1021px] xl:px-0">
             {/* Step 1 */}
-            <motion.div
-              initial={{ opacity: 0, x: -80 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
-              className="relative max-w-[426px] rounded-3xl border border-[#E6F1FE] bg-white"
-            >
+            <div className="relative max-w-[426px] rounded-3xl border border-[#E6F1FE] bg-white">
               <div className="relative z-20 h-full w-full space-y-4 rounded-3xl bg-white p-4 text-center lg:p-8">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-[6px] bg-black font-inter text-[32px] leading-none text-white">
                   1
@@ -50,17 +45,12 @@ const HowWorkSection = () => {
               <div className="absolute z-10 hidden -translate-y-1/2 lg:-right-[30%] lg:top-[95%] lg:block xl:-right-[50%] xl:top-[65%]">
                 <img src="/first-step.svg" alt="first step" />
               </div>
-            </motion.div>
+            </div>
             <div className="hidden lg:block" />
             <div className="hidden lg:block" />
 
             {/* Step 2 */}
-            <motion.div
-              initial={{ opacity: 0, x: 80 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeInOut" }}
-              className="relative max-w-[426px] space-y-4 rounded-3xl border border-[#E6F1FE] bg-white p-4 text-center lg:relative lg:p-8 xl:-top-24 xl:left-10"
-            >
+            <div className="relative max-w-[426px] space-y-4 rounded-3xl border border-[#E6F1FE] bg-white p-4 text-center lg:relative lg:p-8 xl:-top-24 xl:left-10">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-[6px] bg-black font-inter text-[32px] leading-none text-white">
                 2
               </div>
@@ -74,15 +64,10 @@ const HowWorkSection = () => {
               <div className="absolute -left-1/2 top-full -z-10 hidden -translate-y-1/2 lg:block">
                 <img src="/second-step.svg" alt="second step" />
               </div>
-            </motion.div>
+            </div>
 
             {/* Step 3 */}
-            <motion.div
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.6, ease: "easeInOut" }}
-              className="relative max-w-[426px] rounded-3xl border border-[#E6F1FE] bg-white xl:-top-20 xl:left-16"
-            >
+            <div className="relative max-w-[426px] rounded-3xl border border-[#E6F1FE] bg-white xl:-top-20 xl:left-16">
               <div className="relative z-20 h-full w-full space-y-4 rounded-3xl bg-white p-4 text-center lg:p-8">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-[6px] bg-black font-inter text-[32px] leading-none text-white">
                   3
@@ -98,17 +83,12 @@ const HowWorkSection = () => {
               <div className="absolute z-10 hidden -translate-y-1/2 lg:-right-[40%] lg:top-[100%] lg:block">
                 <img src="/third-step.svg" alt="third step" />
               </div>
-            </motion.div>
+            </div>
             <div className="hidden lg:block" />
             <div className="hidden lg:block" />
 
             {/* Step 4 */}
-            <motion.div
-              initial={{ opacity: 0, x: 100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.6, ease: "easeInOut" }}
-              className="relative max-w-[426px] space-y-4 rounded-3xl border border-[#E6F1FE] bg-white p-4 text-center lg:-top-12 lg:p-8 xl:-top-[128px] xl:left-10"
-            >
+            <div className="relative max-w-[426px] space-y-4 rounded-3xl border border-[#E6F1FE] bg-white p-4 text-center lg:-top-12 lg:p-8 xl:-top-[128px] xl:left-10">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-[6px] bg-black font-inter text-[32px] leading-none text-white">
                 4
               </div>
@@ -119,7 +99,7 @@ const HowWorkSection = () => {
                 There are many variations of passages of Lorem Ipsum available,
                 but the majority have suffered alteration
               </p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
