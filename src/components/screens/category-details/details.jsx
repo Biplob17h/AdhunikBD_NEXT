@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import { IoIosArrowForward } from "react-icons/io";
 
@@ -80,8 +81,8 @@ const DetailSection = () => {
                   required
                 />
               </div>{" "}
-              <div className="rounded-lg px-[1px]">
-                <textarea
+              <div className="rounded-lg bg-primary-gradient p-[1px]">
+                <Textarea
                   className="min-h-[87px] w-full resize-none rounded-lg bg-white px-4 py-3 text-black/75 outline-none placeholder:text-[#77A1D3]"
                   placeholder="Message"
                 />
