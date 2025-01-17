@@ -9,7 +9,7 @@ const DetailTabSection = () => {
     <section className="pb-16 xl:pb-32">
       <div className="container_fluid">
         <Tabs defaultValue="details">
-          <TabsList className="mb-4 w-full justify-normal gap-4 rounded-none border-b bg-transparent pb-6 shadow-none lg:gap-14">
+          <TabsList className="sticky top-0 z-10 mb-4 w-full justify-normal gap-4 rounded-none border-b bg-white py-6 shadow-none lg:gap-14">
             <TabsTrigger value="details">Details</TabsTrigger>
             <TabsTrigger value="service-overview">Service Overview</TabsTrigger>
             <TabsTrigger value="faqs">FAQ</TabsTrigger>
