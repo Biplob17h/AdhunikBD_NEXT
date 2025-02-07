@@ -37,7 +37,7 @@ const FaqSection = () => {
                 We Care About Your Safety
               </h2>
               <p className="text-base font-light text-black/60">
-                At Sheba, your safety and convenience are our top priorities. We
+                At Adhunik BD, your safety and convenience are our top priorities. We
                 partner with verified and skilled professionals to ensure the
                 highest quality of service. From booking to completion, giving
                 you peace of mind every step of the way.

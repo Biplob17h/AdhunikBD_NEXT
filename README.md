@@ -1,6 +1,6 @@
-# Sheba - Your Personal Assistant
+# Adhunik BD - Your Personal Assistant
 
-Sheba is a one-stop solution for all your service needs. This platform allows users to order any service, anytime, seamlessly through a web application. From home cleaning to appliance repair, Sheba provides a wide range of services to ensure convenience and satisfaction.
+Adhunik BD is a one-stop solution for all your service needs. This platform allows users to order any service, anytime, seamlessly through a web application. From home cleaning to appliance repair, Adhunik BD provides a wide range of services to ensure convenience and satisfaction.
 
 ## Table of Contents
 
@@ -12,7 +12,7 @@ Sheba is a one-stop solution for all your service needs. This platform allows us
 
 ## Overview
 
-Sheba is designed to simplify the process of hiring professionals for various services. The platform offers:
+Adhunik BD is designed to simplify the process of hiring professionals for various services. The platform offers:
 
 - Quick and reliable service bookings.
 - EMI options for payments.

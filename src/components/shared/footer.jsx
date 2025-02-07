@@ -40,7 +40,7 @@ const FooterSection = () => {
               <img src="/logo-white.svg" alt="logo" />
             </div>
             <p className="max-w-[490px] text-base font-light text-white">
-              At Sheba, your safety and convenience are our top priorities. We
+              At Adhunik BD, your safety and convenience are our top priorities. We
               partner with verified and skilled professionals to ensure the
               highest quality of service.
             </p>
@@ -71,7 +71,7 @@ const FooterSection = () => {
         {/* Copyright */}
         <div className="flex flex-col-reverse justify-between gap-4 pb-12 pt-8 sm:flex-row sm:items-center">
           <p className="text-sm font-light text-white">
-            © {year} Sheba, Inc. All rights reserved.
+            © {year} Adhunik BD, Inc. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-white">
             {socialLinks.map((social, index) => (

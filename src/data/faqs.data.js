@@ -1,8 +1,8 @@
 export const faqs = [
   {
-    question: "What is Sheba?",
+    question: "What is Adhunik BD?",
     answer:
-      "Sheba is an online platform offering home services like cleaning, plumbing, and electrical repairs.",
+      "Adhunik BD is an online platform offering home services like cleaning, plumbing, and electrical repairs.",
   },
   {
     question: "How do I book a service?",

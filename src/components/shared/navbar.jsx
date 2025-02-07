@@ -1,6 +1,7 @@
 "use client";
 
 import { navItems } from "@/data/nav-items.data";
+import useUser from "@/hooks/UserHook";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
@@ -12,6 +13,8 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const closeMenu = () => setMenuOpen(false);
+
+  const { user } = useUser();
 
   return (
     <section className="bg-white py-4 2xl:py-8">
@@ -38,18 +41,33 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="hidden lg:block">
-          <Link
-            href="/auth/login"
-            className={cn(
-              "nav_link inline-block rounded-lg bg-[#040404] px-8 py-3 font-bold text-white",
-              {
-                "bg-primary-gradient": pathname === "/auth/login",
-              },
-            )}
-          >
-            Login
-          </Link>
+        <div>
+          {user?.phone ? (
+            <div className="hidden lg:block">
+              <Link
+                href="/dashboard"
+                className={cn(
+                  "nav_link inline-block rounded-lg bg-[#040404] px-8 py-3 font-bold text-white",
+                )}
+              >
+                Dashboard
+              </Link>
+            </div>
+          ) : (
+            <div className="hidden lg:block">
+              <Link
+                href="/auth/login"
+                className={cn(
+                  "nav_link inline-block rounded-lg bg-[#040404] px-8 py-3 font-bold text-white",
+                  {
+                    "bg-primary-gradient": pathname === "/auth/login",
+                  },
+                )}
+              >
+                Login
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
