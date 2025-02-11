@@ -8,16 +8,17 @@ import { useRouter } from "next/navigation";
 import CLientDashboardOrder from "./CLientDashboardOrder/CLientDashboardOrder";
 import ClientUpdateProfile from "./ClientUpdateProfile/ClientUpdateProfile";
 import ClientAllReports from "./ClientAllReports/ClientAllReports";
+import ChangePassword from "@/components/shared/ChangePassword/ChangePassword";
 
 const ClientDashboard = () => {
   const [show, setShow] = useState("profile");
-  const { setRefresh, setUser, refresh } = useUser();
+  const {  setUser,userRef, setUserRef } = useUser();
   const router = useRouter();
 
   const handleLogout = () => {
     localStorage.removeItem("AdhunikToken");
     setUser({});
-    setRefresh(refresh + 1);
+    setUserRef(userRef + 1);
     router.push("/");
   };
   return (
@@ -59,6 +60,14 @@ const ClientDashboard = () => {
           </button>
           <button
             onClick={() => {
+              setShow("password");
+            }}
+            className={`${show === "password" ? "bg-slate-500 text-white" : "bg-slate-200 text-black"} mb-3 w-full cursor-pointer rounded p-3 hover:bg-slate-500 hover:text-white`}
+          >
+            Change Password
+          </button>
+          <button
+            onClick={() => {
               handleLogout();
             }}
             className={`${show === "logout" ? "bg-slate-500 text-white" : "bg-slate-200 text-black"} mb-3 w-full rounded p-3 hover:bg-slate-500 hover:text-white`}
@@ -71,6 +80,7 @@ const ClientDashboard = () => {
           <CLientDashboardOrder show={show} />
           <ClientUpdateProfile show={show} setShow={setShow} />
           <ClientAllReports show={show} />
+          <ChangePassword show={show} />
         </div>
       </div>
       <FooterSection />

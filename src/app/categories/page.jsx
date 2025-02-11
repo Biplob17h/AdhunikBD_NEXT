@@ -1,6 +1,7 @@
 "use client";
 import CategoryFilter from "@/components/screens/categories/category-filter";
 import ServicesOfCategorySection from "@/components/screens/categories/services-of-category";
+import Navbar from "@/components/shared/navbar";
 import { recommendedServices } from "@/data/recommended.data";
 import { useState } from "react";
 
@@ -19,6 +20,7 @@ const CategoriesPage = () => {
 
   return (
     <div>
+      <Navbar/>
       <CategoryFilter
         setActiveCategory={setActiveCategory}
         activeCategory={activeCategory}

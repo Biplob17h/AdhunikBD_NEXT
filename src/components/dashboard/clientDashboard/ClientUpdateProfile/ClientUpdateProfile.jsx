@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast"; // Make sure to import toast for notifi
 import { useRouter } from "next/navigation";
 
 const ClientUpdateProfile = ({ show, setShow }) => {
-  const { user, refresh, setRefresh } = useUser();
+  const { user, userRef, setUserRef } = useUser();
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -37,7 +37,7 @@ const ClientUpdateProfile = ({ show, setShow }) => {
       if (response.ok) {
         const result = await response.json();
         toast.success("Profile updated successfully!");
-        setRefresh(refresh + 1);
+        setUserRef(userRef + 1);
         window.scrollTo(0, 0);
         router.push("/dashboard");
       } else {
