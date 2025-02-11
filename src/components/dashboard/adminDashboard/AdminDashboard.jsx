@@ -5,6 +5,12 @@ import AdminNavbar from "./AdminNavbar/AdminNavbar";
 import AdminHome from "./AdminHome/AdminHome";
 import AdminUpdateProfile from "./AdminUpdateProfile/AdminUpdateProfile";
 import ChangePassword from "@/components/shared/ChangePassword/ChangePassword";
+import AdminOrders from "./AdminOrders/AdminOrders";
+import AdminLocation from "./AdminLocation/AdminLocation";
+import AdminService from "./AdminService/AdminService";
+import AdminPromoCode from "./AdminPromoCode/AdminPromoCode";
+import AdminOffers from "./AdminOffers/AdminOffers";
+import AdminReport from "./AdminReport/AdminReport";
 
 const AdminDashboard = () => {
   const [adminShow, setAdminShow] = useState("home");
@@ -46,9 +52,9 @@ const AdminDashboard = () => {
             </button>
             {/* Location button */}
             <button
-              onClick={() => setAdminShow("service")}
+              onClick={() => setAdminShow("location")}
               className={`w-full rounded-md px-4 py-3 text-left text-lg font-medium transition-all ${
-                adminShow === "service"
+                adminShow === "location"
                   ? "bg-blue-500 text-white"
                   : "hover:bg-gray-200"
               }`}
@@ -57,14 +63,47 @@ const AdminDashboard = () => {
             </button>
             {/* service button */}
             <button
-              onClick={() => setAdminShow("location")}
+              onClick={() => setAdminShow("service")}
               className={`w-full rounded-md px-4 py-3 text-left text-lg font-medium transition-all ${
-                adminShow === "location"
+                adminShow === "service"
                   ? "bg-blue-500 text-white"
                   : "hover:bg-gray-200"
               }`}
             >
               Service
+            </button>
+            {/* Report button */}
+            <button
+              onClick={() => setAdminShow("report")}
+              className={`w-full rounded-md px-4 py-3 text-left text-lg font-medium transition-all ${
+                adminShow === "report"
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-gray-200"
+              }`}
+            >
+              Report
+            </button>
+            {/* Offers button */}
+            <button
+              onClick={() => setAdminShow("offers")}
+              className={`w-full rounded-md px-4 py-3 text-left text-lg font-medium transition-all ${
+                adminShow === "offers"
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-gray-200"
+              }`}
+            >
+              Offers
+            </button>
+            {/* Promo Code button */}
+            <button
+              onClick={() => setAdminShow("promo")}
+              className={`w-full rounded-md px-4 py-3 text-left text-lg font-medium transition-all ${
+                adminShow === "promo"
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-gray-200"
+              }`}
+            >
+              Promo Code
             </button>
             {/* Update Profile Button */}
             <button
@@ -106,16 +145,31 @@ const AdminDashboard = () => {
             <AdminHome adminShow={adminShow} setAdminShow={setAdminShow} />
           </div>
           <div className="">
+            <AdminOrders adminShow={adminShow} setAdminShow={setAdminShow} />
+          </div>
+          <div className="">
+            <AdminLocation adminShow={adminShow} setAdminShow={setAdminShow} />
+          </div>
+          <div className="">
+            <AdminService adminShow={adminShow} setAdminShow={setAdminShow} />
+          </div>
+          <div className="">
+            <AdminReport adminShow={adminShow} setAdminShow={setAdminShow} />
+          </div>
+          <div className="">
+            <AdminPromoCode adminShow={adminShow} setAdminShow={setAdminShow} />
+          </div>
+          <div className="">
+            <AdminOffers adminShow={adminShow} setAdminShow={setAdminShow} />
+          </div>
+          <div className="">
             <AdminUpdateProfile
               adminShow={adminShow}
               setAdminShow={setAdminShow}
             />
           </div>
           <div className="">
-            <ChangePassword
-              adminShow={adminShow}
-              setAdminShow={setAdminShow}
-            />
+            <ChangePassword adminShow={adminShow} setAdminShow={setAdminShow} />
           </div>
         </main>
       </div>
