@@ -9,14 +9,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
-const LoginPage = () => {
+const VendorLogin = () => {
   const router = useRouter();
   const handleLogin = async (e) => {
     e.preventDefault();
     const phone = e.target.phone.value;
     const password = e.target.password.value;
 
-    const res = await fetch("/api/auth/user/login", {
+    console.log({phone, password});
+
+    const res = await fetch("/api/auth/vendor/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone, password }),
@@ -26,8 +28,8 @@ const LoginPage = () => {
 
     if (res.ok) {
       toast.success(data.message);
-      localStorage.setItem("AdhunikToken", data.data.token);
-      router.push("/dashboard");
+      localStorage.setItem("AdhunikToken", data.data.token); // Save token
+      router.push("/dashboard"); // Redirect to homepage
     } else {
       toast.error(data.message);
     }
@@ -44,10 +46,10 @@ const LoginPage = () => {
               </div>
               <div className="space-y-2">
                 <h3 className="text-3xl font-bold text-black/75 xl:text-5xl">
-                  Welcome
+                  Welcome Vendor
                 </h3>
                 <p className="text-lg text-black/60">
-                  Enter your email and password to sign in
+                  Enter your Phone and password to sign in
                 </p>
               </div>
               <form onSubmit={handleLogin} className="space-y-6">
@@ -102,7 +104,7 @@ const LoginPage = () => {
                 <div className="space-x-1 text-center font-inter text-base">
                   Not a Member yet?{" "}
                   <Link
-                    href="/auth/sign-up"
+                    href="/auth/vendor/sign-up"
                     className="text-[#1173ff] underline-offset-4 transition-all duration-300 ease-in-out hover:underline"
                   >
                     Sign up
@@ -111,17 +113,17 @@ const LoginPage = () => {
               </form>
               <div className="mt-4 text-center">
                 <Link
-                  href={"/auth/vendor/login"}
+                  href={"/auth/login"}
                   className="text-lg font-medium text-[#1173ff] underline-offset-4 transition-all duration-300 ease-in-out hover:underline"
                 >
-                  Vendor Login
+                  Client Login
                 </Link>
               </div>
             </div>
             <div className="hidden lg:block">
               <img
                 className="h-full w-full rounded-2xl object-cover"
-                src="/auth.png"
+                src="/worker.webp"
                 alt="auth"
               />
             </div>
@@ -134,4 +136,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default VendorLogin;

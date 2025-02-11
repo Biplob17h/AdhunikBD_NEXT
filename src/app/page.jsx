@@ -22,7 +22,7 @@ const HomePage = () => {
   const { user, loading, setLoading } = useUser();
 
   useEffect(() => {
-    if (!loading && user?.phone && user?.role === "admin") {
+    if (!loading && user?.phone && user?.role === "vendor") {
       setRouteLoading(true);
       router.push("/dashboard");
       setRouteLoading(false);

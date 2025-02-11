@@ -1,14 +1,16 @@
 import connectMongoDb from "@/lib/mongoose";
-import User from "@/models/userModel";
+import Vendor from "@/models/vendorModel";
 import { generateToken } from "@/utils/auth/generateToken";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
+// Vendor Login
 export async function POST(req) {
   try {
     await connectMongoDb(); // Ensure MongoDB is connected
 
     const { phone, password } = await req.json(); // Parse request body
+    console.log({ phone, password });
 
     // Validate input
     if (!phone || !password) {
@@ -18,17 +20,17 @@ export async function POST(req) {
       );
     }
 
-    // Find user by phone
-    const user = await User.findOne({ phone });
-    if (!user) {
+    // Find vendor by phone
+    const vendor = await Vendor.findOne({ phone });
+    if (!vendor) {
       return NextResponse.json(
-        { status: "fail", message: "No user found" },
+        { status: "fail", message: "No vendor found" },
         { status: 400 },
       );
     }
 
     // Check password
-    const checkPassword = await bcrypt.compare(password, user.password);
+    const checkPassword = await bcrypt.compare(password, vendor.password);
     if (!checkPassword) {
       return NextResponse.json(
         { status: "fail", message: "Wrong password" },
@@ -37,10 +39,10 @@ export async function POST(req) {
     }
 
     // Generate token
-    const token = generateToken({ userId: user._id, userRole: user.role });
+    const token = generateToken({userId : vendor._id, userRole: vendor.role});
 
-    // Select user data (excluding password)
-    const userData = await User.findOne({ phone }).select([
+    // Select vendor data (excluding password)
+    const vendorData = await Vendor.findOne({ phone }).select([
       "-password",
       "-_id",
     ]);
@@ -49,8 +51,8 @@ export async function POST(req) {
     return NextResponse.json(
       {
         status: "success",
-        message: "User signed in successfully",
-        data: { userData, token },
+        message: "Vendor signed in successfully",
+        data: { vendorData, token },
       },
       { status: 200 },
     );

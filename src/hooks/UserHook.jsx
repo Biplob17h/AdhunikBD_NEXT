@@ -1,22 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 const useUser = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [refresh, setRefresh] = useState(1);
-  const [token, setToken] = useState(null); // Store token in state
+  const [userRef, setUserRef] = useState(0);
+  const router = useRouter();
 
-  // Get the token only in the client
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setToken(localStorage.getItem("AdhunikToken"));
-    }
-  }, []);
-
-  useEffect(() => {
+  const fetchUser = useCallback(() => {
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("AdhunikToken")
+        : null;
     if (!token) {
+      setUser(null);
       setLoading(false);
       return;
     }
@@ -27,30 +26,29 @@ const useUser = () => {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Token expired or invalid");
-        }
-        return res.json();
-      })
+      .then((res) =>
+        res.ok ? res.json() : Promise.reject("Token expired or invalid"),
+      )
       .then((data) => {
-        if (data.status === "success") {
-          setUser(data.user);
-        } else {
-          setUser(null);
-        }
-        console.log(data);
+        setUser(data.status === "success" ? data.user : null);
       })
-      .catch((error) => {
-        console.error(error);
-        setUser(null);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [refresh, token]);
+      .catch(() => setUser(null))
+      .finally(() => setLoading(false));
+  }, []);
 
-  return { user, refresh, setRefresh, loading, setLoading, setUser };
+  // Fetch user data on mount & refreshTrigger change
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser, userRef]);
+
+  const userLogout = () => {
+    setUser(null);
+    localStorage.removeItem("AdhunikToken");
+    setUserRef(userRef + 1);
+    router.push("/");
+  };
+
+  return { user, userRef, setUserRef, loading, setUser, userLogout };
 };
 
 export default useUser;
