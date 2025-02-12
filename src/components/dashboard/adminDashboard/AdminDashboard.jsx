@@ -140,7 +140,6 @@ const AdminDashboard = () => {
 
         {/* Main Content */}
         <main className="w-full p-6">
-          <h1 className="mb-4 text-3xl font-bold">Admin Dashboard</h1>
           <div className="">
             <AdminHome adminShow={adminShow} setAdminShow={setAdminShow} />
           </div>

@@ -1,12 +1,13 @@
+'use client'
+import AdminServiceAdd from "@/components/dashboard/adminDashboard/AdminService/AdminServiceAdd/AdminServiceAdd";
+import AdminServiceManage from "@/components/dashboard/adminDashboard/AdminService/AdminServiceManage/AdminServiceManage";
 import React, { useState } from "react";
-import AdminServiceManage from "./AdminServiceManage/AdminServiceManage";
-import AdminServiceAdd from "./AdminServiceAdd/AdminServiceAdd";
 
-const AdminService = ({ adminShow, setAdminShow }) => {
+const AdminService = () => {
   const [serviceShow, setServiceShow] = useState("manage");
 
   return (
-    <div className={`${adminShow === "service" ? "block" : "hidden"}`}>
+    <div className={``}>
       <div className="mb-4 flex border-b-2 border-gray-300">
         <button
           className={`flex-1 border-b-2 py-2 text-center ${
