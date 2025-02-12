@@ -1,34 +1,34 @@
 import connectMongoDb from "@/lib/mongoose";
-import Category from "@/models/categoryModel";
-
+import SubCategory from "@/models/subCategoryModel";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
     await connectMongoDb(); // Ensure MongoDB is connected
 
-    const { categoryName, photoUrl } = await req.json(); // Parse request body
+    const { name, photoUrl, categoryId } = await req.json(); // Parse request body
 
     // Validate if required fields are provided
-    if (!categoryName || !photoUrl) {
+    if (!name || !photoUrl || !categoryId) {
       return NextResponse.json(
-        { status: "fail", message: "Category name and Photo are required" },
+        { status: "fail", message: "please provide your info correctly" },
         { status: 400 },
       );
     }
 
-    const category = await Category({
-      category: categoryName,
+    const subCategory = await SubCategory({
+      subCategory: name,
       photo: photoUrl,
+      categoryId
     });
 
-    await category.save();
+    await subCategory.save();
 
     return NextResponse.json(
       {
         status: "success",
-        message: "Category created successfully",
-        data: category,
+        message: "Sub category created successfully",
+        data: subCategory,
       },
       { status: 200 },
     );
@@ -45,20 +45,20 @@ export async function GET(req) {
   try {
     await connectMongoDb(); // Ensure MongoDB is connected
 
-    const categoryId = req.nextUrl.searchParams.get("categoryId");
+    const subCategoryId = req.nextUrl.searchParams.get("subCategoryId");
 
-    if (!categoryId) {
+    if (!subCategoryId) {
       return NextResponse.json(
-        { status: "fail", message: "categoryId is required" },
+        { status: "fail", message: "subCategoryId is required" },
         { status: 400 },
       );
     }
 
-    const result = await Category.findOne({ _id: categoryId });
+    const result = await SubCategory.findOne({ _id: subCategoryId });
 
     if (!result) {
       return NextResponse.json(
-        { status: "fail", message: "Category not found" },
+        { status: "fail", message: "Sub categoryId not found" },
         { status: 404 },
       );
     }
@@ -78,33 +78,32 @@ export async function GET(req) {
   }
 }
 
-
 export async function PUT(req) {
   try {
     await connectMongoDb(); // Ensure MongoDB is connected
 
-    const { categoryId, name, photo } = await req.json(); // Parse request body
+    const { subCategoryId, name, photo } = await req.json(); // Parse request body
 
-    if (!categoryId || !name || !photo) {
+    if (!subCategoryId || !name || !photo) {
       return NextResponse.json(
         { status: "fail", message: "All fields are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    const category = await Category.findById(categoryId);
-    if (!category) {
+    const subCategory = await SubCategory.findById(subCategoryId);
+    if (!subCategory) {
       return NextResponse.json(
         { status: "fail", message: "Category not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // Update category details
-    category.category = name;
-    category.photo = photo;
+    subCategory.subCategory = name;
+    subCategory.photo = photo;
 
-    await category.save();
+    await subCategory.save();
 
     return NextResponse.json(
       {
@@ -112,13 +111,13 @@ export async function PUT(req) {
         message: "Category updated successfully",
         data: category,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error updating category:", error); // Log the actual error
     return NextResponse.json(
       { status: "fail", message: "Something went wrong. Try again!" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -127,14 +126,14 @@ export async function DELETE(req) {
   try {
     await connectMongoDb(); // Ensure MongoDB is connected
 
-    const categoryId = req.nextUrl.searchParams.get("categoryId");
+    const subCategoryId = req.nextUrl.searchParams.get("subCategoryId");
 
-    const result = await Category.deleteOne({ _id: categoryId });
+    const result = await SubCategory.deleteOne({ _id: subCategoryId });
 
     return NextResponse.json(
       {
         status: "success",
-        message: "Category Deleted successfully",
+        message: "Sub category Deleted successfully",
         data: result,
       },
       { status: 200 },

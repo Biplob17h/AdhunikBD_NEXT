@@ -27,7 +27,7 @@ const LoginPage = () => {
     if (res.ok) {
       toast.success(data.message);
       localStorage.setItem("AdhunikToken", data.data.token);
-      router.push("/dashboard");
+      router.push(`/dashboard/${data?.data?.userData?.role}`);
     } else {
       toast.error(data.message);
     }

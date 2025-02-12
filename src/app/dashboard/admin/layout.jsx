@@ -7,7 +7,7 @@ const layout = ({ children }) => {
     <div>
       <AdminNavbar />
       <div className="flex">
-        <div className="w-[350px] border">
+        <div className="w-[350px]">
           <AdminDashboardSideBar />
         </div>
         <div className="w-full mt-5">{children}</div>

@@ -45,7 +45,7 @@ const Navbar = () => {
           {user?.phone ? (
             <div className="hidden lg:block">
               <Link
-                href="/dashboard"
+                href={`/dashboard/${user?.role}`}
                 className={cn(
                   "nav_link inline-block rounded-lg bg-[#040404] px-8 py-3 font-bold text-white",
                 )}

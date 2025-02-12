@@ -1,11 +1,36 @@
-import React from 'react';
+import mongoose from "mongoose";
 
-const subCategoryModel = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-};
+const subCategorySchema = new mongoose.Schema({
+  subCategory: {
+    type: String,
+    required: true,
+  },
+  photo: {
+    type: String,
+    default: "",
+  },
+  categoryId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Categories",
+  },
+  serviceFeatures: [
+    {
+      serviceFeatures: {
+        type: String,
+      },
+    },
+  ],
+  excluded: [
+    {
+      excluded: {
+        type: String,
+      },
+    },
+  ],
+});
 
-export default subCategoryModel;
+const SubCategory =
+  mongoose.models.subCategories ||
+  mongoose.model("subCategories", subCategorySchema);
+
+export default SubCategory;

@@ -89,18 +89,48 @@ const ChangePassword = ({
       className={`${show === "password" || vendorShow === "password" || adminShow === "password" ? "block" : "hidden"} mx-auto w-full max-w-md rounded-xl bg-white p-6 shadow-md`}
     >
       <h2 className="mb-4 text-xl font-semibold">Change Password</h2>
-      <form onSubmit={handleChangePassword} className="space-y-4">
-        <Input type="password" name="oldPassword" placeholder="Old Password" />
-        <Input type="password" name="newPassword" placeholder="New Password" />
-        <Input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-        />
-        <Button type="submit" disabled={loading} className="w-full">
-          {loading ? "Changing..." : "Change Password"}
-        </Button>
-      </form>
+      <form onSubmit={handleChangePassword} className="space-y-5">
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  Old Password
+                </label>
+                <Input
+                  type="password"
+                  name="oldPassword"
+                  placeholder="Enter your old password"
+                  className="w-full p-3 rounded-md border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  New Password
+                </label>
+                <Input
+                  type="password"
+                  name="newPassword"
+                  placeholder="Enter new password"
+                  className="w-full p-3 rounded-md border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 font-medium mb-1">
+                  Confirm Password
+                </label>
+                <Input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Re-enter new password"
+                  className="w-full p-3 rounded-md border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 text-lg rounded-md bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                {loading ? "Changing..." : "Change Password"}
+              </Button>
+            </form>
     </div>
   );
 };

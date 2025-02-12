@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 const useCategories = () => {
   const [categories, setCategories] = useState([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
-  const [categoriesRef, setCategoriesRef] = useState(0);
+  const [categoriesRef, setCategoriesRef] = useState(1);
 
   useEffect(() => {
     const fetchCategories = async () => {

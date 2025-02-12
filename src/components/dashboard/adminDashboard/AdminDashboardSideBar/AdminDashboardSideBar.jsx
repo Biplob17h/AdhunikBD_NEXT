@@ -10,7 +10,7 @@ const AdminDashboardSideBar = () => {
   return (
     <div>
       {/* Sidebar */}
-      <aside className="w-[350px] bg-white p-4 shadow-md">
+      <aside className="w-[350px] bg-white p-4">
         <h1 className="mb-4 text-center text-2xl font-bold">Admin Panel</h1>
         <nav className="flex flex-col gap-2">
           {/* Home Button */}
