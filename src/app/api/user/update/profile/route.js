@@ -7,13 +7,13 @@ export async function PUT(req) {
   try {
     await connectMongoDb(); // Ensure MongoDB is connected
 
-    const { name, email, phone, dateOfBirth, gender, nid, address } =
+    const { name, email, phone, dateOfBirth, gender, nid, address, photo } =
       await req.json(); // Parse request body
 
     // Validate if required fields are provided
-    if (!name || !email || !phone) {
+    if ( !phone) {
       return NextResponse.json(
-        { status: "fail", message: "Name, email, and phone are required" },
+        { status: "fail", message: "phone is required" },
         { status: 400 },
       );
     }
@@ -31,12 +31,13 @@ export async function PUT(req) {
     }
 
     // Update user data
-    user.name = name;
-    user.email = email;
+    user.name = name || user.name;
+    user.email = email || user.email;
     user.dateOfBirth = dateOfBirth || user.dateOfBirth;
     user.gender = gender || user.gender;
     user.nid = nid || user.nid;
     user.address = address || user.address;
+    user.photo = photo || user.photo;
 
     // Save the updated user data
     const updatedUser = await user.save();

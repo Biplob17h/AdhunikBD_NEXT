@@ -2,18 +2,68 @@
 
 import React, { useEffect, useState } from "react";
 import useUser from "@/hooks/UserHook";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "react-hot-toast";
+import hostPhoto from "@/utils/hostPhoto/hostPhoto";
 
 const ClientDashboardProfile = ({ show }) => {
-  const { user, refresh, loading } = useUser();
+  const { user, refresh, loading, setUserRef, userRef } = useUser();
   const [userInfo, setUserInfo] = useState({});
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [isUploading, setIsUploading] = useState(false); // Loading state
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // Dialog state
 
-  // Sync the user info with the `user` data from the hook
   useEffect(() => {
-    !loading && setUserInfo(user);
+    if (!loading) {
+      setUserInfo(user);
+    }
   }, [user, refresh, loading]);
 
-  const handleEditPhoto = () => {
-    alert("Edit photo feature coming soon!");
+  const handlePhotoChange = (e) => {
+    setSelectedPhoto(e.target.files[0]);
+  };
+
+  const handleUploadPhoto = async (e) => {
+    e.preventDefault();
+
+    if (!selectedPhoto) {
+      toast.error("Please select a photo!");
+      return;
+    }
+
+    setIsUploading(true); // Start loading
+
+    try {
+      const photoUrl = await hostPhoto(selectedPhoto);
+
+      const res = await fetch("/api/user/update/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ photo: photoUrl, phone: user?.phone }),
+      });
+      const data = await res.json();
+
+      if (data.status === "success") {
+        toast.success("Profile photo updated successfully!");
+        setUserRef((pre) => pre + 1);
+        setIsDialogOpen(false); // Close the dialog after success
+      } else {
+        toast.error("Failed to update profile photo.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while uploading the photo.");
+    } finally {
+      setIsUploading(false); // Stop loading
+    }
   };
 
   return (
@@ -23,13 +73,11 @@ const ClientDashboardProfile = ({ show }) => {
       <h1 className="mb-6 text-center text-2xl font-bold text-gray-800">
         Profile Information
       </h1>
-
       <div className="flex flex-col items-center md:flex-row md:items-start md:space-x-8">
-        {/* Profile Image */}
         <div className="relative">
-          {userInfo?.photo ? (
+          {user?.photo ? (
             <img
-              src={userInfo.photo}
+              src={user?.photo}
               alt="User Avatar"
               className="h-32 w-32 rounded-full border-4 border-gray-300 object-cover shadow-sm md:h-40 md:w-40"
             />
@@ -38,15 +86,39 @@ const ClientDashboardProfile = ({ show }) => {
               <span className="text-xl text-gray-500">No Image</span>
             </div>
           )}
-          <button
-            onClick={handleEditPhoto}
-            className="absolute bottom-2 right-2 rounded-full bg-white p-2 shadow-md transition hover:bg-gray-200"
-          >
-            <span className="text-sm font-medium text-blue-500">Edit</span>
-          </button>
+          <Dialog open={isDialogOpen}>
+            <DialogTrigger asChild>
+              <button
+                className="absolute bottom-2 right-2 rounded-full bg-white p-2 shadow-md transition hover:bg-gray-200"
+                onClick={() => setIsDialogOpen(true)} // Open the dialog
+              >
+                <span className="text-sm font-medium text-blue-500">Edit</span>
+              </button>
+            </DialogTrigger>
+
+            <DialogContent className="w-96 rounded-lg bg-white p-6 shadow-lg">
+              <h2 className="mb-4 text-xl font-semibold">Update Profile Photo</h2>
+              <form onSubmit={handleUploadPhoto}>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                />
+                <div className="mt-4 flex justify-end gap-3">
+                  <DialogClose asChild>
+                    <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                  <Button type="submit" disabled={isUploading}>
+                    {isUploading ? "Uploading..." : "Upload"}
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
 
-        {/* Profile Details */}
         <div className="mt-6 space-y-3 text-center md:mt-0 md:text-left">
           <h2 className="text-xl font-semibold text-gray-900">
             {userInfo?.name || "N/A"}

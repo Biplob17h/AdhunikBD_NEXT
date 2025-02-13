@@ -57,47 +57,7 @@ const DetailSection = () => {
           </p>
         </div>
         <div className="space-y-8 lg:space-y-12">
-          <div className="space-y-6 rounded-2xl bg-primary/80 p-6 text-white">
-            <h3 className="border-b border-[#b7b7b7] pb-2 text-[26px] font-medium leading-[32px]">
-              Request A Quote
-            </h3>
-            <form action="#" className="space-y-6">
-              <div className="rounded-lg bg-primary-gradient p-[1px]">
-                <Input
-                  type="text"
-                  className="w-full rounded-lg bg-white px-4 py-3 text-black/75 outline-none placeholder:text-[#77A1D3]"
-                  placeholder="Name"
-                  required
-                />
-              </div>{" "}
-              <div className="rounded-lg bg-primary-gradient p-[1px]">
-                <Input
-                  type="email"
-                  className="w-full rounded-lg bg-white px-4 py-3 text-black/75 outline-none placeholder:text-[#77A1D3]"
-                  placeholder="Email"
-                  required
-                />
-              </div>{" "}
-              <div className="rounded-lg bg-primary-gradient p-[1px]">
-                <Input
-                  type="tel"
-                  className="w-full rounded-lg bg-white px-4 py-3 text-black/75 outline-none placeholder:text-[#77A1D3]"
-                  placeholder="Phone"
-                  pattern="[0-9]{10}"
-                  required
-                />
-              </div>{" "}
-              <div className="rounded-lg bg-primary-gradient p-[1px]">
-                <Textarea
-                  className="min-h-[87px] w-full resize-none rounded-lg bg-white px-4 py-3 text-black/75 outline-none placeholder:text-[#77A1D3]"
-                  placeholder="Message"
-                />
-              </div>
-              <Button className="min-h-[47px] w-full rounded-lg bg-black/75 text-white">
-                Send Me
-              </Button>
-            </form>
-          </div>{" "}
+          
           <div className="space-y-6 rounded-2xl bg-primary/80 p-6 text-white">
             <h3 className="border-b border-[#b7b7b7] pb-2 text-[26px] font-medium leading-[32px]">
               Plumbing & Sanitary

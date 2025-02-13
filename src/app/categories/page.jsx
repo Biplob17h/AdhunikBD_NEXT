@@ -1,34 +1,34 @@
 "use client";
+
 import CategoryFilter from "@/components/screens/categories/category-filter";
 import ServicesOfCategorySection from "@/components/screens/categories/services-of-category";
 import Navbar from "@/components/shared/navbar";
-import { recommendedServices } from "@/data/recommended.data";
+import useCategories from "@/hooks/CategoriesHook";
 import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton"; // Assuming you have a skeleton component
 
 const CategoriesPage = () => {
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredServices = recommendedServices.filter((service) => {
-    const matchesCategory =
-      activeCategory === "all" || service.category === activeCategory;
-    const matchesSearchTerm = service.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearchTerm;
-  });
+  const { categories, categoriesLoading } = useCategories();
 
   return (
     <div>
-      <Navbar/>
-      <CategoryFilter
-        setActiveCategory={setActiveCategory}
-        activeCategory={activeCategory}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-      />
+      <Navbar />
 
-      <ServicesOfCategorySection filteredServices={filteredServices} />
+      <div className="container mx-auto px-4 py-6">
+        {categoriesLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-20">
+            {[...Array(6)].map((_, i) => (
+              <Skeleton key={i} className="h-32 w-full rounded-lg" />
+            ))}
+          </div>
+        ) : categories?.length > 0 ? (
+          <ServicesOfCategorySection categories={categories} />
+        ) : (
+          <div className="text-center text-gray-500 mt-10">
+            No categories available.
+          </div>
+        )}
+      </div>
     </div>
   );
 };

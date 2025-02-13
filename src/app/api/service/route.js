@@ -1,35 +1,67 @@
 import connectMongoDb from "@/lib/mongoose";
-import Category from "@/models/categoryModel";
-import SubCategory from "@/models/subCategoryModel";
+import Service from "@/models/serviceModel";
 import { NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 export async function POST(req) {
   try {
     await connectMongoDb(); // Ensure MongoDB is connected
 
-    const { name, photoUrl, categoryId } = await req.json(); // Parse request body
+    const { name, price, categoryId, subCategoryId } = await req.json(); // Parse request body
 
     // Validate if required fields are provided
-    if (!name || !photoUrl || !categoryId) {
+    if (!name || !price || !categoryId || !subCategoryId) {
       return NextResponse.json(
         { status: "fail", message: "please provide your info correctly" },
         { status: 400 },
       );
     }
 
-    const subCategory = await SubCategory({
-      subCategory: name,
-      photo: photoUrl,
+    const service = await Service({
+      name,
+      price,
       categoryId,
+      subCategoryId,
     });
 
-    await subCategory.save();
+    await service.save();
 
     return NextResponse.json(
       {
         status: "success",
         message: "Sub category created successfully",
-        data: subCategory,
+        data: service,
+      },
+      { status: 200 },
+    );
+  } catch (error) {
+    // Return error response
+    return NextResponse.json(
+      { status: "fail", message: error.message },
+      { status: 400 },
+    );
+  }
+}
+export async function GET(req) {
+  try {
+    await connectMongoDb(); // Ensure MongoDB is connected
+
+    const serviceId = await req.nextUrl.searchParams.get("serviceId");
+
+    if (!serviceId) {
+      return NextResponse.json(
+        { status: "fail", message: "Please provide a serviceId" },
+        { status: 400 },
+      );
+    }
+
+    const service = await Service.findById({ _id: serviceId }).populate(['categoryId', "subCategoryId"])
+
+    return NextResponse.json(
+      {
+        status: "success",
+        message: "Sub category created successfully",
+        data: service,
       },
       { status: 200 },
     );
@@ -42,84 +74,52 @@ export async function POST(req) {
   }
 }
 
-export async function GET(req) {
-  try {
-    await connectMongoDb(); // Ensure MongoDB is connected
-
-    const subCategoryId = req.nextUrl.searchParams.get("subCategoryId");
-
-    if (!subCategoryId) {
-      return NextResponse.json(
-        { status: "fail", message: "subCategoryId is required" },
-        { status: 400 },
-      );
-    }
-
-    const subCategory = await SubCategory.findOne({ _id: subCategoryId });
-
-    if (!subCategory) {
-      return NextResponse.json(
-        { status: "fail", message: "Sub categoryId not found" },
-        { status: 404 },
-      );
-    }
-    let category = {};
-    const categoryId = subCategory.categoryId;
-    category = await Category.findOne({ _id: categoryId });
-
-    return NextResponse.json(
-      {
-        status: "success",
-        data: subCategory,
-        category,
-      },
-      { status: 200 },
-    );
-  } catch (error) {
-    return NextResponse.json(
-      { status: "fail", message: error.message },
-      { status: 500 },
-    );
-  }
-}
-
 export async function PUT(req) {
   try {
     await connectMongoDb(); // Ensure MongoDB is connected
 
-    const { subCategoryId, name, photo } = await req.json(); // Parse request body
+    const { serviceId, name, price } = await req.json(); // Parse request body
 
-    if (!subCategoryId || !name || !photo) {
+    // Validate inputs
+    if (!serviceId || !name || !price) {
       return NextResponse.json(
         { status: "fail", message: "All fields are required" },
         { status: 400 },
       );
     }
 
-    const subCategory = await SubCategory.findById(subCategoryId);
-    if (!subCategory) {
+    // Validate MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(serviceId)) {
       return NextResponse.json(
-        { status: "fail", message: "Category not found" },
+        { status: "fail", message: "Invalid serviceId" },
+        { status: 400 },
+      );
+    }
+
+    // Find and update the service
+    const updatedService = await Service.findByIdAndUpdate(
+      serviceId,
+      { name, price },
+      { new: true }, // Return the updated document
+    );
+
+    if (!updatedService) {
+      return NextResponse.json(
+        { status: "fail", message: "Service not found" },
         { status: 404 },
       );
     }
 
-    // Update category details
-    subCategory.subCategory = name;
-    subCategory.photo = photo;
-
-    await subCategory.save();
-
     return NextResponse.json(
       {
         status: "success",
-        message: "Sub Category updated successfully",
-        data: subCategory,
+        message: "Service updated successfully",
+        data: updatedService,
       },
       { status: 200 },
     );
   } catch (error) {
-    console.error("Error updating category:", error); // Log the actual error
+    console.error("Error updating service:", error); // Log the actual error
     return NextResponse.json(
       { status: "fail", message: "Something went wrong. Try again!" },
       { status: 500 },
@@ -131,9 +131,9 @@ export async function DELETE(req) {
   try {
     await connectMongoDb(); // Ensure MongoDB is connected
 
-    const subCategoryId = req.nextUrl.searchParams.get("subCategoryId");
+    const serviceId = await req.nextUrl.searchParams.get("serviceId");
 
-    const result = await SubCategory.deleteOne({ _id: subCategoryId });
+    const result = await Service.deleteOne({ _id: serviceId });
 
     return NextResponse.json(
       {

@@ -11,7 +11,7 @@ const subCategorySchema = new mongoose.Schema({
   },
   categoryId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Categories",
+    ref: "categories",
   },
   serviceFeatures: [
     {

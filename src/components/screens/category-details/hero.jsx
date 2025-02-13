@@ -2,7 +2,7 @@ import { StarIcon, TweeterIcon } from "@/components/ui/svgs";
 import { Facebook, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 
-const CategoryHeroBanner = () => {
+const CategoryHeroBanner = ({category}) => {
   return (
     <section className="pb-8 xl:pb-16">
       <div className="container_fluid">
@@ -10,11 +10,9 @@ const CategoryHeroBanner = () => {
           <div className="max-w-[1023px] space-y-4">
             <div className="flex flex-wrap items-center gap-4 lg:gap-8">
               <h2 className="text-2xl font-semibold leading-[32px] text-white lg:text-[32px]">
-                Plumbing & Sanitary Services
+                {category?.category}
               </h2>
-              <button className="inline-flex max-h-[38px] cursor-text items-center justify-center rounded-2xl border border-white bg-transparent px-6 py-1 font-heading text-lg font-medium text-white">
-                Home service
-              </button>
+              
             </div>
             <p className="max-w-[587px] text-base font-light leading-[32px] text-white">
               Reliable, professional, affordable, efficient, trusted, skilled,
