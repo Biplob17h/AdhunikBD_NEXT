@@ -1,12 +1,12 @@
-import AdminHome from '@/components/dashboard/adminDashboard/AdminHome/AdminHome';
-import React from 'react';
+import AdminHome from "@/components/dashboard/adminDashboard/AdminHome/AdminHome";
+import React from "react";
 
 const AdminDashboard = () => {
-    return (
-        <div>
-            <AdminHome/>
-        </div>
-    );
+  return (
+    <>
+      <AdminHome />
+    </>
+  );
 };
 
 export default AdminDashboard;

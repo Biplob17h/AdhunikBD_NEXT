@@ -18,6 +18,9 @@ import {
   ListOrdered,
   MapPin,
   Star,
+  Tag,
+  TicketPercent,
+  Wrench,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -26,12 +29,12 @@ import React from "react";
 const items = [
   {
     title: "Home",
-    url: "/dashboard/vendor",
+    url: "/dashboard/admin",
     icon: Home,
   },
   {
     title: "Order",
-    url: "/dashboard/vendor/order",
+    url: "/dashboard/admin/order",
     icon: ListOrdered,
   },
   {
@@ -40,19 +43,29 @@ const items = [
     icon: Contact,
   },
   {
-    title: "Location & Service",
-    url: "/dashboard/vendor/locationAndService",
+    title: "Location",
+    url: "/dashboard/vendor/location",
     icon: MapPin,
   },
   {
-    title: "Review",
-    url: "/dashboard/vendor/review",
-    icon: Star,
+    title: "Service",
+    url: "/dashboard/vendor/service",
+    icon: Wrench,
   },
   {
     title: "Report",
     url: "/dashboard/vendor/report",
     icon: Flag,
+  },
+  {
+    title: "Offer",
+    url: "/dashboard/vendor/offers",
+    icon: Tag,
+  },
+  {
+    title: "Promo Code",
+    url: "/dashboard/vendor/promoCode",
+    icon: TicketPercent,
   },
 ];
 

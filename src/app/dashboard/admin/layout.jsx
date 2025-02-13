@@ -1,19 +1,21 @@
-import AdminDashboardSideBar from "@/components/dashboard/adminDashboard/AdminDashboardSideBar/AdminDashboardSideBar";
-import AdminNavbar from "@/components/dashboard/adminDashboard/AdminNavbar/AdminNavbar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
+import AppSidebar from "./AppSidebar";
+import Nav from "./Nav";
 
-const layout = ({ children }) => {
+const Layout = ({ children }) => {
   return (
-    <div>
-      <AdminNavbar />
-      <div className="flex">
-        <div className="w-[350px]">
-          <AdminDashboardSideBar />
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="w-full">
+        <div className="sticky top-0 z-10 flex h-16 items-center justify-between bg-white px-5 shadow-md">
+          <SidebarTrigger />
+          <Nav />
         </div>
-        <div className="w-full mt-5">{children}</div>
-      </div>
-    </div>
+        {children}
+      </main>
+    </SidebarProvider>
   );
 };
 
-export default layout;
+export default Layout;
