@@ -1,10 +1,9 @@
 "use client";
 
-import CategoryFilter from "@/components/screens/categories/category-filter";
+
 import ServicesOfCategorySection from "@/components/screens/categories/services-of-category";
 import Navbar from "@/components/shared/navbar";
 import useCategories from "@/hooks/CategoriesHook";
-import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton"; // Assuming you have a skeleton component
 
 const CategoriesPage = () => {

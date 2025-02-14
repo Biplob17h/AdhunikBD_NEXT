@@ -4,7 +4,8 @@ import FaqDetailSection from "./faq-details";
 import ReviewDetailSection from "./reviews-detail";
 import ServiceOverviewSection from "./service-overview";
 
-const DetailTabSection = () => {
+const DetailTabSection = ({ subCategories, category }) => {
+  console.log(subCategories)
   return (
     <section className="pb-16 xl:pb-32">
       <div className="container_fluid">
@@ -16,7 +17,7 @@ const DetailTabSection = () => {
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
           </TabsList>
           <TabsContent value="details">
-            <DetailSection />
+            <DetailSection subCategories={subCategories} category={category} />
           </TabsContent>{" "}
           <TabsContent value="service-overview">
             <ServiceOverviewSection />

@@ -66,6 +66,32 @@ const AdminDashboardSideBar = () => {
           >
             Service
           </button>
+          {/* Users Sidebar button */}
+          <button
+            onClick={() => {
+                setAdminShow("users"), router.push("/dashboard/admin/userSidebar");
+              }}
+            className={`w-full rounded-md px-4 py-3 text-left text-lg font-medium transition-all ${
+              adminShow === "users"
+                ? "bg-blue-500 text-white"
+                : "hover:bg-gray-200"
+            }`}
+          >
+            Users
+          </button>
+          {/* Vendor Sidebar button */}
+          <button
+            onClick={() => {
+                setAdminShow("vendor"), router.push("/dashboard/admin/vendorSidebar");
+              }}
+            className={`w-full rounded-md px-4 py-3 text-left text-lg font-medium transition-all ${
+              adminShow === "vendor"
+                ? "bg-blue-500 text-white"
+                : "hover:bg-gray-200"
+            }`}
+          >
+            Vendors
+          </button>
           {/* Report button */}
           <button
             onClick={() => {

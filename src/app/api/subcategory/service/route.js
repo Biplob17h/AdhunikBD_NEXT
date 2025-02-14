@@ -18,7 +18,7 @@ export async function GET(req) {
     }
 
     // Fetch services for the given subCategoryId
-    const services = await Service.find({ subCategoryId });
+    const services = await Service.find({ subCategoryId }).populate(['subCategoryId', "categoryId"])
 
     return NextResponse.json(
       {
