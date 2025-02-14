@@ -8,6 +8,26 @@
   body {
     @apply relative overflow-x-hidden font-body text-base;
   }
+  :root {
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark {
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
 }
 
 .container_fluid {
@@ -50,14 +70,6 @@ h6 {
   background-position: center;
   background-repeat: no-repeat;
   @apply h-full w-full bg-secondary lg:h-[1328px];
-}
-.cat_details_hero_banner {
-  background-image: url("/images/categories/details/hero-banner.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 24px;
-  @apply h-full w-full bg-primary lg:h-[333px];
 }
 
 .bg-categories-hover:hover,
@@ -145,21 +157,19 @@ h6 {
 /* For Chrome, Safari, Edge, and Opera */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* For Firefox */
 input[type="number"] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 .input-field {
-  @apply w-full px-6 py-4 border border-slate-300 rounded-lg bg-slate-50 text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200;
+  @apply w-full rounded-lg border border-slate-300 bg-slate-50 px-6 py-4 text-slate-800 shadow-sm transition-all duration-200 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400;
 }
 
 .input-field:focus {
-  @apply ring-2 ring-blue-400 border-blue-400;
+  @apply border-blue-400 ring-2 ring-blue-400;
 }
-
-

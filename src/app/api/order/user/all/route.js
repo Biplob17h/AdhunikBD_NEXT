@@ -2,12 +2,14 @@ import connectMongoDb from "@/lib/mongoose";
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import Order from "@/models/orderSchema";
+import Service from "@/models/serviceModel";
+import User from "@/models/userModel";
+import SubCategory from "@/models/subCategoryModel";
 
 export async function GET(req) {
   try {
     await connectMongoDb(); // Ensure MongoDB is connected
 
-    // Correctly extract userId from query parameters
     const userId = req.nextUrl.searchParams.get("userId");
 
     if (!userId) {
@@ -17,7 +19,6 @@ export async function GET(req) {
       );
     }
 
-    // Optionally validate MongoDB ObjectId if userId is stored as an ObjectId in MongoDB
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return NextResponse.json(
         { status: "fail", message: "Invalid userId" },
@@ -25,12 +26,12 @@ export async function GET(req) {
       );
     }
 
-    // Fetch orders for the given userId and populate fields correctly
-    const orders = await Order.find({ user: userId }).populate([
-      "service",
-      "user",
-      "subCategoryId" 
-    ]);
+    // Fetch orders for the given userId with explicit model references
+    const orders = await Order.find({ user: userId })
+      .populate({ path: "service", model: Service })
+      .populate({ path: "user", model: User })
+      .populate({ path: "subCategoryId", model: SubCategory })
+      .exec();
 
     return NextResponse.json(
       {
@@ -41,7 +42,7 @@ export async function GET(req) {
       { status: 200 }
     );
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching orders:", error);
     return NextResponse.json(
       { status: "fail", message: "Internal server error" },
       { status: 500 }

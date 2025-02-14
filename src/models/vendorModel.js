@@ -60,6 +60,10 @@ const vendorSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  experts: {
+    type: Array,
+    default: [],
+  },
   nid: {
     type: String,
     default: "",

@@ -16,7 +16,7 @@ const VendorLogin = () => {
     const phone = e.target.phone.value;
     const password = e.target.password.value;
 
-    console.log({phone, password});
+    console.log({ phone, password });
 
     const res = await fetch("/api/auth/vendor/login", {
       method: "POST",
@@ -29,7 +29,7 @@ const VendorLogin = () => {
     if (res.ok) {
       toast.success(data.message);
       localStorage.setItem("AdhunikToken", data.data.token); // Save token
-      router.push("/dashboard"); // Redirect to homepage
+      router.push("/dashboard/vendor");
     } else {
       toast.error(data.message);
     }
