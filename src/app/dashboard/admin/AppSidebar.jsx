@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Vendor from "@/models/vendorModel";
 import {
   AirVent,
   Contact,
@@ -18,6 +19,11 @@ import {
   ListOrdered,
   MapPin,
   Star,
+  Tag,
+  TicketPercent,
+  User,
+  Users,
+  Wrench,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -26,32 +32,37 @@ import React from "react";
 const items = [
   {
     title: "Home",
-    url: "/dashboard/vendor",
+    url: "/dashboard/admin",
     icon: Home,
   },
   {
     title: "Order",
-    url: "/dashboard/vendor/order",
+    url: "/dashboard/admin/order",
     icon: ListOrdered,
   },
   {
-    title: "Expert",
-    url: "/dashboard/vendor/expert",
-    icon: Contact,
+    title: "users",
+    url: "/dashboard/admin/userSidebar",
+    icon: User,
   },
   {
-    title: "Location & Service",
-    url: "/dashboard/vendor/locationAndService",
+    title: "Vendors",
+    url: "/dashboard/admin/vendorSidebar",
+    icon: Users,
+  },
+  {
+    title: "Location",
+    url: "/dashboard/admin/location",
     icon: MapPin,
   },
   {
-    title: "Review",
-    url: "/dashboard/vendor/review",
-    icon: Star,
+    title: "Service",
+    url: "/dashboard/admin/service",
+    icon: Wrench,
   },
   {
     title: "Report",
-    url: "/dashboard/vendor/report",
+    url: "/dashboard/admin/report",
     icon: Flag,
   },
 ];

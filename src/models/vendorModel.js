@@ -23,7 +23,6 @@ const vendorSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    unique: [true, "phone number already in use"],
     validate: {
       validator: validator.isMobilePhone,
       message: (props) => `${props.value} is not a valid phone number!`,
@@ -31,7 +30,7 @@ const vendorSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: [true, "please provide a unique email"],
+    unique: true,
     validate: {
       validator: validator.isEmail,
       message: (props) => `${props.value} is not a valid email address!`,
@@ -41,7 +40,7 @@ const vendorSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minLength: [6, "password is too short"], // Minimum length for password
+    minLength: [6, "password is too short"],
   },
   role: {
     type: String,
@@ -55,10 +54,6 @@ const vendorSchema = new mongoose.Schema({
   shopPhoto: {
     type: Array,
     default: [],
-  },
-  shopName: {
-    type: String,
-    default: "",
   },
   experts: {
     type: Array,
@@ -102,6 +97,6 @@ const vendorSchema = new mongoose.Schema({
 });
 
 const Vendor =
-  mongoose.models.vendors || mongoose.model("vendors", vendorSchema);
+  mongoose.models?.vendors || mongoose.model("vendors", vendorSchema);
 
 export default Vendor;
