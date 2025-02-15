@@ -4,6 +4,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* Glass Morphism Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 @layer base {
   body {
     @apply relative overflow-x-hidden font-body text-base;
