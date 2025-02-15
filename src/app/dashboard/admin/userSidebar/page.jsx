@@ -13,9 +13,11 @@ import useGetAllUser from "@/hooks/getAllUserHook";
 import { CheckCircle } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const AdminUserSidebar = () => {
   const { users, userLoading } = useGetAllUser(); // Get dynamic user data
+  console.log(users);
   const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
@@ -25,6 +27,8 @@ const AdminUserSidebar = () => {
   if (userLoading) {
     return <div>Loading...</div>;
   }
+
+  const router = useRouter();
 
   return (
     <div className="space-y-8 p-6">
@@ -68,7 +72,15 @@ const AdminUserSidebar = () => {
             </TableHeader>
             <TableBody>
               {users.map((user) => (
-                <TableRow key={user._id}>
+                <TableRow
+                  key={user._id}
+                  onClick={() => {
+                    router.push(
+                      `/dashboard/admin/userSidebar/single/${user?._id}`,
+                    );
+                  }}
+                  className="cursor-pointer transition-colors duration-150 hover:bg-gray-100"
+                >
                   <TableCell>
                     <Avatar>
                       {user.photo ? (

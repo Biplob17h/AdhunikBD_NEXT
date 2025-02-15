@@ -25,7 +25,7 @@ import {
   Users,
   Wrench,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 // Menu items.
@@ -39,6 +39,11 @@ const items = [
     title: "Order",
     url: "/dashboard/admin/order",
     icon: ListOrdered,
+  },
+  {
+    title: "Agents",
+    url: "/dashboard/admin/agents",
+    icon: User,
   },
   {
     title: "users",
@@ -69,13 +74,21 @@ const items = [
 
 const AppSidebar = () => {
   const currentRoute = usePathname();
+  const router = useRouter();
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <span className="text-xl">Vendor</span>
+              <span
+                onClick={() => {
+                  router.push("/");
+                }}
+                className="cursor-pointer text-xl"
+              >
+                Admin
+              </span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

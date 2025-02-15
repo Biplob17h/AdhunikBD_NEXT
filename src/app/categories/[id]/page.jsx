@@ -2,6 +2,7 @@
 import DetailTabSection from "@/components/screens/category-details/detail-tabs";
 import CategoryHeroBanner from "@/components/screens/category-details/hero";
 import AdsBannerSection from "@/components/screens/home/app-ads";
+import FooterSection from "@/components/shared/footer";
 import Navbar from "@/components/shared/navbar";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -37,6 +38,7 @@ const CategoriesDetailsPage = () => {
       <CategoryHeroBanner category={category} />
       <DetailTabSection subCategories={subCategories} category={category} />
       <AdsBannerSection />
+      <FooterSection/>
     </>
   );
 };

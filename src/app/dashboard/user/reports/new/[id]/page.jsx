@@ -24,7 +24,7 @@ const CreateANewReport = () => {
       description: e.target.description.value.trim(),
     };
   
-    console.log("Report Data:", reportData); // Debugging
+    
   
     fetch("/api/report", {
       method: "POST",

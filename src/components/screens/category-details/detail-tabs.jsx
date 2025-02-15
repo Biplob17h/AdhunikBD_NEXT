@@ -5,7 +5,7 @@ import ReviewDetailSection from "./reviews-detail";
 import ServiceOverviewSection from "./service-overview";
 
 const DetailTabSection = ({ subCategories, category }) => {
-  console.log(subCategories)
+  
   return (
     <section className="pb-16 xl:pb-32">
       <div className="container_fluid">
