@@ -2,7 +2,7 @@ import { FaClipboardList, FaTruck, FaUser, FaPhone, FaMapMarkerAlt, FaClock, FaC
 
 const OrderDetails = () => {
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen max-w-full bg-gray-100 p-6">
       {/* Order, Delivery & Resource Info */}
       <div className="mx-auto flex max-w-5xl flex-row gap-4 rounded-lg bg-white p-6 shadow-md">
         {/* Order Info */}
