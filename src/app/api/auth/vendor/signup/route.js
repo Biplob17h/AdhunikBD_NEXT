@@ -8,7 +8,7 @@ export async function POST(req) {
     await connectMongoDb(); // Ensure the database is connected
 
     const { phone, password, name } = await req.json(); // Fix async issue
-    console.log({ phone, password, name });
+    
 
     // Check credentials
     if (!name || !phone || !password) {

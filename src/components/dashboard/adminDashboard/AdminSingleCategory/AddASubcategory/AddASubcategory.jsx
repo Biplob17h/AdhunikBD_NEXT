@@ -30,7 +30,7 @@ const AddASubcategory = ({ id, setCategoryRef, setCategoryShow }) => {
       e.target.reset();
     } else {
       toast.error("Failed to add category");
-      console.log(data);
+      
     }
   };
   return (

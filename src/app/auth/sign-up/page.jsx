@@ -28,7 +28,7 @@ const SignUpPage = () => {
       });
 
       const data = await res.json(); // ✅ Parse response JSON
-      console.log(data.message);
+      
 
       if (data.status === "fail") {
         toast.error(data.message); //

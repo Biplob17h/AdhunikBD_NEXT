@@ -68,7 +68,7 @@ const ChangePassword = () => {
           toast.success("Password changed successfully");
         } else {
           toast.error(data?.message);
-          console.log(data);
+          
         }
       }
     } catch (error) {

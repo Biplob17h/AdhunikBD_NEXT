@@ -17,8 +17,10 @@ const FooterSection = () => {
     { name: "Careers", href: "/#" },
     { name: "Help", href: "/#" },
     { name: "Privacy", href: "/privacy" },
+    { name: "Vendor Login", href: "/auth/vendor/login" },
   ];
 
+  
   const socialLinks = [
     { Icon: TweeterIcon, href: "/#" },
     { Icon: LinkedinIcon, href: "/#" },
