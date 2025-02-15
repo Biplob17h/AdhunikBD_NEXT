@@ -32,28 +32,38 @@ import { Badge } from "@/components/ui/badge";
 export default function LocationManagementPage() {
   // State for locations
   const [locations, setLocations] = useState([
-    { id: 1, name: "New York", address: "123 Main St, NY", phone: "555-1234" },
-    { id: 2, name: "Los Angeles", address: "456 Sunset Blvd, LA", phone: "555-5678" },
+    {
+      id: 1,
+      name: "Gajipur",
+      address: "123 Main St, NY",
+      phone: "+8801844-767694",
+    },
+    {
+      id: 2,
+      name: "Mirpur",
+      address: "456 Sunset Blvd, LA",
+      phone: "+8801735-973254",
+    },
   ]);
 
   // State for vendors
   const [vendors, setVendors] = useState([
     {
       id: 1,
-      name: "Vendor A",
-      email: "vendorA@example.com",
+      name: "Sakline mostak sakin",
+      email: "saklinemostak@gmail.com",
       servicingLocations: [1], // IDs of locations they service
     },
     {
       id: 2,
-      name: "Vendor B",
-      email: "vendorB@example.com",
+      name: "Biplob Hossain",
+      email: "biplob12@gmail.com",
       servicingLocations: [2],
     },
     {
       id: 3,
-      name: "Vendor C",
-      email: "vendorC@example.com",
+      name: "Leon Ali",
+      email: "leonali56@gmail.com",
       servicingLocations: [1, 2],
     },
   ]);
@@ -115,7 +125,7 @@ export default function LocationManagementPage() {
   // Handle location request (accept or reject)
   const handleLocationRequest = (requestId, status) => {
     const updatedRequests = locationRequests.map((request) =>
-      request.id === requestId ? { ...request, status } : request
+      request.id === requestId ? { ...request, status } : request,
     );
     setLocationRequests(updatedRequests);
 
@@ -132,7 +142,7 @@ export default function LocationManagementPage() {
                   request.locationId,
                 ],
               }
-            : vendor
+            : vendor,
         );
         setVendors(updatedVendors);
       }
@@ -146,10 +156,10 @@ export default function LocationManagementPage() {
         ? {
             ...vendor,
             servicingLocations: vendor.servicingLocations.filter(
-              (id) => id !== locationId
+              (id) => id !== locationId,
             ),
           }
-        : vendor
+        : vendor,
     );
     setVendors(updatedVendors);
   };
@@ -158,7 +168,7 @@ export default function LocationManagementPage() {
   const filteredVendors = vendors.filter(
     (vendor) =>
       vendor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      vendor.email.toLowerCase().includes(searchQuery.toLowerCase())
+      vendor.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -224,7 +234,7 @@ export default function LocationManagementPage() {
       </div>
 
       {/* Search Bar for Vendors */}
-      <div className="flex items-center gap-2 max-w-[500px]">
+      <div className="flex max-w-[500px] items-center gap-2">
         <Input
           placeholder="Search vendors by name or email..."
           value={searchQuery}
@@ -259,16 +269,22 @@ export default function LocationManagementPage() {
                   <TableCell>
                     {vendor.servicingLocations.map((locationId) => {
                       const location = locations.find(
-                        (loc) => loc.id === locationId
+                        (loc) => loc.id === locationId,
                       );
                       return (
-                        <div key={locationId} className="flex items-center gap-2">
+                        <div
+                          key={locationId}
+                          className="flex items-center gap-2"
+                        >
                           <span>{location?.name}</span>
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() =>
-                              handleRemoveLocationFromVendor(vendor.id, locationId)
+                              handleRemoveLocationFromVendor(
+                                vendor.id,
+                                locationId,
+                              )
                             }
                           >
                             <Trash className="h-4 w-4 text-red-500" />
@@ -284,7 +300,7 @@ export default function LocationManagementPage() {
                       onClick={() => {
                         // Implement remove all locations functionality
                         vendor.servicingLocations.forEach((locationId) =>
-                          handleRemoveLocationFromVendor(vendor.id, locationId)
+                          handleRemoveLocationFromVendor(vendor.id, locationId),
                         );
                       }}
                     >
@@ -318,10 +334,16 @@ export default function LocationManagementPage() {
               {locationRequests.map((request) => (
                 <TableRow key={request.id}>
                   <TableCell>
-                    {vendors.find((vendor) => vendor.id === request.vendorId)?.name}
+                    {
+                      vendors.find((vendor) => vendor.id === request.vendorId)
+                        ?.name
+                    }
                   </TableCell>
                   <TableCell>
-                    {locations.find((loc) => loc.id === request.locationId)?.name}
+                    {
+                      locations.find((loc) => loc.id === request.locationId)
+                        ?.name
+                    }
                   </TableCell>
                   <TableCell>
                     <Badge
@@ -329,8 +351,8 @@ export default function LocationManagementPage() {
                         request.status === "accepted"
                           ? "success"
                           : request.status === "rejected"
-                          ? "destructive"
-                          : "secondary"
+                            ? "destructive"
+                            : "secondary"
                       }
                     >
                       {request.status}
@@ -343,14 +365,18 @@ export default function LocationManagementPage() {
                           variant="ghost"
                           size="sm"
                           className="mr-2"
-                          onClick={() => handleLocationRequest(request.id, "accepted")}
+                          onClick={() =>
+                            handleLocationRequest(request.id, "accepted")
+                          }
                         >
                           <Check className="h-4 w-4 text-green-500" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => handleLocationRequest(request.id, "rejected")}
+                          onClick={() =>
+                            handleLocationRequest(request.id, "rejected")
+                          }
                         >
                           <X className="h-4 w-4 text-red-500" />
                         </Button>
