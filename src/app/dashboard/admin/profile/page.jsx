@@ -1,348 +1,234 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Calendar,
-  Mail,
-  Phone,
-  MapPin,
-  User,
-  Settings,
-  Lock,
-  Key,
-} from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { useState } from "react";
+import { toast } from "react-hot-toast";
+import hostPhoto from "@/utils/hostPhoto/hostPhoto";
+import useUser from "@/hooks/UserHook";
+import ChangePassword from "@/components/shared/ChangePassword/ChangePassword";
 
-export default function ProfilePage() {
-  // Sample data - replace with real data from your API
-  const profile = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1 (555) 123-4567",
-    address: "123 Main St, New York, NY",
-    services: ["AC Repair", "Oven Installation"],
-    notificationsEnabled: true,
-    twoFactorEnabled: false,
+const AdminDashboardProfile = () => {
+  const { user, loading, setUserRef } = useUser();
+  const [userInfo, setUserInfo] = useState({});
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [isUploading, setIsUploading] = useState(false); // Loading state
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // Dialog state
+
+  useEffect(() => {
+    if (!loading) {
+      setUserInfo(user);
+    }
+  }, [user, loading]);
+
+  const handlePhotoChange = (e) => {
+    setSelectedPhoto(e.target.files[0]);
   };
 
-  // State for editable fields
-  const [editableProfile, setEditableProfile] = useState(profile);
-  const [isEditing, setIsEditing] = useState(false);
+  const handleUploadPhoto = async (e) => {
+    e.preventDefault();
 
-  // State for password change
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmNewPassword: "",
-  });
-  const [passwordError, setPasswordError] = useState("");
+    if (!selectedPhoto) {
+      toast.error("Please select a photo!");
+      return;
+    }
 
-  // Handle form submission
-  const handleSave = () => {
-    
-    setIsEditing(false);
+    setIsUploading(true);
+
+    try {
+      const photoUrl = await hostPhoto(selectedPhoto);
+
+      const res = await fetch("/api/user/update/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ photo: photoUrl, phone: user?.phone }),
+      });
+      const data = await res.json();
+
+      if (data.status === "success") {
+        toast.success("Profile photo updated successfully!");
+        setUserRef((pre) => pre + 1);
+        setIsDialogOpen(false); // Close the dialog after success
+      } else {
+        toast.error("Failed to update profile photo.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while uploading the photo.");
+    } finally {
+      setIsUploading(false); // Stop loading
+    }
   };
 
-  // Handle password change
-  const handlePasswordChange = () => {
-    if (passwordData.newPassword !== passwordData.confirmNewPassword) {
-      setPasswordError("New passwords do not match.");
-      return;
+  const handleInfoChange = (e) => {
+    setUserInfo((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { name, email, phone, address } = userInfo;
+
+    try {
+      const res = await fetch("/api/user/update/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, phone, address }),
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        toast.success("Profile updated successfully!");
+      } else {
+        toast.error("Failed to update profile.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while updating the profile.");
     }
-    if (passwordData.newPassword.length < 8) {
-      setPasswordError("New password must be at least 8 characters long.");
-      return;
-    }
-    // Simulate password change (replace with API call)
-    
-    setPasswordData({
-      currentPassword: "",
-      newPassword: "",
-      confirmNewPassword: "",
-    });
-    setPasswordError("");
   };
 
   return (
-    <div className="space-y-6 p-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Profile</h1>
-        <Button onClick={() => setIsEditing(!isEditing)}>
-          {isEditing ? "Cancel" : "Edit Profile"}
-        </Button>
-      </div>
+    <div className="mx-auto max-w-3xl rounded-lg bg-white p-6 shadow-md">
+      <h1 className="mb-6 text-center text-2xl font-bold text-gray-800">
+        Profile Information
+      </h1>
+      <div className="flex flex-col items-center md:flex-row md:items-start md:space-x-8">
+        <div className="relative">
+          {user?.photo ? (
+            <img
+              src={user?.photo}
+              alt="User Avatar"
+              className="h-32 w-32 rounded-full border-4 border-gray-300 object-cover shadow-sm md:h-40 md:w-40"
+            />
+          ) : (
+            <div className="flex h-32 w-32 items-center justify-center rounded-full border-4 border-gray-300 bg-gray-200 shadow-sm md:h-40 md:w-40">
+              <span className="text-xl text-gray-500">No Image</span>
+            </div>
+          )}
+          <Dialog open={isDialogOpen}>
+            <DialogTrigger asChild>
+              <button
+                className="absolute bottom-2 right-2 rounded-full bg-white p-2 shadow-md transition hover:bg-gray-200"
+                onClick={() => setIsDialogOpen(true)} // Open the dialog
+              >
+                <span className="text-sm font-medium text-blue-500">Edit</span>
+              </button>
+            </DialogTrigger>
 
-      {/* Profile Overview */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5" />
-            Personal Information
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center gap-4">
-            <Avatar className="h-16 w-16">
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt="Profile Picture"
-              />
-              <AvatarFallback>JD</AvatarFallback>
-            </Avatar>
-            <div className="space-y-1">
-              <Label htmlFor="name">Full Name</Label>
+            <DialogContent className="w-96 rounded-lg bg-white p-6 shadow-lg">
+              <h2 className="mb-4 text-xl font-semibold">
+                Update Profile Photo
+              </h2>
+              <form onSubmit={handleUploadPhoto}>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoChange}
+                />
+                <div className="mt-4 flex justify-end gap-3">
+                  <DialogClose asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setIsDialogOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                  <Button type="submit" disabled={isUploading}>
+                    {isUploading ? "Uploading..." : "Upload"}
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {/* Profile Info Form */}
+        <div className="mt-6 w-full space-y-3 text-center md:mt-0 md:text-left">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label
+                htmlFor="name"
+                className="text-sm font-medium text-gray-700"
+              >
+                Name
+              </label>
               <Input
                 id="name"
-                value={editableProfile.name}
-                onChange={(e) =>
-                  setEditableProfile({
-                    ...editableProfile,
-                    name: e.target.value,
-                  })
-                }
-                disabled={!isEditing}
+                name="name"
+                value={userInfo?.name || ""}
+                onChange={handleInfoChange}
+                className="w-full"
               />
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="space-y-1">
-              <Label htmlFor="email">Email</Label>
-              <div className="relative flex items-center">
-                <Mail className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-                <Input
-                  id="email"
-                  value={editableProfile.email}
-                  onChange={(e) =>
-                    setEditableProfile({
-                      ...editableProfile,
-                      email: e.target.value,
-                    })
-                  }
-                  disabled={!isEditing}
-                  className="pl-10"
-                />
-              </div>
+            <div>
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <Input
+                id="email"
+                name="email"
+                value={userInfo?.email || ""}
+                onChange={handleInfoChange}
+                className="w-full"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="phone"
+                className="text-sm font-medium text-gray-700"
+              >
+                Phone
+              </label>
+              <Input
+                id="phone"
+                name="phone"
+                value={userInfo?.phone || ""}
+                onChange={handleInfoChange}
+                className="w-full"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="address"
+                className="text-sm font-medium text-gray-700"
+              >
+                Address
+              </label>
+              <Input
+                id="address"
+                name="address"
+                value={userInfo?.address || ""}
+                onChange={handleInfoChange}
+                className="w-full"
+              />
             </div>
 
-            <div className="space-y-1">
-              <Label htmlFor="phone">Phone</Label>
-              <div className="relative flex items-center">
-                <Phone className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-                <Input
-                  id="phone"
-                  value={editableProfile.phone}
-                  onChange={(e) =>
-                    setEditableProfile({
-                      ...editableProfile,
-                      phone: e.target.value,
-                    })
-                  }
-                  disabled={!isEditing}
-                  className="pl-10"
-                />
-              </div>
+            <div className="mt-4 flex justify-end gap-3">
+              <Button type="submit">Save Changes</Button>
             </div>
+          </form>
 
-            <div className="space-y-1">
-              <Label htmlFor="address">Address</Label>
-              <div className="relative flex items-center">
-                <MapPin className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-                <Input
-                  id="address"
-                  value={editableProfile.address}
-                  onChange={(e) =>
-                    setEditableProfile({
-                      ...editableProfile,
-                      address: e.target.value,
-                    })
-                  }
-                  disabled={!isEditing}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Service Preferences */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5" />
-            Service Preferences
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-1">
-            <Label>Preferred Services</Label>
-            <Select
-              value={editableProfile.services.join(", ")}
-              onValueChange={(value) =>
-                setEditableProfile({
-                  ...editableProfile,
-                  services: value.split(", "),
-                })
-              }
-              disabled={!isEditing}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select services" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="AC Repair, Oven Installation">
-                  AC Repair, Oven Installation
-                </SelectItem>
-                <SelectItem value="Refrigerator Maintenance">
-                  Refrigerator Maintenance
-                </SelectItem>
-                <SelectItem value="Washing Machine Repair">
-                  Washing Machine Repair
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Account Settings */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Lock className="h-5 w-5" />
-            Account Settings
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="notifications">Enable Notifications</Label>
-            <Switch
-              id="notifications"
-              checked={editableProfile.notificationsEnabled}
-              onCheckedChange={(checked) =>
-                setEditableProfile({
-                  ...editableProfile,
-                  notificationsEnabled: checked,
-                })
-              }
-              disabled={!isEditing}
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <Label htmlFor="two-factor">Two-Factor Authentication</Label>
-            <Switch
-              id="two-factor"
-              checked={editableProfile.twoFactorEnabled}
-              onCheckedChange={(checked) =>
-                setEditableProfile({
-                  ...editableProfile,
-                  twoFactorEnabled: checked,
-                })
-              }
-              disabled={!isEditing}
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Password Change Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Key className="h-5 w-5" />
-            Change Password
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-1">
-            <Label htmlFor="current-password">Current Password</Label>
-            <Input
-              id="current-password"
-              type="password"
-              value={passwordData.currentPassword}
-              onChange={(e) =>
-                setPasswordData({
-                  ...passwordData,
-                  currentPassword: e.target.value,
-                })
-              }
-              placeholder="Enter your current password"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <Label htmlFor="new-password">New Password</Label>
-            <Input
-              id="new-password"
-              type="password"
-              value={passwordData.newPassword}
-              onChange={(e) =>
-                setPasswordData({
-                  ...passwordData,
-                  newPassword: e.target.value,
-                })
-              }
-              placeholder="Enter your new password"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <Label htmlFor="confirm-new-password">Confirm New Password</Label>
-            <Input
-              id="confirm-new-password"
-              type="password"
-              value={passwordData.confirmNewPassword}
-              onChange={(e) =>
-                setPasswordData({
-                  ...passwordData,
-                  confirmNewPassword: e.target.value,
-                })
-              }
-              placeholder="Confirm your new password"
-            />
-          </div>
-
-          {passwordError && (
-            <div className="text-sm text-red-500">{passwordError}</div>
-          )}
-
-          <Button onClick={handlePasswordChange}>Change Password</Button>
-        </CardContent>
-      </Card>
-
-      {/* Save Button */}
-      {isEditing && (
-        <div className="flex justify-end">
-          <Button onClick={handleSave}>Save Changes</Button>
+          <ChangePassword/>
         </div>
-      )}
+      </div>
     </div>
   );
-}
+};
+
+export default AdminDashboardProfile;

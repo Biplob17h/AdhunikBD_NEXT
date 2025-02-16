@@ -5,14 +5,7 @@ import { Input } from "@/components/ui/input";
 import useUser from "@/hooks/UserHook";
 import { useRouter } from "next/navigation";
 
-const ChangePassword = ({
-  show,
-  setShow,
-  vendorShow,
-  setVendorShow,
-  adminShow,
-  setAdminShow,
-}) => {
+const ChangePassword = () => {
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -74,63 +67,63 @@ const ChangePassword = ({
           toast.success("Password changed successfully");
         } else {
           toast.error(data?.message);
-          
         }
       }
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
+      router.push(`/dashboard/${user?.role}`)
     }
   };
 
   return (
     <div
-      className={`${show === "password" || vendorShow === "password" || adminShow === "password" ? "block" : "hidden"} mx-auto w-full max-w-md rounded-xl bg-white p-6 shadow-md`}
+      className={`mx-auto w-full max-w-md rounded-xl bg-white p-6 shadow-md`}
     >
       <h2 className="mb-4 text-xl font-semibold">Change Password</h2>
       <form onSubmit={handleChangePassword} className="space-y-5">
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Old Password
-                </label>
-                <Input
-                  type="password"
-                  name="oldPassword"
-                  placeholder="Enter your old password"
-                  className="w-full p-3 rounded-md border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  New Password
-                </label>
-                <Input
-                  type="password"
-                  name="newPassword"
-                  placeholder="Enter new password"
-                  className="w-full p-3 rounded-md border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Confirm Password
-                </label>
-                <Input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Re-enter new password"
-                  className="w-full p-3 rounded-md border border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3 text-lg rounded-md bg-blue-500 hover:bg-blue-600 text-white"
-              >
-                {loading ? "Changing..." : "Change Password"}
-              </Button>
-            </form>
+        <div>
+          <label className="mb-1 block font-medium text-gray-700">
+            Old Password
+          </label>
+          <Input
+            type="password"
+            name="oldPassword"
+            placeholder="Enter your old password"
+            className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block font-medium text-gray-700">
+            New Password
+          </label>
+          <Input
+            type="password"
+            name="newPassword"
+            placeholder="Enter new password"
+            className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block font-medium text-gray-700">
+            Confirm Password
+          </label>
+          <Input
+            type="password"
+            name="confirmPassword"
+            placeholder="Re-enter new password"
+            className="w-full rounded-md border border-gray-300 p-3 focus:border-blue-500 focus:ring-blue-500"
+          />
+        </div>
+        <Button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-md bg-blue-500 py-3 text-lg text-white hover:bg-blue-600"
+        >
+          {loading ? "Changing..." : "Change Password"}
+        </Button>
+      </form>
     </div>
   );
 };

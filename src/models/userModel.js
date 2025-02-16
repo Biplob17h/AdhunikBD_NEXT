@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
 
   role: {
     type: String,
-    enum: ["user", "vendor", "admin"],
+    enum: ["user", "vendor", "agent", "admin"],
     default: "user",
   },
   photo: {
@@ -57,6 +57,21 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  access: {
+    type: Object,
+    default: {
+      address: false,
+      order: false,
+      users: false,
+      report: false,
+      vendors: false,
+      service: false,
+      location: false,
+      servicesRequest: false,
+      money: false,
+    },
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,

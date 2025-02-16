@@ -10,32 +10,53 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useGetAllUser from "@/hooks/getAllUserHook";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Search } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const AdminUserSidebar = () => {
-  const { users, userLoading } = useGetAllUser(); // Get dynamic user data
-  console.log(users);
-  const [currentDate, setCurrentDate] = useState("");
+  const { users, userLoading, setUserLoading, setUsers } = useGetAllUser();
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
 
-  useEffect(() => {
-    setCurrentDate(new Date().toLocaleDateString());
-  }, []);
-
+  // Ensure hooks are initialized before returning a loading state
   if (userLoading) {
     return <div>Loading...</div>;
   }
 
   const router = useRouter();
 
+  const handleFilterSubmit = (e) => {
+    e.preventDefault();
+    setUserLoading(true);
+
+    fetch(`/api/user/filter?name=${name}&phone=${phone}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setUsers(data?.data);
+      })
+      .finally(() => {
+        setUserLoading(false);
+      });
+  };
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handlePhoneChange = (e) => {
+    setPhone(e.target.value);
+  };
+
   return (
     <div className="space-y-8 p-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Dashboard Overview</h1>
-        <div className="text-sm text-gray-500">Today: {currentDate}</div>
       </div>
 
       {/* Stats Cards */}
@@ -50,6 +71,49 @@ const AdminUserSidebar = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Filter Section */}
+      <form
+        onSubmit={handleFilterSubmit}
+        className="mb-6 flex items-center gap-4"
+      >
+        <div className="flex w-full flex-col sm:w-1/2">
+          <Label htmlFor="name" className="text-sm font-medium">
+            Name:
+          </Label>
+          <Input
+            id="name"
+            name="name"
+            placeholder="Enter Name"
+            value={name}
+            onChange={handleNameChange}
+          />
+        </div>
+
+        <div className="flex w-full flex-col sm:w-1/2">
+          <Label htmlFor="phone" className="text-sm font-medium">
+            Phone:
+          </Label>
+          <Input
+            id="phone"
+            name="phone"
+            placeholder="Enter Phone"
+            value={phone}
+            onChange={handlePhoneChange}
+          />
+        </div>
+
+        <div className="mt-5">
+          <Button
+            type="submit"
+            variant="outline"
+            className="flex w-full items-center justify-center sm:mt-0 sm:w-auto"
+          >
+            <Search className="h-5 w-5" />
+            <span className="ml-2">Search</span>
+          </Button>
+        </div>
+      </form>
 
       {/* Users Table */}
       <Card>
@@ -76,7 +140,7 @@ const AdminUserSidebar = () => {
                   key={user._id}
                   onClick={() => {
                     router.push(
-                      `/dashboard/admin/userSidebar/single/${user?._id}`,
+                      `/dashboard/admin/userSidebar/single/${user?._id}`
                     );
                   }}
                   className="cursor-pointer transition-colors duration-150 hover:bg-gray-100"
@@ -93,9 +157,7 @@ const AdminUserSidebar = () => {
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.address}</TableCell>
-                  <TableCell>
-                    <span>{user?.phone}</span>
-                  </TableCell>
+                  <TableCell>{user.phone}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

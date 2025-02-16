@@ -45,8 +45,10 @@ const notifications = [
     read: true,
   },
 ];
+
 const Nav = () => {
-  const { userLogout } = useUser();
+  const { userLogout, user } = useUser();
+  
   return (
     <div className="flex items-center gap-5">
       {/* Notification Dropdown */}
@@ -108,12 +110,15 @@ const Nav = () => {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarImage
+              src={user?.photo ? user?.photo : "https://github.com/shadcn.png"}
+              alt="@shadcn"
+            />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="mr-5 w-[200px]">
-          <DropdownMenuLabel>Leon Ali</DropdownMenuLabel>
+          <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <Link href="/dashboard/admin/profile">
             <DropdownMenuItem>
