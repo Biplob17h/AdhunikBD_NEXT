@@ -18,6 +18,10 @@ const ManageSingleSubcategory = ({
   const [deleting, setDeleting] = useState(false);
   const [deletingService, setDeletingService] = useState(null);
   const [updatingService, setUpdatingService] = useState(null); // Track which service is updating
+  const [discountType, setDiscountType] = useState("flat");
+  const [discountValue, setDiscountValue] = useState("");
+  const [discounts, setDiscounts] = useState([]);
+  const [editingDiscount, setEditingDiscount] = useState(null);
 
   const router = useRouter();
   const { categoriesRef, setCategoriesRef } = useCategories();
@@ -70,7 +74,6 @@ const ManageSingleSubcategory = ({
     ) {
       return;
     }
-
     try {
       setDeleting(true);
       const res = await fetch(
@@ -147,6 +150,20 @@ const ManageSingleSubcategory = ({
     } finally {
       setUpdatingService(null);
     }
+  };
+
+  const handleAddDiscount = () => {
+    if (!discountValue) return toast.error("Enter a discount value");
+    setDiscounts([
+      ...discounts,
+      { id: Date.now(), type: discountType, value: discountValue },
+    ]);
+    setDiscountValue("");
+  };
+
+  const handleDeleteDiscount = (id) => {
+    setDiscounts(discounts.filter((discount) => discount.id !== id));
+    toast.success("Discount removed");
   };
 
   return (
@@ -256,8 +273,45 @@ const ManageSingleSubcategory = ({
             </p>
           )}
 
+          {/* Discount Management */}
+          <div className="mx-auto mt-10 max-w-2xl">
+            <h2 className="mb-4 text-xl font-semibold">Discount Management</h2>
+
+            <form className="flex flex-wrap items-center gap-4">
+              <select className="h-10 w-[150px] rounded-lg border px-4">
+                <option value="flat">Flat Discount</option>
+                <option value="percent">Percent Discount</option>
+              </select>
+              <input
+                type="number"
+                placeholder="Enter value"
+                className="h-10 w-[150px] rounded-lg border px-4"
+              />
+              <button className="h-10 rounded-lg bg-green-500 px-4 text-white hover:bg-green-600">
+                Add
+              </button>
+            </form>
+
+            <div className="mt-6 space-y-4">
+              {/* Discounts List */}
+              <div className="flex items-center justify-between rounded-lg border p-4 shadow-sm">
+                <p className="text-lg">100 Tk</p>
+                <button className="h-10 rounded-lg bg-red-500 px-4 text-white hover:bg-red-600">
+                  Delete
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between rounded-lg border p-4 shadow-sm">
+                <p className="text-lg">15%</p>
+                <button className="h-10 rounded-lg bg-red-500 px-4 text-white hover:bg-red-600">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+
           {/* Delete Subcategory */}
-          <div className="mt-20 w-full flex justify-center">
+          <div className="mt-20 flex w-full justify-center">
             <Button
               type="button"
               onClick={handleDeleteSubCategory}

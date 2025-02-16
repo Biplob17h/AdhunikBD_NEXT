@@ -70,6 +70,11 @@ const items = [
     url: "/dashboard/admin/report",
     icon: Flag,
   },
+  {
+    title: "Coupon",
+    url: "/dashboard/admin/coupon",
+    icon: TicketPercent,
+  },
 ];
 
 const AppSidebar = () => {

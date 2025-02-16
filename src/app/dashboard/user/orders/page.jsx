@@ -1,69 +1,107 @@
 "use client";
 import useUser from "@/hooks/UserHook";
 import useUserOrders from "@/hooks/userOrdersHook";
-import { Card } from "@radix-ui/react-slot"; // For reusable card UI
 import { useRouter } from "next/navigation";
-import { Spinner } from "react-icons"; // Optional: To show loading spinner
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Loader2, CheckCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
-const CLientDashboardOrder = () => {
+const ClientDashboardOrder = () => {
   const { user } = useUser();
   const { orders, orderLoading } = useUserOrders(user?._id);
   const router = useRouter();
+  const [currentDate, setCurrentDate] = useState("");
+
+  useEffect(() => {
+    setCurrentDate(new Date().toLocaleDateString());
+  }, []);
 
   if (orderLoading) {
     return (
-      <div className="flex items-center justify-center p-4">Loading...</div>
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+      </div>
     );
   }
 
   return (
-    <div>
-      <div>
-        <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-3">
-          {orders?.map((order) => (
-            <div key={order._id} className="rounded-lg border p-4 shadow-lg">
-              <h3 className="text-xl font-semibold text-gray-800">
-                {order.subCategoryId?.subCategory}
-              </h3>
-              <p className="text-sm text-gray-600">{order.customerEmail}</p>
-              <p className="text-sm text-gray-600">{order.customerPhone}</p>
-
-              <div className="mt-4">
-                <h4 className="font-medium text-gray-800">Order Details</h4>
-                <p className="text-sm text-gray-600">
-                  Location: {order.location}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Date: {new Date(order.date).toLocaleDateString()}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Problem: {order.problem}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Service: {order.service.name}
-                </p>
-                <p className="text-sm text-gray-600">Time Slot: {order.time}</p>
-                <p className="text-sm text-gray-600">
-                  Total Price: ${order.totalPrice || order.service.price}
-                </p>
-              </div>
-
-              <div className="mt-4">
-                <button
-                  onClick={() => {
-                    router.push(`/dashboard/user/single/${order?._id}`);
-                  }}
-                  className="w-full rounded-lg bg-blue-500 py-2 text-white"
-                >
-                  View Details
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className="space-y-8 p-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold">Your Orders</h1>
+        <div className="text-sm text-gray-500">Today: {currentDate}</div>
       </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <Card className="transition-shadow hover:shadow-lg">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
+            <CheckCircle className="h-4 w-4 text-blue-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{orders.length}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Orders Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <CheckCircle className="h-5 w-5 text-blue-500" />
+            Order List
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {orders.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Service</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Location</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Problem</TableHead>
+                  <TableHead>Time Slot</TableHead>
+                  <TableHead>Total Price</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {orders.map((order) => (
+                  <TableRow
+                    key={order._id}
+                    onClick={() => router.push(`/dashboard/user/single/${order._id}`)}
+                    className="cursor-pointer transition-colors duration-150 hover:bg-gray-100"
+                  >
+                    <TableCell>{order.service.name}</TableCell>
+                    <TableCell>{order.customerEmail}</TableCell>
+                    <TableCell>{order.customerPhone}</TableCell>
+                    <TableCell>{order.location}</TableCell>
+                    <TableCell>{new Date(order.date).toLocaleDateString()}</TableCell>
+                    <TableCell>{order.problem}</TableCell>
+                    <TableCell>{order.time}</TableCell>
+                    <TableCell>${order.totalPrice || order.service.price}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <p className="text-center text-gray-500">No orders found.</p>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
 
-export default CLientDashboardOrder;
+export default ClientDashboardOrder;
