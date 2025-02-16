@@ -9,24 +9,31 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import Vendor from "@/models/vendorModel";
 import {
-  AirVent,
-  Contact,
-  Flag,
   Home,
   ListOrdered,
-  MapPin,
-  Star,
-  Tag,
-  TicketPercent,
   User,
   Users,
+  MapPin,
   Wrench,
+  Flag,
+  TicketPercent,
+  ChevronRight,
+  GitPullRequestDraft,
+  Kanban,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import Link from "next/link";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 // Menu items.
 const items = [
@@ -36,7 +43,7 @@ const items = [
     icon: Home,
   },
   {
-    title: "Order",
+    title: "Orders",
     url: "/dashboard/admin/order",
     icon: ListOrdered,
   },
@@ -46,7 +53,7 @@ const items = [
     icon: User,
   },
   {
-    title: "users",
+    title: "Users",
     url: "/dashboard/admin/userSidebar",
     icon: User,
   },
@@ -56,32 +63,44 @@ const items = [
     icon: Users,
   },
   {
-    title: "Location Management",
-    url: "/dashboard/admin/location/manage",
-    icon: MapPin,
+    title: "Requests",
+    icon: GitPullRequestDraft,
+    subItems: [
+      {
+        title: "Location Requests",
+        url: "/dashboard/admin/location/request",
+      },
+      {
+        title: "Vendor Requests",
+        url: "/dashboard/admin/location/add",
+      },
+      {
+        title: "Service Requests",
+        url: "/dashboard/admin/location/add",
+      },
+    ],
   },
   {
-    title: "Location Requests",
-    url: "/dashboard/admin/location/request",
-    icon: MapPin,
+    title: "Management",
+    icon: Kanban,
+    subItems: [
+      {
+        title: "Manage Locations",
+        url: "/dashboard/admin/location/manage",
+      },
+      {
+        title: "Manage Services",
+        url: "/dashboard/admin/service",
+      },
+    ],
   },
   {
-    title: "Add Location",
-    url: "/dashboard/admin/location/add",
-    icon: MapPin,
-  },
-  {
-    title: "Service",
-    url: "/dashboard/admin/service",
-    icon: Wrench,
-  },
-  {
-    title: "Report",
+    title: "Reports",
     url: "/dashboard/admin/report",
     icon: Flag,
   },
   {
-    title: "Coupon",
+    title: "Coupons",
     url: "/dashboard/admin/coupon",
     icon: TicketPercent,
   },
@@ -90,6 +109,7 @@ const items = [
 const AppSidebar = () => {
   const currentRoute = usePathname();
   const router = useRouter();
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -114,17 +134,47 @@ const AppSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={currentRoute === item.url}
-                  >
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <React.Fragment key={item.title}>
+                  {item.subItems ? (
+                    <Collapsible className="group/collapsible">
+                      <SidebarMenuItem>
+                        <CollapsibleTrigger asChild>
+                          <SidebarMenuButton>
+                            <item.icon />
+                            <span>{item.title}</span>
+                            <ChevronRight className="ml-auto transition-transform duration-300 ease-in-out group-data-[state=open]/collapsible:rotate-90" />
+                          </SidebarMenuButton>
+                        </CollapsibleTrigger>
+                      </SidebarMenuItem>
+                      <CollapsibleContent>
+                        {item.subItems.map((subItem) => (
+                          <SidebarMenuSub key={subItem.title}>
+                            <SidebarMenuSubItem>
+                              <Link href={subItem.url}>
+                                <SidebarMenuSubButton
+                                  isActive={currentRoute === subItem.url}
+                                >
+                                  <span>{subItem.title}</span>
+                                </SidebarMenuSubButton>
+                              </Link>
+                            </SidebarMenuSubItem>
+                          </SidebarMenuSub>
+                        ))}
+                      </CollapsibleContent>
+                    </Collapsible>
+                  ) : (
+                    <SidebarMenuItem>
+                      <Link href={item.url}>
+                        <SidebarMenuButton isActive={currentRoute === item.url}>
+                          <div className="flex items-center gap-2">
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.title}</span>
+                          </div>
+                        </SidebarMenuButton>
+                      </Link>
+                    </SidebarMenuItem>
+                  )}
+                </React.Fragment>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
