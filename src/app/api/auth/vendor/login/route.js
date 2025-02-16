@@ -10,7 +10,7 @@ export async function POST(req) {
     await connectMongoDb(); // Ensure MongoDB is connected
 
     const { phone, password } = await req.json(); // Parse request body
-    console.log({ phone, password });
+    
 
     // Validate input
     if (!phone || !password) {

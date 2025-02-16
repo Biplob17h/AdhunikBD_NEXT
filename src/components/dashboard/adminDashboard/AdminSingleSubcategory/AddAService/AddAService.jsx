@@ -33,7 +33,7 @@ const AddAService = ({
       e.target.reset();
     } else {
       toast.error("Failed to add category");
-      console.log(data);
+      
     }
   };
   return (

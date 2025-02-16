@@ -63,7 +63,7 @@ export default function ProfilePage() {
 
   // Handle form submission
   const handleSave = () => {
-    console.log("Profile updated:", editableProfile);
+    
     setIsEditing(false);
   };
 
@@ -78,7 +78,7 @@ export default function ProfilePage() {
       return;
     }
     // Simulate password change (replace with API call)
-    console.log("Password changed successfully:", passwordData);
+    
     setPasswordData({
       currentPassword: "",
       newPassword: "",

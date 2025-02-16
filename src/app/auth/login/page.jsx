@@ -109,14 +109,7 @@ const LoginPage = () => {
                   </Link>{" "}
                 </div>
               </form>
-              <div className="mt-4 text-center">
-                <Link
-                  href={"/auth/vendor/login"}
-                  className="text-lg font-medium text-[#1173ff] underline-offset-4 transition-all duration-300 ease-in-out hover:underline"
-                >
-                  Vendor Login
-                </Link>
-              </div>
+              
             </div>
             <div className="hidden lg:block">
               <img

@@ -37,7 +37,7 @@ const NewOrderSinglePage = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        
         if (data.status === "success") {
           toast.success("Order Accepted successfully!");
           setOrderRef((prev) => prev + 1);
@@ -55,7 +55,7 @@ const NewOrderSinglePage = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        
         if (data.status === "success") {
           toast.success("Order rejected successfully!");
           setOrderRef((prev) => prev + 1);

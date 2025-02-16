@@ -28,7 +28,7 @@ const VendorSignUp = () => {
       });
 
       const data = await res.json(); 
-      console.log(data.message);
+      
 
       if (data.status === "fail") {
         toast.error(data.message); //

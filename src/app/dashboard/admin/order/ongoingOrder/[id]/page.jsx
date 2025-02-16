@@ -7,7 +7,7 @@ const OnGoingOrderSinglePage = () => {
   const { id } = useParams();
   const router = useRouter();
   const { order, isLoading } = useSingleOrder(id);
-  console.log(order);
+  
 
   const [formData, setFormData] = useState({
     customerName: "",
