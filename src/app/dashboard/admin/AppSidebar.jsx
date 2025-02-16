@@ -56,8 +56,18 @@ const items = [
     icon: Users,
   },
   {
-    title: "Location",
-    url: "/dashboard/admin/location",
+    title: "Location Management",
+    url: "/dashboard/admin/location/manage",
+    icon: MapPin,
+  },
+  {
+    title: "Location Requests",
+    url: "/dashboard/admin/location/request",
+    icon: MapPin,
+  },
+  {
+    title: "Add Location",
+    url: "/dashboard/admin/location/add",
     icon: MapPin,
   },
   {

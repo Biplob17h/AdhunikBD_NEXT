@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-
-
 const useGetUserById = (id) => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
