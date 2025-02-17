@@ -80,7 +80,7 @@ const items = [
       },
       {
         title: "Expert Requests",
-        url: "/dashboard/admin/location/add",
+        url: "/dashboard/admin/expert",
       },
     ],
   },
