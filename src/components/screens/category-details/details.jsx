@@ -103,7 +103,7 @@ const DetailSection = ({ subCategories, category }) => {
         if (data.status === "success") {
           toast.success("Order placed successfully");
           e.target.reset();
-          router.push('/dashboard/user/orders')
+          router.push('/profile/user/orders')
         }
       });
   };

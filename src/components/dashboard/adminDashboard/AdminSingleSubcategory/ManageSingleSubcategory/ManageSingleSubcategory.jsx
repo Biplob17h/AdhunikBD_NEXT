@@ -6,6 +6,8 @@ import { toast } from "react-hot-toast";
 import hostPhoto from "@/utils/hostPhoto/hostPhoto";
 import { useRouter } from "next/navigation";
 import useCategories from "@/hooks/CategoriesHook";
+import * as Dialog from "@radix-ui/react-dialog";
+import { Calendar } from "react-day-picker"; // For date pickers
 
 const ManageSingleSubcategory = ({
   subCategory,
@@ -143,7 +145,7 @@ const ManageSingleSubcategory = ({
 
       if (data?.status === "success") {
         toast.success("Service updated successfully!");
-        setSubCategoryRef((prev) => prev + 1); // Refresh services
+        setSubCategoryRef((prev) => prev + 1);
       } else {
         toast.error("Failed to update service. Please try again!");
       }
@@ -152,13 +154,11 @@ const ManageSingleSubcategory = ({
     }
   };
 
-  const handleAddDiscount = () => {
-    if (!discountValue) return toast.error("Enter a discount value");
-    setDiscounts([
-      ...discounts,
-      { id: Date.now(), type: discountType, value: discountValue },
-    ]);
-    setDiscountValue("");
+  const handleDiscountSubmit = (e) => {
+    e.preventDefault();
+    const type = e.target.type.value;
+    const discountValue = e.target.discountValue.value;
+    console.log(type, discountValue)
   };
 
   const handleDeleteDiscount = (id) => {
@@ -166,6 +166,7 @@ const ManageSingleSubcategory = ({
     toast.success("Discount removed");
   };
 
+  
   return (
     <div className="mx-auto rounded-xl bg-white p-8 shadow-lg">
       <h1 className="mb-6 text-3xl font-semibold text-gray-800">
@@ -176,7 +177,7 @@ const ManageSingleSubcategory = ({
         <div>
           <form
             onSubmit={handleUpdateSubCategory}
-            className="mx-auto max-w-2xl space-y-6"
+            className="ml-10 max-w-2xl space-y-6"
           >
             <div className="flex flex-col items-center">
               <img
@@ -222,7 +223,7 @@ const ManageSingleSubcategory = ({
           {services?.length > 0 ? (
             <div className="mt-10">
               <h2 className="mb-4 text-xl font-semibold">Services</h2>
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-4 md:grid-cols-4">
                 {services.map((service) => (
                   <form
                     key={service._id}
@@ -274,20 +275,27 @@ const ManageSingleSubcategory = ({
           )}
 
           {/* Discount Management */}
-          <div className="mx-auto mt-10 max-w-2xl">
+          <div className="ml-10 mt-10 max-w-2xl">
             <h2 className="mb-4 text-xl font-semibold">Discount Management</h2>
 
-            <form className="flex flex-wrap items-center gap-4">
-              <select className="h-10 w-[150px] rounded-lg border px-4">
+            <form
+              onSubmit={handleDiscountSubmit}
+              className="flex flex-wrap items-center gap-4"
+            >
+              <select
+                name="type"
+                className="h-10 w-[150px] rounded-lg border px-4"
+              >
                 <option value="flat">Flat Discount</option>
                 <option value="percent">Percent Discount</option>
               </select>
               <input
                 type="number"
                 placeholder="Enter value"
+                name="discountValue"
                 className="h-10 w-[150px] rounded-lg border px-4"
               />
-              <button className="h-10 rounded-lg bg-green-500 px-4 text-white hover:bg-green-600">
+              <button type="submit" className="h-10 rounded-lg bg-green-500 px-4 text-white hover:bg-green-600">
                 Add
               </button>
             </form>

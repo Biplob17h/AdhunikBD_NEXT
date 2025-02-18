@@ -80,7 +80,7 @@ const ClientDashboardOrder = () => {
                 {orders.map((order) => (
                   <TableRow
                     key={order._id}
-                    onClick={() => router.push(`/dashboard/user/single/${order._id}`)}
+                    onClick={() => router.push(`/profile/user/single/${order._id}`)}
                     className="cursor-pointer transition-colors duration-150 hover:bg-gray-100"
                   >
                     <TableCell>{order.service.name}</TableCell>

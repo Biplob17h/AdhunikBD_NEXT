@@ -33,7 +33,7 @@ export async function GET(req) {
     const { userId, userRole } = decoded.userId; // Extract values correctly
 
     let user;
-    if (userRole === "user" || userRole === "admin") {
+    if (userRole === "user" || userRole === "admin" || userRole === "agent") {
       user = await User.findById(userId).select("-password");
     } else if (userRole === "vendor") {
       user = await Vendor.findById(userId).select("-password");

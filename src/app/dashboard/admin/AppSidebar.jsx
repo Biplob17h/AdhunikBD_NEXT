@@ -78,6 +78,10 @@ const items = [
         title: "Service Requests",
         url: "/dashboard/admin/location/add",
       },
+      {
+        title: "Expert Requests",
+        url: "/dashboard/admin/location/add",
+      },
     ],
   },
   {
@@ -95,7 +99,7 @@ const items = [
     ],
   },
   {
-    title: "Reports",
+    title: "Complain",
     url: "/dashboard/admin/report",
     icon: Flag,
   },

@@ -13,17 +13,24 @@ const subCategorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "categories",
   },
-  serviceFeatures: [
+  discount: [
     {
-      serviceFeatures: {
+      type: {
         type: String,
+        enum: ["percentage", "amount"],
+        default: "percentage",
       },
-    },
-  ],
-  excluded: [
-    {
-      excluded: {
-        type: String,
+      discount: {
+        type: Number,
+        default: 0,
+      },
+      startAt: {
+        type: Date,
+        default: Date.now(),
+      },
+      endAt: {
+        type: Date,
+        default: null,
       },
     },
   ],
