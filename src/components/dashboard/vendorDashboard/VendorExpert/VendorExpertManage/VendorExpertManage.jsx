@@ -180,24 +180,26 @@ export default function ResourcesDashboard() {
 
   // Filter experts based on search query and filter option
   const filteredExperts = experts.filter((expert) => {
+    // Check if expert is defined
+    if (!expert) return false;
+  
     const query = searchQuery.toLowerCase();
-
-    // Apply search filter
+  
+    // Apply search filter (with checks for undefined properties)
     const matchesSearch =
-      expert.name.toLowerCase().includes(query) ||
-      expert.phone.toLowerCase().includes(query) ||
-      expert.nid.toLowerCase().includes(query) ||
-      expert.verify.toLowerCase().includes(query);
-
+      (expert.name && expert.name.toLowerCase().includes(query)) ||
+      (expert.phone && expert.phone.toLowerCase().includes(query)) ||
+      (expert.nid && expert.nid.toLowerCase().includes(query)) ||
+      (expert.verify && expert.verify.toLowerCase().includes(query));
+  
     // Apply status filter
     const matchesFilter =
       filter === "all" ||
       (filter === "verified" && expert.verify === "Verify") ||
       (filter === "not-verified" && expert.verify === "Not Verify");
-
+  
     return matchesSearch && matchesFilter;
   });
-
   if (loading) {
     return <div className="min-h-screen bg-gray-100 p-6">Loading...</div>;
   }
@@ -212,7 +214,7 @@ export default function ResourcesDashboard() {
       {notification.isVisible && (
         <div
           className={`fixed right-4 top-4 rounded-lg p-4 text-white ${
-            notification.type === "success" ? "bg-green-500" : "bg-red-500"
+            notification.type === "success" ? "bg-green-500 mt-[50px]" : "bg-red-500 mt-[50px]"
           }`}
         >
           {notification.message}
@@ -372,6 +374,9 @@ export default function ResourcesDashboard() {
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
+
+
+
                   className="rounded border px-4 py-2"
                   onClick={() => setIsFormOpen(false)}
                 >

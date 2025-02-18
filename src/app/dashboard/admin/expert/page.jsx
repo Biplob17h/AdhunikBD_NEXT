@@ -1,13 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import { FaSearch, FaCheck, FaTimes } from "react-icons/fa";
+import { FaSearch, FaTimes } from "react-icons/fa";
 
 export default function ExpertRequest() {
   const [experts, setExperts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filter, setFilter] = useState("all");
   const [notification, setNotification] = useState({
     message: "",
     type: "",
@@ -22,7 +21,9 @@ export default function ExpertRequest() {
           throw new Error("Failed to fetch experts");
         }
         const data = await response.json();
-        setExperts(data.data.reverse());
+        // Only show "Not Verify" experts
+        const notVerifiedExperts = data.data.filter(expert => expert.verify === "Not Verify");
+        setExperts(notVerifiedExperts.reverse());
       } catch (error) {
         setError(error.message);
       } finally {
@@ -34,14 +35,11 @@ export default function ExpertRequest() {
 
   const showNotification = (message, type) => {
     setNotification({ message, type, isVisible: true });
-    setTimeout(
-      () => setNotification({ message: "", type: "", isVisible: false }),
-      3000,
-    );
+    setTimeout(() => setNotification({ message: "", type: "", isVisible: false }), 3000);
   };
 
-  const toggleVerification = async (id, currentStatus) => {
-    const newStatus = currentStatus === "Verify" ? "Not Verify" : "Verify";
+  const toggleVerification = async (id) => {
+    const newStatus = "Verify"; // Only updating "Not Verify" to "Verify"
 
     try {
       const response = await fetch(
@@ -56,50 +54,29 @@ export default function ExpertRequest() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          result.message || "Failed to update verification status",
-        );
+        throw new Error(result.message || "Failed to update verification status");
       }
 
-      setExperts((prevExperts) =>
-        prevExperts.map((expert) =>
-          expert._id === id ? { ...expert, verify: newStatus } : expert,
-        ),
-      );
+      // Remove the verified expert from the list
+      setExperts((prevExperts) => prevExperts.filter(expert => expert._id !== id));
 
-      showNotification(`Expert status updated to "${newStatus}"`, "success");
+      showNotification(`Expert marked as "Verify"`, "success");
     } catch (error) {
       console.error("Error:", error);
       showNotification(error.message || "Failed to update status", "error");
     }
   };
 
-  if (loading)
-    return <div className="min-h-screen bg-gray-100 p-6">Loading...</div>;
-  if (error)
-    return <div className="min-h-screen bg-gray-100 p-6">Error: {error}</div>;
-
-  const filteredExperts = experts.filter((expert) => {
-    const query = searchQuery.toLowerCase();
-    const matchesSearch =
-      expert.name.toLowerCase().includes(query) ||
-      expert.phone.toLowerCase().includes(query) ||
-      expert.nid.toLowerCase().includes(query) ||
-      expert.verify.toLowerCase().includes(query);
-
-    const matchesFilter =
-      filter === "all" ||
-      (filter === "verified" && expert.verify === "Verify") ||
-      (filter === "not-verified" && expert.verify === "Not Verify");
-
-    return matchesSearch && matchesFilter;
-  });
+  if (loading) return <div className="min-h-screen bg-gray-100 p-6">Loading...</div>;
+  if (error) return <div className="min-h-screen bg-gray-100 p-6">Error: {error}</div>;
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
       {notification.isVisible && (
         <div
-          className={`fixed right-4 top-4 rounded-lg p-4 text-white ${notification.type === "success" ? "mt-[30px] bg-green-500" : "mt-[30px] bg-red-500"}`}
+          className={`fixed right-4 top-4 rounded-lg p-4 text-white ${
+            notification.type === "success" ? " bg-green-500 mt-[50px]" : "mt-[50px] bg-red-500"
+          }`}
         >
           {notification.message}
         </div>
@@ -107,7 +84,7 @@ export default function ExpertRequest() {
 
       {/* Header */}
       <div className="mb-6 flex flex-col items-center justify-between md:flex-row">
-        <h2 className="text-xl font-bold opacity-60">Expert Request...</h2>
+        <h2 className="text-xl font-bold opacity-60">Expert Requests (Not Verified)</h2>
 
         {/* Search Input */}
         <div className="relative mt-3 md:mt-0">
@@ -120,66 +97,55 @@ export default function ExpertRequest() {
           />
           <FaSearch className="absolute right-3 top-3 text-gray-500" />
         </div>
-
-        {/* Filter Dropdown */}
-        <select
-          className="ml-4 rounded border px-4 py-2"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        >
-          <option value="all">All</option>
-          <option value="verified">Verified</option>
-          <option value="not-verified">Not Verified</option>
-        </select>
       </div>
 
-      {/* Expert Grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {filteredExperts.length > 0 ? (
-          filteredExperts.map((expert) => (
-            <div
-              key={expert._id}
-              className="relative flex flex-col items-center rounded-lg bg-white p-4 text-center shadow-md"
-            >
-              <img
-                src={expert.photo}
-                alt={expert.name}
-                className="mb-3 h-20 w-20 rounded-full object-cover sm:h-24 sm:w-24"
-              />
-              <h3 className="text-lg font-semibold">{expert.name}</h3>
-              <p className="text-sm text-gray-600">{expert.phone}</p>
-              <p className="text-sm text-gray-600">{expert.nid}</p>
-
-              {/* Verification Status Tag */}
-              <span
-                className={`absolute right-2 top-2 rounded px-3 py-1 text-xs font-bold text-white ${
-                  expert.verify === "Verify" ? "bg-teal-500" : "bg-red-500"
-                }`}
-              >
-                {expert.verify}
-              </span>
-
-              {/* Toggle Verification Button */}
-              <button
-                className={`mt-3 flex items-center gap-2 rounded px-3 py-1.5 text-sm text-white ${
-                  expert.verify === "Verify" ? "bg-teal-500 " : " bg-red-500"
-                } transition hover:opacity-80`}
-                onClick={() => toggleVerification(expert._id, expert.verify)}
-              >
-                {expert.verify === "Verify" ? (
-                    <FaCheck className="text-sm" />
-                ) : (
-                    <FaTimes className="text-sm" />
-                )}
-                {expert.verify}
-              </button>
-            </div>
-          ))
-        ) : (
-          <div className="col-span-4 text-center text-gray-500">
-            No expert found.
-          </div>
-        )}
+      {/* Table Design */}
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse bg-white shadow-md">
+          <thead>
+            <tr className="bg-gray-200 text-left">
+              <th className="px-4 py-2">Photo</th>
+              <th className="px-4 py-2">Name</th>
+              <th className="px-4 py-2">Phone</th>
+              <th className="px-4 py-2">NID</th>
+              <th className="px-4 py-2">Vendor</th>
+              <th className="px-4 py-2 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+  {experts
+    .filter(
+      (expert) =>
+        expert.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        expert.phone.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        expert.nid.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .map((expert) => (
+      <tr key={expert._id} className="border-b hover:bg-gray-100">
+        <td className="px-4 py-2">
+          <img
+            src={expert.photo}
+            alt={expert.name}
+            className="h-12 w-12 rounded-full object-cover"
+          />
+        </td>
+        <td className="px-4 py-2">{expert.name}</td>
+        <td className="px-4 py-2">{expert.phone}</td>
+        <td className="px-4 py-2">{expert.nid}</td>
+        <td className="px-4 py-2">{expert.vendor.vendorName}</td>
+        <td className="px-4 py-2 text-center">
+          <button
+            className="flex items-center gap-2 rounded bg-red-500 px-3 py-1.5 text-sm text-white transition hover:opacity-80"
+            onClick={() => toggleVerification(expert._id)}
+          >
+            <FaTimes className="text-sm" />
+            Not Verified
+          </button>
+        </td>
+      </tr>
+    ))}
+</tbody>
+        </table>
       </div>
     </div>
   );

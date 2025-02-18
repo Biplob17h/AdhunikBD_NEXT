@@ -1,3 +1,4 @@
+// models/Expert.js
 import mongoose from "mongoose";
 
 const expertSchema = new mongoose.Schema({
@@ -12,7 +13,6 @@ const expertSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
   photo: {
     type: String,
     default: "",
@@ -21,13 +21,16 @@ const expertSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-
   verify: {
     type: String,
     enum: ["Verify", "Not Verify"],
     default: "Not Verify",
   },
-
+  vendor: {
+    type: mongoose.Schema.Types.ObjectId, // Reference to the Vendor model
+    ref: "vendors", // Reference to the Vendor collection
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
