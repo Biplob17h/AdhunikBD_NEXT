@@ -158,15 +158,62 @@ const ManageSingleSubcategory = ({
     e.preventDefault();
     const type = e.target.type.value;
     const discountValue = e.target.discountValue.value;
-    console.log(type, discountValue)
+    const startAt = e.target.startAt?.value || new Date(); // If not provided, use current date
+    const endAt = e.target.endAt?.value || null; // Default to null if not provided
+
+    fetch("/api/discount", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        subCategoryId: subCategory._id,
+        type,
+        discount: discountValue, // Updated to match the backend field name
+        startAt,
+        endAt,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "success") {
+          toast.success("Discount added");
+          setSubCategoryRef((prev) => prev + 1);
+        } else {
+          toast.error("Failed to add discount");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        toast.error("Error adding discount");
+      });
   };
 
-  const handleDeleteDiscount = (id) => {
-    setDiscounts(discounts.filter((discount) => discount.id !== id));
-    toast.success("Discount removed");
+  const handleDeleteDiscount = (_id) => {
+    fetch("/api/discount", {
+
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        subCategoryId: subCategory._id,
+        _id
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Server response:", data); // Debugging
+        if (data.status === "success") {
+          toast.success("Discount deleted successfully");
+          setSubCategoryRef((prev) => prev + 1);
+        } else {
+          toast.error("Failed to delete discount");
+        }
+      })
+      .catch((err) => console.error("Error in request:", err));
   };
 
-  
   return (
     <div className="mx-auto rounded-xl bg-white p-8 shadow-lg">
       <h1 className="mb-6 text-3xl font-semibold text-gray-800">
@@ -287,7 +334,7 @@ const ManageSingleSubcategory = ({
                 className="h-10 w-[150px] rounded-lg border px-4"
               >
                 <option value="flat">Flat Discount</option>
-                <option value="percent">Percent Discount</option>
+                <option value="percentage">Percent Discount</option>
               </select>
               <input
                 type="number"
@@ -295,26 +342,38 @@ const ManageSingleSubcategory = ({
                 name="discountValue"
                 className="h-10 w-[150px] rounded-lg border px-4"
               />
-              <button type="submit" className="h-10 rounded-lg bg-green-500 px-4 text-white hover:bg-green-600">
+              <button
+                type="submit"
+                className="h-10 rounded-lg bg-green-500 px-4 text-white hover:bg-green-600"
+              >
                 Add
               </button>
             </form>
 
             <div className="mt-6 space-y-4">
               {/* Discounts List */}
-              <div className="flex items-center justify-between rounded-lg border p-4 shadow-sm">
-                <p className="text-lg">100 Tk</p>
-                <button className="h-10 rounded-lg bg-red-500 px-4 text-white hover:bg-red-600">
-                  Delete
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between rounded-lg border p-4 shadow-sm">
-                <p className="text-lg">15%</p>
-                <button className="h-10 rounded-lg bg-red-500 px-4 text-white hover:bg-red-600">
-                  Delete
-                </button>
-              </div>
+              {subCategory?.discount?.length > 0 ? (
+                subCategory.discount.map((discount, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between rounded-lg border p-4 shadow-sm"
+                  >
+                    <p className="text-lg">
+                      {discount.type === "percentage"
+                        ? `${discount.discount}%`
+                        : `${discount.discount} Tk`}
+                    </p>
+                    <button
+                      className="h-10 rounded-lg bg-red-500 px-4 text-white hover:bg-red-600"
+                      onClick={() => handleDeleteDiscount(discount._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p className="text-lg text-gray-500">No discounts available</p>
+              )}
             </div>
           </div>
 

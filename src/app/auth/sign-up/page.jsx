@@ -18,7 +18,13 @@ const SignUpPage = () => {
     const lastName = e.target.lastName.value.trim();
     const phone = e.target.phone.value.trim();
     const password = e.target.password.value.trim();
+    const checkBox = e.target.checkBox.checked;
     const name = `${firstName} ${lastName}`;
+
+    if (!checkBox) {
+      toast.error("Please agree to the terms and conditions");
+      return;
+    }
 
     try {
       const res = await fetch("/api/auth/user/signup", {
@@ -28,15 +34,14 @@ const SignUpPage = () => {
       });
 
       const data = await res.json(); // ✅ Parse response JSON
-      
 
       if (data.status === "fail") {
         toast.error(data.message); //
         return;
       }
       toast.success("User created successfully!"); //
-      router.push("/auth/login"); 
-      e.target.reset(); 
+      router.push("/auth/login");
+      e.target.reset();
     } finally {
       // Handle any errors that occur during the fetch request
     }
@@ -120,7 +125,7 @@ const SignUpPage = () => {
                   />
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Checkbox id="terms" />
+                  <Checkbox name="checkBox" id="terms" />
                   <label
                     htmlFor="terms"
                     className="inline-flex items-center gap-1 text-lg leading-[30px] text-black/60 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

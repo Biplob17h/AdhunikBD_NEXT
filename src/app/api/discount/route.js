@@ -1,33 +1,46 @@
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import SubCategory from "@/models/subCategoryModel";
+import connectMongoDb from "@/lib/mongoose";
+import genId from "@/utils/genId/genId";
 
 export async function POST(req) {
   try {
     await connectMongoDb(); // Ensure MongoDB is connected
 
-    const { type, discount, subCategoryId } = await req.json();
+    const { type, discount, subCategoryId, startAt, endAt } = await req.json();
 
     // Fetch subcategory
-    const subCategory = await SubCategory.findById({ subCategoryId });
+    const subCategory = await SubCategory.findById(subCategoryId);
+
+    if (!subCategory) {
+      return NextResponse.json(
+        { status: "fail", message: "SubCategory not found" },
+        { status: 404 },
+      );
+    }
+
+    const id = genId();
 
     const discountData = {
+      _id: id,
       type,
       discount,
     };
 
-    subCategory.discounts.push(discountData);
+    subCategory.discount.push(discountData);
     await subCategory.save();
+
     return NextResponse.json(
       {
         status: "success",
-        message: "discount created successfully",
-        data: orders,
+        message: "Discount created successfully",
+        data: discountData,
       },
       { status: 200 },
     );
   } catch (error) {
-    console.error("Error fetching orders:", error);
+    console.error("Error creating discount:", error);
     return NextResponse.json(
       { status: "fail", message: "Internal server error" },
       { status: 500 },
@@ -35,43 +48,44 @@ export async function POST(req) {
   }
 }
 
-export async function GET(req) {
+export async function DELETE(req) {
   try {
-    await connectMongoDb(); // Ensure MongoDB is connected
+    await connectMongoDb();
 
-    const userId = req.nextUrl.searchParams.get("userId");
+    const { _id, subCategoryId } = await req.json();
+    console.log(_id, subCategoryId)
 
-    if (!userId) {
+    if (!subCategoryId || !_id) {
       return NextResponse.json(
-        { status: "fail", message: "Please provide a userId" },
+        { status: "fail", message: "subCategoryId and id are required" },
         { status: 400 },
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
+    const subCategory = await SubCategory.findById(subCategoryId);
+    if (!subCategory) {
       return NextResponse.json(
-        { status: "fail", message: "Invalid userId" },
-        { status: 400 },
+        { status: "fail", message: "SubCategory not found" },
+        { status: 404 },
       );
     }
 
-    // Fetch orders for the given userId with explicit model references
-    const orders = await Order.find({ user: userId })
-      .populate({ path: "service", model: Service })
-      .populate({ path: "user", model: User })
-      .populate({ path: "subCategoryId", model: SubCategory })
-      .exec();
+    // Remove discount by `_id`
+    const updatedSubCategory = await SubCategory.findByIdAndUpdate(
+      subCategoryId,
+      { $pull: { discount: { _id: _id } } },
+      { new: true },
+    );
 
     return NextResponse.json(
       {
         status: "success",
-        message: "User orders found successfully",
-        data: orders,
+        message: "Discount deleted successfully",
+        data: updatedSubCategory,
       },
       { status: 200 },
     );
   } catch (error) {
-    console.error("Error fetching orders:", error);
     return NextResponse.json(
       { status: "fail", message: "Internal server error" },
       { status: 500 },

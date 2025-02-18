@@ -13,27 +13,10 @@ const subCategorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "categories",
   },
-  discount: [
-    {
-      type: {
-        type: String,
-        enum: ["percentage", "amount"],
-        default: "percentage",
-      },
-      discount: {
-        type: Number,
-        default: 0,
-      },
-      startAt: {
-        type: Date,
-        default: Date.now(),
-      },
-      endAt: {
-        type: Date,
-        default: null,
-      },
-    },
-  ],
+  discount: {
+    type: Array,
+    default: [],
+  },
 });
 
 const SubCategory =
