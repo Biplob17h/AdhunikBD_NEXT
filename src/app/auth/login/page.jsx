@@ -32,6 +32,9 @@ const LoginPage = () => {
       } else if (data?.data?.userData?.role === "admin") {
         toast.success("Admin login in successfully");
         router.push("/dashboard/admin");
+      } else if (data?.data?.userData?.role === "agent") {
+        toast.success("Agent login in successfully");
+        router.push("/dashboard/admin");
       } else if (data?.data?.userData?.role === "vendor") {
         toast.success("Vendor login in successfully");
         router.push("/dashboard/vendor");

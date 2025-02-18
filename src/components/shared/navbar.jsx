@@ -7,8 +7,16 @@ import { LogOut, Menu, User, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -63,26 +71,21 @@ const Navbar = () => {
                               ? user?.photo
                               : "https://github.com/shadcn.png"
                           }
-                          alt="@shadcn"
+                          alt="User Photo"
                         />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarFallback>User</AvatarFallback>
                       </Avatar>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="mr-5 w-[200px] cursor-pointer">
                       <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
                       <DropdownMenuSeparator />
-                      <Link href="/dashboard/admin/profile">
+                      <Link href="/profile/user">
                         <DropdownMenuItem>
                           <User />
                           Profile
                         </DropdownMenuItem>
                       </Link>
-                      <Link href="/dashboard/admin/settings">
-                        <DropdownMenuItem>
-                          <User />
-                          Settings
-                        </DropdownMenuItem>
-                      </Link>
+
                       <DropdownMenuItem onClick={() => userLogout()}>
                         <LogOut />
                         Logout
@@ -91,9 +94,23 @@ const Navbar = () => {
                   </DropdownMenu>
                 </div>
               ) : user?.role === "vendor" ? (
-                <div>Vendor Content</div>
+                <Button
+                  onClick={() => {
+                    router.push("/dashboard/vendor");
+                  }}
+                >
+                  Dashboard
+                </Button>
               ) : (
-                <></>
+                <div>
+                  <Button
+                    onClick={() => {
+                      router.push("/dashboard/admin");
+                    }}
+                  >
+                    Dashboard
+                  </Button>
+                </div>
               )}
             </div>
           ) : (
