@@ -30,7 +30,6 @@ const UserSidebarSinglePage = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data)
           if (data.status === "success") {
             toast.success("Agent assign successfully");
             router.back("/dashboard/admin/agents");

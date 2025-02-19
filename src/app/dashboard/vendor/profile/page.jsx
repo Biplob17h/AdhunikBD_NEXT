@@ -30,7 +30,6 @@ export default function ProfilePage() {
   }, [user]);
 
   const handleSave = () => {
-    console.log("Profile updated:", editableProfile);
     setIsEditing(false);
   };
 
@@ -43,7 +42,6 @@ export default function ProfilePage() {
       setPasswordError("New password must be at least 8 characters long.");
       return;
     }
-    console.log("Password changed successfully:", passwordData);
     setPasswordData({ currentPassword: "", newPassword: "", confirmNewPassword: "" });
     setPasswordError("");
   };

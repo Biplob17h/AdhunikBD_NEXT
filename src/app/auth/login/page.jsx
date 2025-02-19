@@ -23,7 +23,6 @@ const LoginPage = () => {
     });
 
     const data = await res.json();
-    console.log(data?.data?.userData?.role);
 
     if (data?.status === "success") {
       if (data?.data?.userData?.role === "user") {

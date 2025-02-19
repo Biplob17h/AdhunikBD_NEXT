@@ -1,74 +1,116 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Trash2, Minus, Plus } from "lucide-react";
+import { handleLocalStorageIncrement } from "@/utils/addToLocalStroge/addToLocalStorage";
+import { useRouter } from "next/navigation";
 
-const CartPage = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      service: "1 - 2 Ton",
-      price: 500,
-      quantity: 1,
-      subCategory: "Ac Basic wash",
-      discount: 5,
-      discountType: "percentage",
-    },
-    {
-      id: 2,
-      service: "1 - 2 Ton",
-      price: 1000,
-      quantity: 1,
-      subCategory: "Ac Jet wash",
-      discount: 200,
-      discountType: "flat",
-    },
-  ]);
+const mockCartItems = [
+  {
+    serviceId: "457674764",
+    name: "Web Development Service",
+    subCategoryName: "Development",
+    subCategoryId: "478423762347823478",
+    categoryName: "Web Development",
+    categoryId: "478234782347823478",
+    price: 5000,
+    quantity: 2,
+    discountType: "percentage",
+    discountValue: 10, // 10% discount
+  },
+  {
+    serviceId: "44776767",
+    name: "SEO Optimization",
+    subCategoryName: "Marketing",
+    subCategoryId: "389472938479283479",
+    categoryName: "Digital Marketing",
+    categoryId: "987234987234987234",
+    price: 3000,
+    quantity: 1,
+    discountType: "flat",
+    discountValue: 500, // Flat 500 discount
+  },
+  {
+    serviceId: "474767867",
+    name: "Graphic Design Package",
+    subCategoryName: "Design",
+    subCategoryId: "239847928374982374",
+    categoryName: "Creative Design",
+    categoryId: "239847923847923847",
+    price: 2500,
+    quantity: 3,
+    discountType: null,
+    discountValue: 0, // No discount
+  },
+];
 
-  const increaseQuantity = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
-      ),
+const CartPage = ({ localRef, setLocalRef }) => {
+  const [cartItems, setCartItems] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  useEffect(() => {
+    const items = JSON.parse(localStorage.getItem("AdhunikServices"));
+    setCartItems(items);
+  }, [localRef]);
+
+  useEffect(() => {
+    const totalAmount = cartItems.reduce((total, item) => {
+      let discountedPrice = item.price;
+      if (item.discountType === "percentage") {
+        discountedPrice = item.price - (item.price * item.discountValue) / 100;
+      } else if (item.discountType === "flat") {
+        discountedPrice = item.price - item.discountValue;
+      }
+      return total + discountedPrice * item.quantity;
+    }, 0);
+    setTotalAmount(totalAmount);
+  }, [localRef]);
+
+  const handleIncrement = (itemId) => {
+    const services = JSON.parse(localStorage.getItem("AdhunikServices"));
+    const selectedService = services.filter(
+      (service) => service.serviceId === itemId,
     );
-  };
-
-  const decreaseQuantity = (id) => {
-    setCartItems((prev) =>
-      prev
-        .map((item) =>
-          item.id === id
-            ? { ...item, quantity: Math.max(1, item.quantity - 1) }
-            : item,
-        )
-        .filter((item) => item.quantity > 0),
+    const otherServices = services.filter(
+      (service) => service.serviceId !== itemId,
     );
+
+    selectedService[0].quantity++;
+
+    const updatedData = [...otherServices, selectedService[0]];
+
+    localStorage.removeItem("AdhunikServices");
+    localStorage.setItem("AdhunikServices", JSON.stringify(updatedData));
+    setLocalRef((prev) => prev + 1);
+  };
+  const handleDecrement = (itemId) => {
+    const services = JSON.parse(localStorage.getItem("AdhunikServices"));
+    const selectedService = services.filter(
+      (service) => service.serviceId === itemId,
+    );
+    const otherServices = services.filter(
+      (service) => service.serviceId !== itemId,
+    );
+
+    selectedService[0].quantity--;
+
+    const updatedData = [...otherServices, selectedService[0]];
+
+    localStorage.removeItem("AdhunikServices");
+    localStorage.setItem("AdhunikServices", JSON.stringify(updatedData));
+    setLocalRef((prev) => prev + 1);
+  };
+  const handleDeleteService = (itemId) => {
+    const services = JSON.parse(localStorage.getItem("AdhunikServices"));
+    const updatedData = services.filter(
+      (service) => service.serviceId !== itemId,
+    );
+
+    localStorage.removeItem("AdhunikServices");
+    localStorage.setItem("AdhunikServices", JSON.stringify(updatedData));
+    setLocalRef((prev) => prev + 1);
   };
 
-  const removeItem = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  // Calculate discount for each item
-  const calculateDiscountedPrice = (item) => {
-    let discountAmount =
-      item.discountType === "percentage"
-        ? (item.price * item.discount) / 100
-        : item.discount;
-    return item.price - discountAmount;
-  };
-
-  // Total calculations
-  const totalAmount = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-  const totalDiscount = cartItems.reduce(
-    (discount, item) =>
-      discount +
-      (item.discountType === "percentage"
-        ? (item.price * item.discount) / 100
-        : item.discount) *
-        item.quantity,
-    0,
-  );
-  const totalAfterDiscount = totalAmount - totalDiscount;
+  const router = useRouter();
 
   return (
     <div className="mx-auto max-w-3xl p-4">
@@ -79,49 +121,67 @@ const CartPage = () => {
       {cartItems.length > 0 ? (
         <div className="space-y-3">
           {cartItems.map((item) => {
-            const discountedPrice = calculateDiscountedPrice(item);
+            const hasDiscount = item.discountType && item.discountValue > 0;
+            let discountedPrice = item.price;
+            if (item.discountType === "percentage") {
+              discountedPrice =
+                item.price - (item.price * item.discountValue) / 100;
+            } else if (item.discountType === "flat") {
+              discountedPrice = item.price - item.discountValue;
+            }
+
             return (
               <div
-                key={item.id}
+                key={item._id}
                 className="flex items-center justify-between rounded-md border bg-white p-3 shadow-sm"
               >
                 <div>
-                  <p className="text-sm font-medium">{item.subCategory}</p>
-                  <p className="text-xs text-gray-500">{item.service}</p>
+                  <p className="text-sm font-medium">{item.subCategoryName}</p>
+                  <p className="text-xs text-gray-500">{item.name}</p>
                   <p className="text-xs text-gray-700">
-                    <span className="line-through text-red-500">৳{item.price}</span>{" "}
-                    <span className="font-bold">৳{discountedPrice}</span> x {item.quantity}
+                    {hasDiscount ? (
+                      <>
+                        <span className="text-gray-500 line-through">
+                          ৳{item.price}
+                        </span>
+                        <span className="ml-2 font-bold">
+                          ৳{discountedPrice}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="font-bold">৳{item.price}</span>
+                    )}{" "}
+                    x {item.quantity}
                   </p>
-                  {item.discount > 0 && (
-                    <p className="text-xs text-green-500">
-                      {item.discountType === "percentage"
-                        ? `(${item.discount}% off)`
-                        : `(৳${item.discount} off)`}{" "}
-                      per unit
-                    </p>
-                  )}
                 </div>
-
                 <div className="flex items-center gap-2">
                   <Button
+                    onClick={() => {
+                      handleDecrement(item?.serviceId);
+                    }}
                     variant="outline"
                     size="icon"
-                    onClick={() => decreaseQuantity(item.id)}
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
-                  <span className="w-6 text-center text-sm">{item.quantity}</span>
+                  <span className="w-6 text-center text-sm">
+                    {item.quantity}
+                  </span>
                   <Button
+                    onClick={() => {
+                      handleIncrement(item?.serviceId);
+                    }}
                     variant="outline"
                     size="icon"
-                    onClick={() => increaseQuantity(item.id)}
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
                   <Button
+                    onClick={() => {
+                      handleDeleteService(item?.serviceId);
+                    }}
                     variant="destructive"
                     size="icon"
-                    onClick={() => removeItem(item.id)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -136,21 +196,9 @@ const CartPage = () => {
               <span>Total Amount:</span>
               <span>৳{totalAmount}</span>
             </div>
-            {totalDiscount > 0 && (
-              <>
-                <div className="flex items-center justify-between text-green-600">
-                  <span>Discount:</span>
-                  <span>-৳{totalDiscount}</span>
-                </div>
-                <div className="flex items-center justify-between border-t pt-2 font-semibold">
-                  <span>Total After Discount:</span>
-                  <span>৳{totalAfterDiscount}</span>
-                </div>
-              </>
-            )}
           </div>
 
-          <Button className="w-full rounded-lg bg-blue-600 py-2 text-sm text-white hover:bg-blue-700">
+          <Button onClick={()=>{router.push('/checkout')}} className="w-full rounded-lg bg-blue-600 py-2 text-sm text-white hover:bg-blue-700">
             Proceed to Checkout
           </Button>
         </div>

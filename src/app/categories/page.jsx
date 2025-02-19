@@ -19,9 +19,9 @@ const CategoryPage = () => {
 
   const { services, servicesLoading, setServices } = useSubCategoryServices(showSubCategory);
 
-  console.log(services)
 
   const [show, setShow] = useState("subcategory");
+  const [localRef, setLocalRef] = useState(1)
 
   return (
     <div>
@@ -72,12 +72,14 @@ const CategoryPage = () => {
             show={show}
             setShow={setShow}
             setServices={setServices}
+            localRef={localRef}
+            setLocalRef={setLocalRef}
           />
         </div>
 
         {/* Cart Div */}
         <div className="min-h-screen w-3/12 border">
-          <CartPage />
+          <CartPage localRef={localRef} setLocalRef={setLocalRef}/>
         </div>
       </div>
     </div>

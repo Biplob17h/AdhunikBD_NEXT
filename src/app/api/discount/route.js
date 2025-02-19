@@ -53,7 +53,6 @@ export async function DELETE(req) {
     await connectMongoDb();
 
     const { _id, subCategoryId } = await req.json();
-    console.log(_id, subCategoryId)
 
     if (!subCategoryId || !_id) {
       return NextResponse.json(

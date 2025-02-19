@@ -36,7 +36,6 @@ const AdminUserSidebar = () => {
     fetch(`/api/user/filter?name=${name}&phone=${phone}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setUsers(data?.data);
       })
       .finally(() => {

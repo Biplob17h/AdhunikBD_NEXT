@@ -2,7 +2,6 @@ const { useState, useEffect } = require("react");
 
 const useGetAllUser = () => {
   const [users, setUsers] = useState([]);
-  console.log(users)
   const [userLoading, setUserLoading] = useState(false);
   const [userRef, setUserRef] = useState(1);
 
