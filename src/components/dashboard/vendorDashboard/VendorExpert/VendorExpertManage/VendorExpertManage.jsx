@@ -1,283 +1,398 @@
-// components/VendorExpertManage.js
-import { useState } from 'react';
-import { FaUser, FaPhone, FaIdCard, FaImage, FaCalendar, FaBriefcase, FaEdit, FaTrash } from 'react-icons/fa';
-import hostPhoto from "../../../../../utils/hostPhoto/hostPhoto";
+"use client";
+import { useState, useEffect } from "react";
+import { FaPlus, FaTh, FaList, FaSearch } from "react-icons/fa";
 
-const VendorExpertManage = () => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  const [nid, setNid] = useState('');
-  const [age, setAge] = useState('');
-  const [workExperience, setWorkExperience] = useState('');
-  const [photo, setPhoto] = useState(null);
-  const [photoUrl, setPhotoUrl] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [experts, setExperts] = useState([
-    {
-      id: 1,
-      name: 'John Doe',
-      number: '1234567890',
-      nid: '1234567890123',
-      age: '30',
-      workExperience: '5 years',
-      photoUrl: 'https://via.placeholder.com/150',
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      number: '0987654321',
-      nid: '9876543210987',
-      age: '28',
-      workExperience: '4 years',
-      photoUrl: 'https://via.placeholder.com/150',
-    },
-    {
-      id: 3,
-      name: 'Alice Johnson',
-      number: '1122334455',
-      nid: '1122334455667',
-      age: '35',
-      workExperience: '10 years',
-      photoUrl: 'https://via.placeholder.com/150',
-    },
-  ]);
-  const [editExpertId, setEditExpertId] = useState(null);
+// Photo upload function
+const hostPhoto = async (photo) => {
+  const photoData = new FormData();
+  photoData.append("file", photo);
+  photoData.append("upload_preset", "test-upload");
+  photoData.append("cloud_name", "dqeuy96cs");
 
-  const handlePhotoChange = (e) => {
-    setPhoto(e.target.files[0]);
+  try {
+    const response = await fetch(
+      "https://api.cloudinary.com/v1_1/dqeuy96cs/image/upload",
+      {
+        method: "POST",
+        body: photoData,
+      },
+    );
+
+    const data = await response.json();
+    return data?.url;
+  } catch (error) {
+    console.error("Image upload failed:", error);
+    throw error;
+  }
+};
+
+export default function ResourcesDashboard() {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [view, setView] = useState("grid");
+  const [experts, setExperts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Search state
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter state
+  const [filter, setFilter] = useState("all");
+
+  // Notification state
+  const [notification, setNotification] = useState({
+    message: "",
+    type: "",
+    isVisible: false,
+  });
+
+  // Form state for creating a new expert
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    photo: null,
+    photoUrl: "",
+    nid: "",
+    verify: "Not Verify",
+  });
+
+  // Fetch experts from the API
+  useEffect(() => {
+    const fetchExperts = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/vendor/expert");
+        if (!response.ok) {
+          throw new Error("Failed to fetch experts");
+        }
+        const data = await response.json();
+        setExperts(data.data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExperts();
+  }, []);
+
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
+  // Handle photo file input
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({
+      ...formData,
+      photo: file,
+    });
+  };
+
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+
+    // Validate the name field
+    if (formData.name.length < 5) {
+      showNotification("Name must be at least 5 characters long.", "error");
+      return;
+    }
 
     try {
-      const photoUrl = await hostPhoto(photo);
-      setPhotoUrl(photoUrl);
+      let photoUrl = "";
 
-      const newExpert = {
-        id: experts.length + 1,
-        name,
-        number,
-        nid,
-        age,
-        workExperience,
-        photoUrl,
+      // Upload photo to Cloudinary if a file is selected
+      if (formData.photo) {
+        photoUrl = await hostPhoto(formData.photo);
+      }
+
+      // Create the expert object
+      const expertData = {
+        name: formData.name,
+        phone: formData.phone,
+        photo: photoUrl,
+        nid: formData.nid,
+        verify: formData.verify,
       };
 
-      setExperts([...experts, newExpert]);
-      alert('Expert added successfully!');
-      resetForm();
+      // Send a POST request to the API
+      const response = await fetch("http://localhost:3000/api/vendor/expert", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(expertData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create expert");
+      }
+
+      const newExpert = await response.json();
+
+      // Update the experts state with the newly created expert
+      setExperts([...experts, newExpert.data]);
+
+      // Show success notification
+      showNotification("Expert added successfully!", "success");
+
+      // Close the form modal
+      setIsFormOpen(false);
+
+      // Reset the form data
+      setFormData({
+        name: "",
+        phone: "",
+        photo: null,
+        photoUrl: "",
+        nid: "",
+        verify: "Not Verify",
+      });
     } catch (error) {
-      console.error('Error adding expert:', error);
-      alert('Failed to add expert.');
-    } finally {
-      setIsLoading(false);
+      console.error("Error creating expert:", error);
+      showNotification("Failed to create expert. Please try again.", "error");
     }
   };
 
-  const handleEdit = (expert) => {
-    setEditExpertId(expert.id);
-    setName(expert.name);
-    setNumber(expert.number);
-    setNid(expert.nid);
-    setAge(expert.age);
-    setWorkExperience(expert.workExperience);
-    setPhotoUrl(expert.photoUrl);
+  // Show notification
+  const showNotification = (message, type) => {
+    setNotification({
+      message,
+      type,
+      isVisible: true,
+    });
+
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+      setNotification({
+        message: "",
+        type: "",
+        isVisible: false,
+      });
+    }, 3000);
   };
 
-  const handleUpdate = () => {
-    const updatedExperts = experts.map((expert) =>
-      expert.id === editExpertId
-        ? {
-            ...expert,
-            name,
-            number,
-            nid,
-            age,
-            workExperience,
-            photoUrl,
-          }
-        : expert
-    );
-    setExperts(updatedExperts);
-    setEditExpertId(null);
-    resetForm();
-    alert('Expert updated successfully!');
-  };
+  // Filter experts based on search query and filter option
+  const filteredExperts = experts.filter((expert) => {
+    // Check if expert is defined
+    if (!expert) return false;
+  
+    const query = searchQuery.toLowerCase();
+  
+    // Apply search filter (with checks for undefined properties)
+    const matchesSearch =
+      (expert.name && expert.name.toLowerCase().includes(query)) ||
+      (expert.phone && expert.phone.toLowerCase().includes(query)) ||
+      (expert.nid && expert.nid.toLowerCase().includes(query)) ||
+      (expert.verify && expert.verify.toLowerCase().includes(query));
+  
+    // Apply status filter
+    const matchesFilter =
+      filter === "all" ||
+      (filter === "verified" && expert.verify === "Verify") ||
+      (filter === "not-verified" && expert.verify === "Not Verify");
+  
+    return matchesSearch && matchesFilter;
+  });
+  if (loading) {
+    return <div className="min-h-screen bg-gray-100 p-6">Loading...</div>;
+  }
 
-  const handleDelete = (id) => {
-    const filteredExperts = experts.filter((expert) => expert.id !== id);
-    setExperts(filteredExperts);
-    alert('Expert deleted successfully!');
-  };
-
-  const resetForm = () => {
-    setName('');
-    setNumber('');
-    setNid('');
-    setAge('');
-    setWorkExperience('');
-    setPhoto(null);
-    setPhotoUrl('');
-  };
+  if (error) {
+    return <div className="min-h-screen bg-gray-100 p-6">Error: {error}</div>;
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-green-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Add Expert Form */}
-        <div className="bg-white rounded-lg shadow-2xl p-8 mb-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-blue-600">
-              {editExpertId ? 'Edit Expert' : 'Add an Expert'}
-            </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              {editExpertId
-                ? 'Update the expert details below.'
-                : 'Please fill in the details to add a new expert.'}
-            </p>
-          </div>
-          <form className="mt-6 space-y-4" onSubmit={editExpertId ? handleUpdate : handleSubmit}>
-            {/* Form Fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="relative">
-                <FaUser className="absolute left-3 top-3 text-gray-400" />
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="relative">
-                <FaPhone className="absolute left-3 top-3 text-gray-400" />
-                <input
-                  id="number"
-                  name="number"
-                  type="text"
-                  required
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Phone Number"
-                  value={number}
-                  onChange={(e) => setNumber(e.target.value)}
-                />
-              </div>
-              <div className="relative">
-                <FaIdCard className="absolute left-3 top-3 text-gray-400" />
-                <input
-                  id="nid"
-                  name="nid"
-                  type="text"
-                  required
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="NID Card Number"
-                  value={nid}
-                  onChange={(e) => setNid(e.target.value)}
-                />
-              </div>
-              <div className="relative">
-                <FaCalendar className="absolute left-3 top-3 text-gray-400" />
-                <input
-                  id="age"
-                  name="age"
-                  type="number"
-                  required
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Age"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                />
-              </div>
-              <div className="relative">
-                <FaBriefcase className="absolute left-3 top-3 text-gray-400" />
-                <input
-                  id="workExperience"
-                  name="workExperience"
-                  type="text"
-                  required
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Work Experience (in years)"
-                  value={workExperience}
-                  onChange={(e) => setWorkExperience(e.target.value)}
-                />
-              </div>
-              <div className="relative">
-                <FaImage className="absolute left-3 top-3 text-gray-400" />
-                <input
-                  id="photo"
-                  name="photo"
-                  type="file"
-                  required={!editExpertId}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  onChange={handlePhotoChange}
-                />
-              </div>
-            </div>
+    <div className="min-h-screen bg-gray-100 p-6">
+      {/* Notification */}
+      {notification.isVisible && (
+        <div
+          className={`fixed right-4 top-4 rounded-lg p-4 text-white ${
+            notification.type === "success" ? "bg-green-500 mt-[50px]" : "bg-red-500 mt-[50px]"
+          }`}
+        >
+          {notification.message}
+        </div>
+      )}
 
-            {/* Submit/Update Button */}
-            <div>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300"
-              >
-                {isLoading
-                  ? editExpertId
-                    ? 'Updating...'
-                    : 'Adding...'
-                  : editExpertId
-                  ? 'Update Expert'
-                  : 'Add Expert'}
-              </button>
-            </div>
-          </form>
+      {/* Header */}
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-xl font-bold text-blue-600 opacity-60">
+          RESOURCES
+        </h2>
+      </div>
+
+      <div className="grid grid-cols-3 gap-6">
+        {/* Add Expert Section */}
+        <div className="mb-4">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setFilter("all")}
+              className={`rounded border px-2 py-1 ${
+                filter === "all" ? "bg-teal-500 text-white" : "bg-white"
+              }`}
+            >
+              All Experts
+            </button>
+            <button
+              onClick={() => setFilter("verified")}
+              className={`rounded border px-2 py-1 ${
+                filter === "verified" ? "bg-teal-500 text-white" : "bg-white"
+              }`}
+            >
+              Verified
+            </button>
+            <button
+              onClick={() => setFilter("not-verified")}
+              className={`rounded border px-2 py-1 ${
+                filter === "not-verified"
+                  ? "bg-teal-500 text-white"
+                  : "bg-white"
+              }`}
+            >
+              Not Verified
+            </button>
+          </div>
+          <div
+            className="mt-[25px] flex h-[400px] cursor-pointer flex-col items-center justify-center rounded-lg bg-white p-6 opacity-60 shadow-md"
+            onClick={() => setIsFormOpen(true)}
+          >
+            <FaPlus size={50} className="text-gray-400" />
+            <p className="text-gray-500 opacity-60">Add Resource</p>
+          </div>
         </div>
 
-        {/* Expert List */}
-        <div className="bg-white rounded-lg shadow-2xl p-8">
-          <h2 className="text-2xl font-bold text-blue-600 mb-6">Expert List</h2>
-          <div className="space-y-4">
-            {experts.map((expert) => (
-              <div
-                key={expert.id}
-                className="flex flex-col md:flex-row items-center justify-between p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+        {/* Expert List Section */}
+        <div className="col-span-2">
+          <div className="mb-4 flex justify-between">
+            <div className="relative">
+              <input
+                type="text"
+                className="w-64 rounded border px-4 py-2"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <FaSearch className="absolute right-3 top-3 text-gray-500" />
+            </div>
+
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setView("grid")}
+                className={view === "grid" ? "text-blue-500" : "text-gray-500"}
               >
-                <div className="flex items-center space-x-4">
+                <FaTh size={20} />
+              </button>
+              <button
+                onClick={() => setView("list")}
+                className={view === "list" ? "text-blue-500" : "text-gray-500"}
+              >
+                <FaList size={20} />
+              </button>
+            </div>
+          </div>
+          <div
+            className={view === "grid" ? "grid grid-cols-3 gap-4" : "space-y-4"}
+          >
+            {filteredExperts.length > 0 ? (
+              filteredExperts.map((expert) => (
+                <div
+                  key={expert._id}
+                  className="relative flex flex-col items-center rounded-lg bg-white p-4 shadow-md"
+                >
                   <img
-                    src={expert.photoUrl}
+                    src={expert.photo}
                     alt={expert.name}
-                    className="w-12 h-12 rounded-full object-cover"
+                    className="mb-3 h-20 w-20 rounded-full object-cover"
                   />
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800">{expert.name}</h3>
-                    <p className="text-sm text-gray-600">{expert.number}</p>
-                  </div>
-                </div>
-                <div className="flex space-x-4 mt-4 md:mt-0">
-                  <button
-                    onClick={() => handleEdit(expert)}
-                    className="text-blue-600 hover:text-blue-800 transition-colors"
+                  <h3 className="text-lg font-semibold">{expert.name}</h3>
+                  <p className="text-sm text-gray-600">{expert.phone}</p>
+                  <p className="text-sm text-gray-600">{expert.nid}</p>
+                  <span
+                    className={`absolute right-2 top-2 rounded px-3 py-1 text-xs font-bold text-white ${
+                      expert.verify === "Verify" ? "bg-teal-500" : "bg-red-500"
+                    }`}
                   >
-                    <FaEdit className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(expert.id)}
-                    className="text-red-600 hover:text-red-800 transition-colors"
-                  >
-                    <FaTrash className="w-5 h-5" />
-                  </button>
+                    {expert.verify}
+                  </span>
                 </div>
+              ))
+            ) : (
+              <div className="col-span-3 text-center text-gray-500">
+                No expert found.
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
+
+      {/* Add Expert Form Modal */}
+      {isFormOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-96 rounded-lg bg-white p-6">
+            <h3 className="mb-4 text-lg font-semibold">Add Expert</h3>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                className="mb-2 w-full rounded border p-2"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="phone"
+                placeholder="Number"
+                className="mb-2 w-full rounded border p-2"
+                value={formData.phone}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="file"
+                name="photo"
+                className="mb-2 w-full rounded border p-2"
+                onChange={handlePhotoChange}
+              />
+              <input
+                type="text"
+                name="nid"
+                placeholder="NID"
+                className="mb-2 w-full rounded border p-2"
+                value={formData.nid}
+                onChange={handleInputChange}
+              />
+
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+
+
+
+                  className="rounded border px-4 py-2"
+                  onClick={() => setIsFormOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded bg-blue-500 px-4 py-2 text-white"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
-};
-
-export default VendorExpertManage; 
+}

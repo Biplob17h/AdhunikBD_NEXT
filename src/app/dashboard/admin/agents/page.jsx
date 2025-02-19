@@ -16,7 +16,6 @@ import useGetAllAgent from "@/hooks/getAllAgentsHook";
 
 const AgentsPage = () => {
   const { agentLoading, agents } = useGetAllAgent();
-  console.log(agents);
   const router = useRouter();
 
   return (

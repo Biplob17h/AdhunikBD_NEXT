@@ -33,7 +33,6 @@ const CreateANewReport = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Response:", data); // Debugging
         if (data?.status === "success") {
           toast.success("Report created successfully!");
           router.back();

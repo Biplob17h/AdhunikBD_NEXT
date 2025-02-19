@@ -45,7 +45,6 @@ const AdminServiceAdd = () => {
       setCategoriesRef((pre) => pre + 1);
     } else {
       toast.error("Failed to add category");
-      console.log(data);
       setIsAdding(false);
     }
   };

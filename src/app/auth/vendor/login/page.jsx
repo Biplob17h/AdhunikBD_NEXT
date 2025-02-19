@@ -16,7 +16,6 @@ const VendorLogin = () => {
     const phone = e.target.phone.value;
     const password = e.target.password.value;
 
-    console.log({ phone, password });
 
     const res = await fetch("/api/auth/vendor/login", {
       method: "POST",

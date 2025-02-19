@@ -1,198 +1,87 @@
-"use client";
-
+"use client"
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import useSettings from "@/hooks/getSettingsHook";
 import {
-  Activity,
   AlertCircle,
   AlertTriangle,
   ArrowDownToLine,
-  Ban,
   Calendar,
-  CalendarCheck,
   CheckCircle,
   Clock,
   DollarSign,
-  FileText,
   List,
-  ShoppingCart,
   X,
 } from "lucide-react";
-import { useState } from "react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import InvoicePDF from "./InvoicePDF";
 
 export default function AdminHomePage() {
-  // New stats state
+  const { settings, settingsLoading, setSettingsRef } = useSettings();
   const [stats, setStats] = useState({
-    totalOngoingOrder: 15,
-    totalOrder: 120,
-    totalComplain: 8,
-    totalCancelOrder: 5,
-    totalServeOrder: 100,
-    totalServeOrderAmount: 4500,
-    todayScheduleOrder: 20,
-    totalOngoingComplain: 3,
+    totalNewOrder: 15,
+    totalTodayOrder: 10,
+    totalOngoingOrder: 20,
+    totalServedOrder: 5,
+    finishedOrder: 105,
+    TotalOrder: 1005,
+    cancelOrder: 3,
+    servedAmount: 12000,
+    totalSale: 100000,
+    newReport: 3,
+    onGoingReport: 5,
+    totalReport: 50,
   });
 
-  // ... rest of your existing state and functions
-  // Refresh vendors (simulate fetching new data)
-  const refreshVendors = () => {
-    console.log("Refreshing vendors...");
-    // Add logic to fetch new data from the API
-  };
+  const [filteredCards, setFilteredCards] = useState([]);
 
-  const invoiceData = {
-    invoiceNumber: "INV-12345",
-    date: new Date().toLocaleDateString(),
-    from: {
-      name: "Your Company",
-      address: "123 Business St, City, Country",
-      email: "info@yourcompany.com",
-    },
-    to: {
-      name: "Client Name",
-      address: "456 Client St, City, Country",
-      email: "client@example.com",
-    },
-    items: [
-      {
-        description: "Kitchen Hood Cleaning",
-        quantity: 1,
-        price: "1500.00 TK",
-      },
-    ],
-    totalPrice: "1500 TK",
-    paymentInfo: {
-      totalAmount: "1500 TK",
-      discount: "0 TK",
-      grossAmount: "1500 TK",
-      paid: "1500 TK",
-      due: "0 TK",
-      paymentStatus: "Paid",
-    },
-  };
+  // Effect to update filteredCards when settings change
+  useEffect(() => {
+    if (settings?.home) {
+      setFilteredCards(
+        statCards.filter((stat) => settings.home?.[stat.key])
+      );
+    }
+  }, [settings]);
+
+  if (settingsLoading) return <p>Loading...</p>;
+  if (!settings?.home) return <p>Error loading settings.</p>;
+
+  const statCards = [
+    { key: "new", title: "Total New Orders", value: stats.totalNewOrder, icon: <List className="h-5 w-5" /> },
+    { key: "today", title: "Total Today's Orders", value: stats.totalTodayOrder, icon: <Calendar className="h-5 w-5" /> },
+    { key: "ongoing", title: "Total Ongoing Orders", value: stats.totalOngoingOrder, icon: <Clock className="h-5 w-5" /> },
+    { key: "served", title: "Total Served Orders", value: stats.totalServedOrder, icon: <CheckCircle className="h-5 w-5" /> },
+    { key: "finished", title: "Total Finished Orders", value: stats.finishedOrder, icon: <CheckCircle className="h-5 w-5" /> },
+    { key: "total", title: "Total Orders", value: stats.TotalOrder, icon: <List className="h-5 w-5" /> },
+    { key: "cancel", title: "Total Cancelled Orders", value: stats.cancelOrder, icon: <X className="h-5 w-5" /> },
+    { key: "servedAmount", title: "Total Served Amount", value: `$${stats.servedAmount}`, icon: <DollarSign className="h-5 w-5" /> },
+    { key: "totalSale", title: "Total Sales", value: `$${stats.totalSale}`, icon: <DollarSign className="h-5 w-5" /> },
+    { key: "newReport", title: "New Reports", value: stats.newReport, icon: <AlertCircle className="h-5 w-5" /> },
+    { key: "ongoingReport", title: "Ongoing Reports", value: stats.onGoingReport, icon: <AlertTriangle className="h-5 w-5" /> },
+    { key: "totalReport", title: "Total Reports", value: stats.totalReport, icon: <AlertTriangle className="h-5 w-5" /> },
+  ];
 
   return (
     <div className="space-y-6 p-6">
-      {/* Header */}
       <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-
-      <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-        {/* Total Ongoing Order */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Ongoing Order
-            </CardTitle>
-            <Clock className="text-muted-foreground h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalOngoingOrder}</div>
-          </CardContent>
-        </Card>
-
-        {/* Total Order */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Order</CardTitle>
-            <List className="text-muted-foreground h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalOrder}</div>
-          </CardContent>
-        </Card>
-
-        {/* Total Complain */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Complain
-            </CardTitle>
-            <AlertCircle className="text-muted-foreground h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalComplain}</div>
-          </CardContent>
-        </Card>
-
-        {/* Total Cancel Order */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Cancel Order
-            </CardTitle>
-            <X className="text-muted-foreground h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalCancelOrder}</div>
-          </CardContent>
-        </Card>
-
-        {/* Total Serve Order */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Serve Order
-            </CardTitle>
-            <CheckCircle className="text-muted-foreground h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalServeOrder}</div>
-          </CardContent>
-        </Card>
-
-        {/* Total Serve Order Amount */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Serve Order Amount
-            </CardTitle>
-            <DollarSign className="text-muted-foreground h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              ${stats.totalServeOrderAmount}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Today Schedule Order */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Today Schedule Order
-            </CardTitle>
-            <Calendar className="text-muted-foreground h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.todayScheduleOrder}</div>
-          </CardContent>
-        </Card>
-
-        {/* Total Ongoing Complain */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Ongoing Complain
-            </CardTitle>
-            <AlertTriangle className="text-muted-foreground h-4 w-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {stats.totalOngoingComplain}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <PDFDownloadLink
-        document={<InvoicePDF data={invoiceData} />}
-        fileName="invoice.pdf"
-      >
-        {({ loading }) =>
-          loading ? "Loading document..." : "Download Invoice"
-        }
-      </PDFDownloadLink>
+      {filteredCards.length === 0 ? (
+        <p>No stats available based on current settings.</p>
+      ) : (
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+          {filteredCards.map((stat, index) => (
+            <Card key={index}>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                {stat.icon}
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stat.value}</div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

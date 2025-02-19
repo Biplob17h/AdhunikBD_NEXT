@@ -29,7 +29,7 @@ const AddAService = ({
     if (data.status === "success") {
       toast.success("Service added successfully");
       setSubCategoryRef((pre) => pre + 1);
-      setSubCategoryShow("subcategory");
+      setSubCategoryShow("manage");
       e.target.reset();
     } else {
       toast.error("Failed to add category");

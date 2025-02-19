@@ -39,7 +39,7 @@ const ClientUpdateProfile = () => {
         toast.success("Profile updated successfully!");
         setUserRef(userRef + 1);
         window.scrollTo(0, 0);
-        router.push("/dashboard/user");
+        router.push("/profile/user");
       } else {
         // If the request failed, show an error toast
         const error = await response.json();

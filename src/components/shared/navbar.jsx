@@ -3,16 +3,27 @@
 import { navItems } from "@/data/nav-items.data";
 import useUser from "@/hooks/UserHook";
 import { cn } from "@/lib/utils";
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, User, X } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const closeMenu = () => setMenuOpen(false);
+  const router = useRouter();
 
   const { user } = useUser();
 
@@ -43,15 +54,64 @@ const Navbar = () => {
 
         <div>
           {user?.phone ? (
-            <div className="hidden lg:block">
-              <Link
-                href={`/dashboard/${user?.role}`}
-                className={cn(
-                  "nav_link inline-block rounded-lg bg-[#040404] px-8 py-3 font-bold text-white",
-                )}
-              >
-                Dashboard
-              </Link>
+            <div>
+              {user?.role === "user" ? (
+                <div
+                  onClick={() => {
+                    router.push("/profile/user");
+                  }}
+                >
+                  {/* Profile Dropdown */}
+                  <DropdownMenu className="border-none">
+                    <DropdownMenuTrigger>
+                      <Avatar className="border-none">
+                        <AvatarImage
+                          src={
+                            user?.photo
+                              ? user?.photo
+                              : "https://github.com/shadcn.png"
+                          }
+                          alt="User Photo"
+                        />
+                        <AvatarFallback>User</AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="mr-5 w-[200px] cursor-pointer">
+                      <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <Link href="/profile/user">
+                        <DropdownMenuItem>
+                          <User />
+                          Profile
+                        </DropdownMenuItem>
+                      </Link>
+
+                      <DropdownMenuItem onClick={() => userLogout()}>
+                        <LogOut />
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              ) : user?.role === "vendor" ? (
+                <Button
+                  onClick={() => {
+                    router.push("/dashboard/vendor");
+                  }}
+                >
+                  Dashboard
+                </Button>
+              ) : (
+                <div>
+                  <Button
+                    onClick={() => {
+                      router.push("/dashboard/admin");
+                    }}
+                  >
+                    Dashboard
+                  </Button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="hidden lg:block">

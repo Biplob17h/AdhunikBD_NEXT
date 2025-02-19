@@ -19,7 +19,7 @@ const ClientDashboardSidebar = () => {
       <div className="min-h-screen pr-5">
         <button
           onClick={() => {
-            setShow("profile"), router.push("/dashboard/user");
+            setShow("profile"), router.push("/profile/user");
           }}
           className={`${show === "profile" ? "bg-slate-500 text-white" : "bg-slate-200 text-black"} mb-3 w-full cursor-pointer rounded p-3 hover:bg-slate-500 hover:text-white`}
         >
@@ -27,7 +27,7 @@ const ClientDashboardSidebar = () => {
         </button>
         <button
           onClick={() => {
-            setShow("orders"), router.push("/dashboard/user/orders");
+            setShow("orders"), router.push("/profile/user/orders");
           }}
           className={`${show === "orders" ? "bg-slate-500 text-white" : "bg-slate-200 text-black"} mb-3 w-full cursor-pointer rounded p-3 hover:bg-slate-500 hover:text-white`}
         >
@@ -35,7 +35,7 @@ const ClientDashboardSidebar = () => {
         </button>
         <button
           onClick={() => {
-            setShow("update"), router.push("/dashboard/user/updateProfile");
+            setShow("update"), router.push("/profile/user/updateProfile");
           }}
           className={`${show === "update" ? "bg-slate-500 text-white" : "bg-slate-200 text-black"} mb-3 w-full cursor-pointer rounded p-3 hover:bg-slate-500 hover:text-white`}
         >
@@ -43,7 +43,7 @@ const ClientDashboardSidebar = () => {
         </button>
         <button
           onClick={() => {
-            setShow("report"), router.push("/dashboard/user/reports");
+            setShow("report"), router.push("/profile/user/reports");
           }}
           className={`${show === "report" ? "bg-slate-500 text-white" : "bg-slate-200 text-black"} mb-3 w-full cursor-pointer rounded p-3 hover:bg-slate-500 hover:text-white`}
         >
@@ -51,7 +51,7 @@ const ClientDashboardSidebar = () => {
         </button>
         <button
           onClick={() => {
-            setShow("password"), router.push("/dashboard/user/password");
+            setShow("password"), router.push("/profile/user/password");
           }}
           className={`${show === "password" ? "bg-slate-500 text-white" : "bg-slate-200 text-black"} mb-3 w-full cursor-pointer rounded p-3 hover:bg-slate-500 hover:text-white`}
         >

@@ -42,7 +42,6 @@ const VendorExpertAdd = () => {
         photoUrl,
       };
 
-      console.log("Expert Data:", expertData);
       alert("Expert added successfully!");
     } catch (error) {
       console.error("Error adding expert:", error);

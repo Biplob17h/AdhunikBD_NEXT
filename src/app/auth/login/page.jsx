@@ -24,10 +24,21 @@ const LoginPage = () => {
 
     const data = await res.json();
 
-    if (res.ok) {
-      toast.success(data.message);
+    if (data?.status === "success") {
+      if (data?.data?.userData?.role === "user") {
+        toast.success("User login in successfully");
+        router.push("/profile/user");
+      } else if (data?.data?.userData?.role === "admin") {
+        toast.success("Admin login in successfully");
+        router.push("/dashboard/admin");
+      } else if (data?.data?.userData?.role === "agent") {
+        toast.success("Agent login in successfully");
+        router.push("/dashboard/admin");
+      } else if (data?.data?.userData?.role === "vendor") {
+        toast.success("Vendor login in successfully");
+        router.push("/dashboard/vendor");
+      }
       localStorage.setItem("AdhunikToken", data.data.token);
-      router.push(`/dashboard/${data?.data?.userData?.role}`);
     } else {
       toast.error(data.message);
     }
@@ -109,7 +120,6 @@ const LoginPage = () => {
                   </Link>{" "}
                 </div>
               </form>
-              
             </div>
             <div className="hidden lg:block">
               <img

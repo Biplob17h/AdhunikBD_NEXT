@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 
 const SingleSubCategory = () => {
   const { id } = useParams();
-  const [subCategoryShow, setSubCategoryShow] = useState("subcategory");
+  const [subCategoryShow, setSubCategoryShow] = useState("manage");
   const [subCategory, setSubCategory] = useState({});
   const [category, setCategory] = useState({});
   const [services, setServices] = useState([]);
@@ -64,7 +64,7 @@ const SingleSubCategory = () => {
 
       {/* Tab Navigation */}
       <div className="mb-6 flex border-b-2 border-gray-300">
-        {["subcategory", "manage", "add"].map((tab) => (
+        {["manage", "add"].map((tab) => (
           <button
             key={tab}
             disabled={loading}
@@ -87,13 +87,6 @@ const SingleSubCategory = () => {
         <p className="text-center text-lg text-gray-500">Loading data...</p>
       ) : (
         <>
-          {subCategoryShow === "subcategory" && (
-            <SubcategorySinglePage
-              subCategory={subCategory}
-              category={category}
-              services={services}
-            />
-          )}
           {subCategoryShow === "manage" && (
             <ManageSingleSubcategory
               subCategory={subCategory}

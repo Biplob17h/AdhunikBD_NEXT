@@ -13,20 +13,10 @@ const subCategorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "categories",
   },
-  serviceFeatures: [
-    {
-      serviceFeatures: {
-        type: String,
-      },
-    },
-  ],
-  excluded: [
-    {
-      excluded: {
-        type: String,
-      },
-    },
-  ],
+  discount: {
+    type: Array,
+    default: [],
+  },
 });
 
 const SubCategory =

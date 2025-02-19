@@ -51,7 +51,7 @@ const CLientDashboardOrder = ({ show }) => {
               <div className="mt-4">
                 <button
                   onClick={() => {
-                    router.push(`/dashboard/user/single/${order?._id}`);
+                    router.push(`/profile/user/single/${order?._id}`);
                   }}
                   className="w-full rounded-lg bg-blue-500 py-2 text-white"
                 >

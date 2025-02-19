@@ -24,7 +24,7 @@ const HomePage = () => {
   useEffect(() => {
     if (!loading && user?.phone && user?.role === "vendor") {
       setRouteLoading(true);
-      router.push("/dashboard");
+      router.push("/dashboard/vendor");
       setRouteLoading(false);
       return;
     }

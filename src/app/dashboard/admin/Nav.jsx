@@ -117,13 +117,19 @@ const Nav = () => {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="mr-5 w-[200px]">
+        <DropdownMenuContent className="mr-5 w-[200px] cursor-pointer">
           <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <Link href="/dashboard/admin/profile">
             <DropdownMenuItem>
               <User />
               Profile
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/dashboard/admin/settings">
+            <DropdownMenuItem>
+              <User />
+              Settings
             </DropdownMenuItem>
           </Link>
           <DropdownMenuItem onClick={() => userLogout()}>
