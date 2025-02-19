@@ -5,6 +5,7 @@ import {
   Activity,
   AlertCircle,
   AlertTriangle,
+  ArrowDownToLine,
   Ban,
   Calendar,
   CalendarCheck,
@@ -17,6 +18,8 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import InvoicePDF from "./InvoicePDF";
 
 export default function AdminHomePage() {
   // New stats state
@@ -36,6 +39,37 @@ export default function AdminHomePage() {
   const refreshVendors = () => {
     console.log("Refreshing vendors...");
     // Add logic to fetch new data from the API
+  };
+
+  const invoiceData = {
+    invoiceNumber: "INV-12345",
+    date: new Date().toLocaleDateString(),
+    from: {
+      name: "Your Company",
+      address: "123 Business St, City, Country",
+      email: "info@yourcompany.com",
+    },
+    to: {
+      name: "Client Name",
+      address: "456 Client St, City, Country",
+      email: "client@example.com",
+    },
+    items: [
+      {
+        description: "Kitchen Hood Cleaning",
+        quantity: 1,
+        price: "1500.00 TK",
+      },
+    ],
+    totalPrice: "1500 TK",
+    paymentInfo: {
+      totalAmount: "1500 TK",
+      discount: "0 TK",
+      grossAmount: "1500 TK",
+      paid: "1500 TK",
+      due: "0 TK",
+      paymentStatus: "Paid",
+    },
   };
 
   return (
@@ -150,6 +184,15 @@ export default function AdminHomePage() {
           </CardContent>
         </Card>
       </div>
+
+      <PDFDownloadLink
+        document={<InvoicePDF data={invoiceData} />}
+        fileName="invoice.pdf"
+      >
+        {({ loading }) =>
+          loading ? "Loading document..." : "Download Invoice"
+        }
+      </PDFDownloadLink>
     </div>
   );
 }

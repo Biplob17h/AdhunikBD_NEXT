@@ -6,12 +6,13 @@ import React, { useState } from "react";
 
 const AdminVendorSidebar = () => {
   const [vendorShow, setVendorShow] = useState("manage");
-  const { vendors, setVendorStatusRef, vendorRequests, vendorStatusLoading } = useVendorByStatus();
+  const { vendors, setVendorStatusRef, vendorRequests, vendorStatusLoading } =
+    useVendorByStatus();
 
   return (
     <div className="p-6">
       {/* Toggle Buttons */}
-      <div className="mb-4 flex border-b-2 border-gray-300">
+      {/* <div className="mb-4 flex border-b-2 border-gray-300">
         {["manage", "request"].map((type) => (
           <button
             key={type}
@@ -25,18 +26,21 @@ const AdminVendorSidebar = () => {
             {type === "manage" ? "Manage Vendor" : "Vendor Request"}
           </button>
         ))}
-      </div>
+      </div> */}
 
       {/* Conditional Rendering */}
-      {vendorShow === "manage" && <AdminShowAllVendor vendors={vendors} vendorStatusLoading={vendorStatusLoading} />}
-      {vendorShow === "request" && (
+      <AdminShowAllVendor
+        vendors={vendors}
+        vendorStatusLoading={vendorStatusLoading}
+      />
+      {/* {vendorShow === "request" && (
         <AdminAllVendorRequest
           vendors={vendors}
           setVendorStatusRef={setVendorStatusRef}
           setVendorShow={setVendorShow}
           vendorRequests={vendorRequests}
         />
-      )}
+      )} */}
     </div>
   );
 };

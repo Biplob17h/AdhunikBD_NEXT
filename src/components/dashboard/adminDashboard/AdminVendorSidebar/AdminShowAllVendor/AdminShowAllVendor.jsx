@@ -13,9 +13,12 @@ import useGetAllUser from "@/hooks/getAllUserHook";
 import { CheckCircle } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const AdminShowAllVendor = ({vendors, vendorStatusLoading}) => {
+const AdminShowAllVendor = ({ vendors, vendorStatusLoading }) => {
   const [currentDate, setCurrentDate] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     setCurrentDate(new Date().toLocaleDateString());
@@ -67,13 +70,24 @@ const AdminShowAllVendor = ({vendors, vendorStatusLoading}) => {
             </TableHeader>
             <TableBody>
               {vendors.map((vendor) => (
-                <TableRow key={vendor._id}>
+                <TableRow
+                  key={vendor._id}
+                  onClick={() =>
+                    router.push("/dashboard/admin/vendorSidebar/id=1")
+                  }
+                  className="cursor-pointer"
+                >
                   <TableCell>
                     <Avatar>
                       {vendor.vendorPhoto ? (
-                        <AvatarImage src={vendor.vendorPhoto} alt={vendor.name} />
+                        <AvatarImage
+                          src={vendor.vendorPhoto}
+                          alt={vendor.name}
+                        />
                       ) : (
-                        <AvatarFallback>{vendor.vendorName.charAt(0)}</AvatarFallback>
+                        <AvatarFallback>
+                          {vendor.vendorName.charAt(0)}
+                        </AvatarFallback>
                       )}
                     </Avatar>
                   </TableCell>
