@@ -1,4 +1,5 @@
 import Expert from "@/models/expertModel";
+import Vendor from "@/models/vendorModel"; 
 import { NextResponse } from "next/server";
 import connectMongoDb from "@/lib/mongoose";
 
@@ -8,14 +9,22 @@ export async function POST(req) {
   await connectMongoDb();
 
   try {
-
-    const { name, phone, photo, nid, verify } =await req.json();
+    const { name, phone, photo, nid, verify, vendorId } = await req.json();
 
     // Validate required fields
-    if (!name || !phone) {
+    if (!name || !phone || !vendorId) {
       return NextResponse.json({
         status: "Fail",
-        message: "Name and Phone are required.",
+        message: "Name, Phone, and Vendor ID are required.",
+      });
+    }
+
+    // Check if the vendor exists
+    const vendor = await Vendor.findById(vendorId);
+    if (!vendor) {
+      return NextResponse.json({
+        status: "Fail",
+        message: "Vendor not found.",
       });
     }
 
@@ -26,9 +35,14 @@ export async function POST(req) {
       photo,
       nid,
       verify,
+      vendor: vendorId, // Associate the expert with the vendor
     });
 
     const savedExpert = await newExpert.save();
+
+    // Add the expert to the vendor's experts array
+    vendor.experts.push(savedExpert._id);
+    await vendor.save();
 
     return NextResponse.json({
       status: "Success",
@@ -43,7 +57,6 @@ export async function POST(req) {
   }
 }
 
-
 // GET ALL & SINGLE EXPERT
 export async function GET(req) {
   try {
@@ -52,26 +65,56 @@ export async function GET(req) {
 
     // Extract query parameters
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
+    const id = searchParams.get("id"); // Expert ID (optional)
+    const vendorId = searchParams.get("vendorId"); // Vendor ID (optional)
+    const limit = searchParams.get("limit"); // Limit the number of experts (optional)
 
     if (id) {
-      // Fetch a single expert by ID
-      const expert = await Expert.findById(id);
+      // Fetch a single expert by ID and populate the 'vendor' field
+      const expert = await Expert.findById(id).populate({
+        path: "vendor",
+        select: "vendorName shopName email phone", // Select specific fields from the Vendor model
+      });
 
       if (!expert) {
-        return NextResponse.json({
-          status: "Fail",
-          message: "Expert not found.",
-        }, { status: 404 });
+        return NextResponse.json(
+          {
+            status: "Fail",
+            message: "Expert not found.",
+          },
+          { status: 404 }
+        );
       }
 
       return NextResponse.json({
         status: "Success",
         data: expert,
       });
+    } else if (vendorId) {
+      // Fetch experts created by a specific vendor
+      let query = Expert.find({ vendor: vendorId }).populate({
+        path: "vendor",
+        select: "vendorName shopName email phone", // Select specific fields from the Vendor model
+      });
+
+      // Apply limit if provided
+      if (limit) {
+        query = query.limit(parseInt(limit, 10));
+      }
+
+      const experts = await query.exec();
+
+      return NextResponse.json({
+        status: "Success",
+        data: experts,
+      });
     } else {
-      // Fetch all experts
-      const experts = await Expert.find({});
+      // Fetch all experts and populate the 'vendor' field for each expert
+      const experts = await Expert.find({}).populate({
+        path: "vendor",
+        select: "vendorName shopName email phone", // Select specific fields from the Vendor model
+      });
+
       return NextResponse.json({
         status: "Success",
         data: experts,
@@ -79,10 +122,13 @@ export async function GET(req) {
     }
   } catch (error) {
     console.error("Error fetching experts:", error);
-    return NextResponse.json({
-      status: "Fail",
-      message: error.message || "Failed to fetch experts",
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        status: "Fail",
+        message: error.message || "Failed to fetch experts",
+      },
+      { status: 500 }
+    );
   }
 }
 

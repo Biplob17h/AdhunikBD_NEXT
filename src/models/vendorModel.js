@@ -1,3 +1,4 @@
+// models/Vendor.js
 import mongoose from "mongoose";
 import validator from "validator";
 
@@ -35,7 +36,7 @@ const vendorSchema = new mongoose.Schema({
       validator: validator.isEmail,
       message: (props) => `${props.value} is not a valid email address!`,
     },
-    default: "example@gamil.com",
+    default: "example@gmail.com",
   },
   password: {
     type: String,
@@ -55,10 +56,12 @@ const vendorSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  experts: {
-    type: Array,
-    default: [],
-  },
+  experts: [
+    {
+      type: mongoose.Schema.Types.ObjectId, // Reference to the Expert model
+      ref: "experts", // Reference to the Expert collection
+    },
+  ],
   nid: {
     type: String,
     default: "",
