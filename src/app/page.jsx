@@ -38,7 +38,7 @@ const HomePage = () => {
     <div>
       <Navbar />
       <HeroSection />
-      <CategoriesSection />
+      {/* <CategoriesSection /> */}
       <ForHomeSectionSlider />
       <RecommendedSection />
       <GallerySlider />

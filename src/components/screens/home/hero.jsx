@@ -3,8 +3,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapIcon } from "@/components/ui/svgs";
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
+import {
+  LocateFixedIcon,
+  Map,
+  MapPin,
+  Mic,
+  Search,
+  TrendingUp,
+} from "lucide-react";
 import { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+// import required modules
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import Image from "next/image";
+import { categories } from "@/data/categories.data";
 
 const HeroSection = () => {
   const [location, setLocation] = useState("");
@@ -56,97 +74,173 @@ const HeroSection = () => {
   };
 
   return (
-    <motion.section
-      className="container_fluid bg-hero-home"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-    >
-      <div className="items-center justify-between gap-12 space-y-12 py-8 lg:flex lg:space-y-0 xl:gap-16 xl:px-12">
-        <motion.div className="lg:max-w-xl xl:max-w-[668px]" {...fadeInUp}>
-          <div className="space-y-2">
-            <motion.h2
-              className="text-4xl font-bold text-white md:text-6xl lg:text-5xl xl:text-[58px] xl:leading-none"
-              {...fadeInUp}
-              transition={{ delay: 0.2 }}
-            >
-              Simplify Your World Achieve More
-            </motion.h2>
-            <motion.p
-              className="text-base font-light text-white xl:text-xl xl:leading-[32px]"
-              {...fadeInUp}
-              transition={{ delay: 0.4 }}
-            >
-              Streamline tasks, manage schedules, and access smart solutions
-              designed to simplify your life. Boost productivity effortlessly
-              with a personal assistant that keeps you organized, focused, and
-              always one step ahead
-            </motion.p>
+    <hero>
+      <div className="mx-auto max-w-[1250px] p-5">
+        <span className="text-2xl font-semibold">Search across services</span>
+        {/* search sec */}
+        <search className="mt-2 flex items-center gap-3">
+          <div className="relative">
+            <MapPin className="absolute left-2 top-3 opacity-70" size={20} />
+            <Input
+              className="w-[250px] border-black py-3 pl-9 focus:border-green-500"
+              placeholder="Select location"
+            />
           </div>
-
-          {/* location search */}
-          <motion.div
-            className="mt-6 max-w-[547px]"
-            {...fadeInUp}
-            transition={{ delay: 0.6 }}
+          <div className="group relative">
+            <div className="right absolute bottom-0 right-2 top-0 flex items-center gap-2">
+              <Mic />
+              <div className="flex size-8 items-center justify-center rounded bg-green-500">
+                <Search size={18} className="text-white" />
+              </div>
+            </div>
+            <Input
+              className="w-[500px] border-black py-3 focus:border-green-500"
+              placeholder="Search for services"
+            />
+            <div className="absolute left-0 top-14 z-[5] hidden h-[500px] w-[500px] rounded border border-green-500 bg-white px-2 group-focus-within:block">
+              <span className="text-[0.6rem] font-medium uppercase text-zinc-700">
+                Trending searches
+              </span>
+              <div>
+                <div className="flex items-center gap-3 rounded px-1 py-3 transition-colors duration-300 ease-in-out hover:bg-neutral-200">
+                  <div className="flex size-8 items-center justify-center rounded-md bg-gray-400">
+                    <TrendingUp
+                      size={16}
+                      className="text-white"
+                      strokeWidth={3}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-sm font-semibold leading-none">
+                      AC Searvicing
+                    </span>
+                    <span className="text-[0.79rem] leading-none tracking-wider text-zinc-500">
+                      Category
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 rounded px-1 py-3 transition-colors duration-300 ease-in-out hover:bg-neutral-200">
+                  <div className="flex size-8 items-center justify-center rounded-md bg-gray-400">
+                    <TrendingUp
+                      size={16}
+                      className="text-white"
+                      strokeWidth={3}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-sm font-semibold leading-none">
+                      AC Searvicing
+                    </span>
+                    <span className="text-[0.79rem] leading-none tracking-wider text-zinc-500">
+                      Category
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 rounded px-1 py-3 transition-colors duration-300 ease-in-out hover:bg-neutral-200">
+                  <div className="flex size-8 items-center justify-center rounded-md bg-gray-400">
+                    <TrendingUp
+                      size={16}
+                      className="text-white"
+                      strokeWidth={3}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-sm font-semibold leading-none">
+                      AC Searvicing
+                    </span>
+                    <span className="text-[0.79rem] leading-none tracking-wider text-zinc-500">
+                      Category
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 rounded px-1 py-3 transition-colors duration-300 ease-in-out hover:bg-neutral-200">
+                  <div className="flex size-8 items-center justify-center rounded-md bg-gray-400">
+                    <TrendingUp
+                      size={16}
+                      className="text-white"
+                      strokeWidth={3}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-sm font-semibold leading-none">
+                      AC Searvicing
+                    </span>
+                    <span className="text-[0.79rem] leading-none tracking-wider text-zinc-500">
+                      Category
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 rounded px-1 py-3 transition-colors duration-300 ease-in-out hover:bg-neutral-200">
+                  <div className="flex size-8 items-center justify-center rounded-md bg-gray-400">
+                    <TrendingUp
+                      size={16}
+                      className="text-white"
+                      strokeWidth={3}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-sm font-semibold leading-none">
+                      AC Searvicing
+                    </span>
+                    <span className="text-[0.79rem] leading-none tracking-wider text-zinc-500">
+                      Category
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </search>
+        {/* images slide sec */}
+        <div className="mt-5 flex h-[230px] items-center gap-5">
+          <Swiper
+            centeredSlides={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            pagination={{
+              clickable: true,
+            }}
+            navigation={true}
+            modules={[Autoplay, Pagination, Navigation]}
+            className="h-full min-w-[500px] rounded"
           >
-            <div className="flex items-center space-x-4">
-              <Button
-                onClick={handleLocationClick}
-                variant="outline"
-                className="h-12 border-none bg-white px-8 py-3 font-medium text-black"
-                role="button"
-                aria-label="location"
-              >
-                <MapIcon />
-                <span>{location ? location : "Location"}</span>
-              </Button>
-              <div className="relative flex-1">
-                <Input
-                  type="text"
-                  placeholder="Service Search..."
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  className="h-12 rounded-lg border-none bg-white py-3 pl-4 pr-3 text-black placeholder:text-[#8C8C8C]"
-                />
-                <button
-                  className="absolute right-2.5 top-2 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-black p-1.5 text-white"
-                  onClick={() => alert(`Searching for: ${searchValue}`)}
-                >
-                  <Search />
-                </button>
+            <SwiperSlide className="relative bg-neutral-200">
+              <Image src={"/images/faq.png"} objectFit="cover" layout="fill" />
+            </SwiperSlide>
+            <SwiperSlide className="bg-neutral-200">Slide 2</SwiperSlide>
+            <SwiperSlide className="bg-neutral-200">Slide 3</SwiperSlide>
+            <SwiperSlide className="bg-neutral-200">Slide 4</SwiperSlide>
+            <SwiperSlide className="bg-neutral-200">Slide 5</SwiperSlide>
+            <SwiperSlide className="bg-neutral-200">Slide 6</SwiperSlide>
+            <SwiperSlide className="bg-neutral-200">Slide 7</SwiperSlide>
+            <SwiperSlide className="bg-neutral-200">Slide 8</SwiperSlide>
+            <SwiperSlide className="bg-neutral-200">Slide 9</SwiperSlide>
+          </Swiper>
+          {/* big images */}
+          <div className="h-full w-full rounded bg-slate-200"></div>
+          <div className="h-full w-full rounded bg-slate-200"></div>
+          <div className="h-full w-full rounded bg-slate-200"></div>
+          <div className="h-full w-full rounded bg-slate-200"></div>
+        </div>
+        {/* icons */}
+        <div className="mt-10 grid grid-cols-8 gap-x-20 gap-y-12">
+          {categories.map((category) => {
+            return (
+              <div className="flex flex-col gap-2">
+                <div className="flex h-20 w-full cursor-pointer items-center justify-center rounded-xl border border-green-500 bg-white transition-shadow duration-300 ease-in-out hover:shadow-lg hover:shadow-gray-400">
+                  <Image src={category.image} alt="" width={40} height={40} />
+                </div>
+                <h1 className="text-center text-sm font-medium leading-none text-zinc-700">
+                  {category.title}
+                </h1>
               </div>
-            </div>
-            <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-center">
-              <p className="text-white">Popular Searches:</p>
-              <div className="flex space-x-2">
-                {popularSearches.map((item, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handlePopularSearchClick(item)}
-                    className="max-h-8 rounded-full bg-black px-4 py-1 text-sm text-white xl:text-base"
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          className="flex flex-1 items-center justify-center lg:justify-end"
-          {...fadeInUp}
-          transition={{ delay: 0.8 }}
-        >
-          <img
-            src="/images/hero-workers-frame.png"
-            className="w-full select-none"
-            alt="workers"
-          />
-        </motion.div>
+            );
+          })}
+        </div>
       </div>
-    </motion.section>
+    </hero>
   );
 };
 
